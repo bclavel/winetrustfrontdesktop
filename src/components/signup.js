@@ -13,7 +13,7 @@ import {
   Label,
   Input
 } from 'reactstrap';
-import './style.css';
+import '../style.css';
 
 export default class Signup extends Component {
   constructor(props){
@@ -33,7 +33,7 @@ export default class Signup extends Component {
     return(
     <div className="homeDiv">
       <div className="logoSignin">
-        <img src="../images/WineTrust-V-logo-bordeaux.png" />
+        <img src="../../images/WineTrust-V-logo-bordeaux.png" />
       </div>
       <div className="signinComp">
       <Form >

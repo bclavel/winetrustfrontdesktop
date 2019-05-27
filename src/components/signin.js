@@ -12,7 +12,7 @@ import {
   Label,
   Input
 } from 'reactstrap';
-import './style.css';
+import '../style.css';
 
 export default class Signin extends Component {
   constructor(props){

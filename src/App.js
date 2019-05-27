@@ -16,8 +16,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css';
 import './App.css';
 
-import Signin from './signin';
-import Signup from './signup';
+import Signin from './components/signin';
+import Signup from './components/signup';
 
 class App extends Component {
 
