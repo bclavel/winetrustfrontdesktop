@@ -17,7 +17,6 @@ import './style.css';
 import './App.css';
 
 import Signin from './signin';
-import Signup from './signup';
 
 class App extends Component {
 
@@ -31,7 +30,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Signup/>
+        <Signin/>
       </div>
     )
   }
