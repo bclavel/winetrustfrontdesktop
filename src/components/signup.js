@@ -13,8 +13,9 @@ export default class Signup extends Component {
 
   };
 
-
-
+  userType = (event) => {
+    this.setState({userType: event.target.value})
+  }
   render() {
     var display = null;
     if ( this.state.userType==="Producteur" || this.state.userType==="Distributeur") {
