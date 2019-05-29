@@ -10,24 +10,25 @@ export default class Signup extends Component {
     this.state = {
       userType: "Vous êtes"
     }
-
   };
 
   userType = (event) => {
-    this.setState({userType: event.target.value})
-  }
+    this.setState({userType:event.target.value});
+    console.log(this.state.userType)
+  };
+
   render() {
-    var display = null;
-    if ( this.state.userType==="Producteur" || this.state.userType==="Distributeur") {
+    var display = 'block';
+    if ( this.state.userType==="Consommateur" || this.state.userType==="Transporteur" || this.state.userType==="Vous êtes") {
       display = 'none'
     };
 
     return(
-    <div className="homeDiv">
+    <div style={styles.homeDiv}>
       <div className="logoSignin">
         <img src="../../images/WineTrust-V-logo-bordeaux.png" />
       </div>
-      <div className="signinComp">
+      <div style={styles.signupComp}>
       <Form >
         <FormGroup>
           <Label for="exampleEmail" hidden>Votre Nom</Label>
@@ -47,7 +48,7 @@ export default class Signup extends Component {
         </FormGroup>
         <FormGroup>
           <Label for="typeUser" hidden>Vous êtes</Label>
-          <Input type="select" placeholder="Vous êtes" onChange={this.state.userType}>
+          <Input type="select" placeholder="Vous êtes" onChange={this.userType}>
             <option value="">Vous êtes</option>
             <option>Producteur</option>
             <option>Distributeur</option>
@@ -63,10 +64,34 @@ export default class Signup extends Component {
           <Label for="examplePassword" hidden>Adresse</Label>
           <Input type="address" name="address" id="address" placeholder="Adresse" />
         </FormGroup>
-        <Button className="btn-validate"><Link to='/createproduct/'>Validez</Link></Button>
+        <Button style={styles.btnValidate}><Link to='/createproduct/'>Validez</Link></Button>
       </Form>
       </div>
     </div>
-    );
+    )
   }
 };
+
+var styles = {
+  homeDiv: {
+    backgroundColor: '#711A1A',
+    height: '100vh',
+    width: '100vw',
+    display: 'flex',
+    flexDirection: 'column',
+    justify: 'center',
+    alignItems: 'center'
+  },
+
+  signupComp: {
+    width: '100vw',
+    marginTop: '100px',
+    textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+
+  btnValidate: {
+    backgroundColor: '#22323F'
+  }
+}

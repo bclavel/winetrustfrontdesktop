@@ -6,11 +6,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-};
-
-.logoSignin {
-  min-width: 100vw;
-  margin-bottom: 300px;
 }
 
 .signinComp {
@@ -19,7 +14,7 @@
   text-align: center;
   display: flex;
   justify-content: center;
-};
+}
 
 .signupComp {
   width: 100vw;
@@ -27,8 +22,8 @@
   text-align: center;
   display: flex;
   justify-content: center;
-};
+}
 
 .btn-validate {
-  background-color: #711A1A
+  background-color: #22323F
 }
