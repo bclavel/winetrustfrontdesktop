@@ -1,16 +1,25 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Container, Row, Col, Button, Table, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Container, Row, Col, Button, Table, Form, FormGroup, Label, Input, FormText, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import NavBar from './navbar';
 import { Link } from "react-router-dom";
+import '../style.css'
 
 export default class CreateProduct extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      stateTest : null,
+      modal: false
     };
+
+    this.toggle = this.toggle.bind(this);
+  }
+
+  toggle() {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
   }
 
  render() {
@@ -96,11 +105,33 @@ export default class CreateProduct extends Component {
         </Row>
         <Row>
           <Col md={{ size: 6, offset: 6 }}>
-            <Button style={styles.lightBigBtn}>Annuler</Button>
-            <Button style={styles.blueBigBtn}><Link to='/product/'>Valider</Link></Button>
+            <Button style={styles.lightBigBtn} onClick={this.toggle}>Annuler</Button>
+            <Button className='blueBigBtnHover' style={styles.blueBigBtn}><Link to='/product/' className='blueBtnLink'>Valider</Link></Button>
           </Col>
         </Row>
       </Container>
+      <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+        <ModalHeader style={styles.h2} toggle={this.toggle}>Validation de la vente</ModalHeader>
+        <ModalBody>
+          <Container>
+            <Row style={styles.modalFormat}>
+              <Col sm="4">
+                <img style={styles.imageModal} src='/images/bouteille.png'/>
+              </Col>
+              <Col sm="8">
+                <h4 style={styles.h4}>Chateau Beauregard 2014</h4>
+                <p style={styles.normalTxt}><strong>ID Produit</strong><br />0x45fb56gt21av987atj89</p>
+                <p style={styles.normalTxt}><strong>Vendeur</strong><br />Domaine Beauregard<br />73 Rue de Catusseau, 33500 Pomerol<br />contact@chateau-beauregard.com</p>
+                <p style={styles.normalTxt}><strong>Date de la vente</strong><br />27/04/2019</p>
+              </Col>
+            </Row>
+          </Container>
+        </ModalBody>
+        <ModalFooter>
+          <Button style={styles.lightBigBtn} onClick={this.toggle}>Annuler</Button>
+          <Button className='blueBigBtnHover' style={styles.blueBigBtn} onClick={this.toggle}>Valider</Button>
+        </ModalFooter>
+      </Modal>
     </div>
     );
   }
@@ -135,23 +166,25 @@ var styles = {
   },
   smallBtn : {
     backgroundColor : '#22323F',
-    fontSize: '18px',
+    fontSize: '16px',
     paddingLeft : '40px',
     paddingRight : '40px',
   },
   blueBigBtn : {
     backgroundColor : '#22323F',
-    fontSize: '20px',
+    fontSize: '18px',
     paddingLeft : '40px',
     paddingRight : '40px',
-    marginLeft : '30px'
+    marginLeft : '30px',
+    borderColor : '#22323F'
   },
   lightBigBtn : {
     backgroundColor : '#E2DAD4',
     color : '#22323F',
-    fontSize: '20px',
+    fontSize: '18px',
     paddingLeft : '40px',
     paddingRight : '40px',
+    borderColor : '#E2DAD4'
   },
   smallTxt : {
     fontFamily: 'Roboto',
@@ -186,5 +219,14 @@ var styles = {
     borderColor : '#999999',
     borderRadius : 0,
     paddingLeft: 0
+  },
+  imageModal : {
+    width : '100%'
+  },
+  modalFormat : {
+    display : 'flex',
+    flexDirection : 'row',
+    justifyContent : 'center',
+    alignItems : 'center'
   }
 }

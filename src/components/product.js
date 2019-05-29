@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Container, Row, Col, Button, Table } from 'reactstrap';
+import { Container, Row, Col, Button, Table, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap';
 import NavBar from './navbar';
 import { Link } from "react-router-dom";
 
@@ -10,8 +10,17 @@ export default class Product extends Component {
 
     this.state = {
       stateTest : null,
+      modal: false
     };
-  }
+
+  this.toggle = this.toggle.bind(this);
+}
+
+toggle() {
+  this.setState(prevState => ({
+    modal: !prevState.modal
+  }));
+}
 
  render() {
    var productData = {
@@ -32,7 +41,7 @@ export default class Product extends Component {
             <h4 style={styles.h4}>Domaine Beauregard</h4>
             <h4 style={styles.h4}>Région de Bordeaux, France</h4>
             <div style={{marginTop : '25px', marginBottom : '15px'}}>
-              <Button style={styles.smallBtn}>Acheter 49,96€</Button>
+              <Button style={styles.smallBtn} onClick={this.toggle}>Acheter 49,96€</Button>
               <p style={styles.smallTxt}>Vendu par Ovinia.com</p>
             </div>
             <div style={{marginTop : '25px', marginBottom : '15px'}}>
@@ -91,8 +100,36 @@ export default class Product extends Component {
             </Table>
           </Col>
         </Row>
-
       </Container>
+      <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+        <ModalHeader style={styles.h2} toggle={this.toggle}>Merci de patienter, traitement en cours</ModalHeader>
+        <ModalBody>
+          <Container>
+            <Row style={styles.modalFormat}>
+              <Col sm="12">
+                <div style={styles.modalFormat}>
+                  <Spinner style={styles.spinnerStyle} size="sm" color="secondary" /><p style={styles.normalTxt}>Création de la transaction</p>
+                </div>
+                <div style={styles.modalFormat}>
+                  <Spinner style={styles.spinnerStyle} size="sm" color="secondary" /><p style={styles.normalTxt}>En attente de minage</p>
+                </div>
+                <div style={styles.modalFormat}>
+                  <Spinner style={styles.spinnerStyle} size="sm" color="secondary" /><p style={styles.normalTxt}>Transaction minée sur le bloc 0x4ab76fa90blas43p15v</p>
+                </div>
+                <div style={styles.modalFormat}>
+                  <Spinner style={styles.spinnerStyle} size="sm" color="secondary" /><p style={styles.normalTxt}>Synchronisation sur les noeuds du réseau</p>
+                </div>
+                <div style={styles.modalFormat}>
+                  <Spinner style={styles.spinnerStyle} size="sm" color="secondary" /><p style={styles.normalTxt}>Succès !</p>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </ModalBody>
+        <ModalFooter>
+          <Button className='blueBigBtnHover' style={styles.blueBigBtn} onClick={this.toggle}>Fermer</Button>
+        </ModalFooter>
+      </Modal>
     </div>
     );
   }
@@ -149,5 +186,14 @@ var styles = {
     fontSize: '14px',
     display : 'flex',
     alignItems : 'center',
+  },
+  modalFormat : {
+    display : 'flex',
+    flexDirection : 'row',
+    justifyContent : 'flex-start',
+    alignItems : 'normal'
+  },
+  spinnerStyle : {
+    marginRight : '10px'
   }
 }
