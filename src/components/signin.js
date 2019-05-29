@@ -1,18 +1,7 @@
 import React, { Component } from 'react';
-import {
-  Col,
-  Card,
-  CardImg,
-  CardText,
-  CardBody,
-  CardTitle,
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input
-} from 'reactstrap';
+import { Col, Card, CardImg, CardText, CardBody, CardTitle, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import '../style.css';
+import { Link } from "react-router-dom";
 
 export default class Signin extends Component {
   constructor(props){
@@ -41,7 +30,8 @@ export default class Signin extends Component {
             <Input type="password" name="password" id="examplePassword" placeholder="Password" />
           </FormGroup>
           {' '}
-          <Button className="btn-validate">Validez</Button>
+          <Button className="btn-validate"><Link to='/createproduct/'>Validez</Link></Button>
+          <p><Link to='/signup/'>Vous n'avez pas encore de compte, crééz en un !</Link></p>
         </Form>
       </div>
     </div>

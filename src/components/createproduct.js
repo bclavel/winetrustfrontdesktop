@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col, Button, Table, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import NavBar from './navbar';
+import { Link } from "react-router-dom";
 
 export default class CreateProduct extends Component {
   constructor(props) {
@@ -29,7 +30,7 @@ export default class CreateProduct extends Component {
           </Col>
         </Row>
         <Row>
-          <Col sm="12" md='6'>
+          <Col sm="7">
             <h2 style={styles.h2}>Etape 1 : informations produit</h2>
             <Form>
               <FormGroup>
@@ -87,7 +88,7 @@ export default class CreateProduct extends Component {
               </FormGroup>
             </Form>
           </Col>
-          <Col sm="12" md='6' style={styles.qrcode}>
+          <Col sm={{ size: 4, offset: 1 }} style={styles.qrcode}>
             <h2 style={styles.h2}>Etape 2 : authentification</h2>
             <img src='/images/qrcode.jpg'/>
             <Button style={styles.smallBtn}>Télécharger le QR code</Button>
@@ -96,7 +97,7 @@ export default class CreateProduct extends Component {
         <Row>
           <Col md={{ size: 6, offset: 6 }}>
             <Button style={styles.lightBigBtn}>Annuler</Button>
-            <Button style={styles.blueBigBtn}>Valider</Button>
+            <Button style={styles.blueBigBtn}><Link to='/product/'>Valider</Link></Button>
           </Col>
         </Row>
       </Container>

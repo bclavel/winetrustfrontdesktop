@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col, Button, Table } from 'reactstrap';
 import NavBar from './navbar';
+import { Link } from "react-router-dom";
 
 export default class Product extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ export default class Product extends Component {
           <Col sm="12" md={{ size: 4, offset: 8 }} style={styles.headerTxt}>Vous êtes : Domaine Beauregard (producteur)</Col>
         </Row>
         <Row>
-          <Col sm="12" md='6' style={styles.productImg}><img src='/images/bouteille.jpg'/></Col>
+          <Col sm="12" md='6' style={styles.productImg}><img src='/images/bouteille.png'/></Col>
           <Col sm="12" md='6'>
             <h1 style={styles.h1}>Chateau Beauregard 2014</h1>
             <h4 style={styles.h4}>Pomerol AOC</h4>

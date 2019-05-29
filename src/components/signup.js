@@ -1,19 +1,7 @@
 import React, { Component } from 'react';
-import {
-  Col,
-  Card,
-  CardImg,
-  CardText,
-  CardBody,
-  CardTitle,
-  Button,
-  Form,
-  FormGroup,
-  FormText,
-  Label,
-  Input
-} from 'reactstrap';
+import { Col, Card, CardImg, CardText, CardBody, CardTitle, Button, Form, FormGroup, FormText, Label, Input } from 'reactstrap';
 import '../style.css';
+import { Link } from "react-router-dom";
 
 export default class Signup extends Component {
   constructor(props){
@@ -71,7 +59,7 @@ export default class Signup extends Component {
           <Label for="examplePassword" hidden>Adresse</Label>
           <Input type="address" name="address" id="address" placeholder="Adresse" />
         </FormGroup>
-        <Button className="btn-validate">Validez</Button>
+        <Button className="btn-validate"><Link to='/createproduct/'>Validez</Link></Button>
       </Form>
       </div>
     </div>
