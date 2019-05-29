@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Col, Card, CardImg, CardText, CardBody, CardTitle, Button, Form, FormGroup, FormText, Label, Input } from 'reactstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style.css';
 import { Link } from "react-router-dom";
 
@@ -7,10 +8,12 @@ export default class Signup extends Component {
   constructor(props){
     super(props);
     this.state = {
-      userType: ""
+      userType: "Vous êtes"
     }
 
   };
+
+
 
   render() {
     var display = null;
@@ -43,7 +46,7 @@ export default class Signup extends Component {
         </FormGroup>
         <FormGroup>
           <Label for="typeUser" hidden>Vous êtes</Label>
-          <Input type="select" placeholder="Vous êtes" userType={this.state.userType}>
+          <Input type="select" placeholder="Vous êtes" onChange={this.state.userType}>
             <option value="">Vous êtes</option>
             <option>Producteur</option>
             <option>Distributeur</option>
