@@ -92,7 +92,6 @@ var styles = {
     justifyContent: 'center',
   },
 
-  // style on "validate" button is put in the jsx because the color on the button cannot be stylized via the css file
   btnValidate: {
     backgroundColor: '#22323F',
     marginTop: '35px',
