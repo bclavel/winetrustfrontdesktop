@@ -25,7 +25,7 @@ export default class Signup extends Component {
 
     return(
     <div className="homeDiv">
-      <div className="logoSignup">
+      <div>
         <img src="../../images/WineTrust-V-logo-bordeaux.png" />
       </div>
       <div className="signupComp">
@@ -65,7 +65,7 @@ export default class Signup extends Component {
             <Input style={styles.formInput} type="address" name="address" id="address" placeholder="Adresse" />
           </FormGroup>
           <Button style={styles.btnValidate}><Link className="blueBtnLink" to='/createproduct/'>Créer votre compte</Link></Button>
-        <p>Déjà inscrit ? <Link className="signup-link" to='/signup/'>Cliquez ici pour vous connecter</Link></p>
+          <p className="signup-link">Déjà inscrit ? <Link className="signup-link" to='/'>Cliquez ici pour vous connecter</Link></p>
         </Form>
       </div>
     </div>

@@ -15,7 +15,7 @@ export default class Signin extends Component {
 
     return(
     <div className="homeDiv">
-      <div className="logoSignin">
+      <div>
         <img src="../images/WineTrust-V-logo-bordeaux.png" />
       </div>
       <div className="signinComp">
