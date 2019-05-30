@@ -15,7 +15,7 @@ import {
   DropdownMenu,
   DropdownItem } from 'reactstrap';
 
-import 'bootstrap/dist/css/bootstrap.css';
+
 import '../App.css';
 import '../style.css';
 
@@ -36,13 +36,14 @@ export default class NavBar extends React.Component {
 
   render() {
     return (
-      <div style={{backgroundColor : 'red'}}>
-      <Container>
-        <Navbar light expand="md">
-          <NavbarBrand href="/">reactstrap</NavbarBrand>
+      <div>
+        <Navbar dark expand="md" style={styles.navbar}>
+          <NavbarBrand href="/">
+            <img style={{maxWidth: 200}} src="../images/WineTrust-H-logo-bordeaux.png" />
+          </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="ml-auto" navbar>
+            <Nav navbar>
               <NavItem>
                 <NavLink href="/components/">Components</NavLink>
               </NavItem>
@@ -69,8 +70,14 @@ export default class NavBar extends React.Component {
             </Nav>
           </Collapse>
         </Navbar>
-    </Container>
-    </div>
-    );
+      </div>
+    )
+  }
+};
+
+var styles = {
+  navbar: {
+    backgroundColor: "#711A1A",
+    paddingLeft: "5%"
   }
 }
