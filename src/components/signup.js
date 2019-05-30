@@ -94,4 +94,4 @@ var styles = {
   btnValidate: {
     backgroundColor: '#22323F'
   }
-}
+};
