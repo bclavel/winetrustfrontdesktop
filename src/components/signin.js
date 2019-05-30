@@ -15,25 +15,31 @@ export default class Signin extends Component {
 
     return(
     <div className="homeDiv">
-      <div className="logoSignin">
+      <div>
         <img src="../images/WineTrust-V-logo-bordeaux.png" />
       </div>
       <div className="signinComp">
-        <Form >
+        <Form className="form">
           <FormGroup>
             <Label for="exampleEmail" hidden>Email</Label>
-            <Input type="email" name="email" id="exampleEmail" placeholder="Email" />
+            <Input style={styles.formInput} type="email" name="email" id="exampleEmail" placeholder="Email" />
           </FormGroup>
           <FormGroup>
             <Label for="examplePassword" hidden>Password</Label>
-            <Input type="password" name="password" id="examplePassword" placeholder="Password" />
+            <Input style={styles.formInput} type="password" name="password" id="examplePassword" placeholder="Password" />
           </FormGroup>
+<<<<<<< HEAD
           <Button style={styles.btnValidate}><Link to='/createproduct/'>Validez</Link></Button>
           <p><Link to='/signup/'>Vous n'avez pas encore de compte, crééz en un !</Link></p>
+=======
+          <Button style={styles.btnValidate}><Link className="blueBtnLink" to='/createproduct/'>Validez</Link></Button>
+          <p><Link className="signup-link" to='/signup/'>Vous n'avez pas encore de compte, crééz en un !</Link></p>
+>>>>>>> styles
         </Form>
       </div>
     </div>
     )
+<<<<<<< HEAD
   }
 };
 
@@ -58,5 +64,45 @@ var styles = {
 
   btnValidate: {
     backgroundColor: '#22323F'
+=======
+>>>>>>> styles
   }
+};
+
+var styles = {
+  homeDiv: {
+    backgroundColor: '#711A1A',
+    height: '100vh',
+    width: '100vw',
+    display: 'flex',
+    flexDirection: 'column',
+    justify: 'center',
+    alignItems: 'center'
+  },
+
+  signupComp: {
+    width: '100vw',
+    marginTop: '100px',
+    textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+
+  // style on "validate" button is put in the jsx because the color on the button cannot be stylized via the css file
+  btnValidate: {
+    backgroundColor: '#22323F',
+    marginTop: '35px',
+    marginBottom: '10px'
+  },
+
+  formInput : {
+    borderTop : '0px',
+    borderLeft : '0px',
+    borderRight : '0px',
+    borderBottom : '1px solid',
+    borderColor : '#999999',
+    borderRadius : 0,
+    paddingLeft: 0
+  }
+
 };
