@@ -64,7 +64,7 @@ export default class Signup extends Component {
             <Label for="examplePassword" hidden>Adresse</Label>
             <Input style={styles.formInput} type="address" name="address" id="address" placeholder="Adresse" />
           </FormGroup>
-          <Button style={styles.btnValidate}><Link className="blueBtnLink" to='/createproduct/'>Créer votre compte</Link></Button>
+          <Button style={styles.btnValidate}><Link className="blueBtnLink" to='/dashboard/'>Créer votre compte</Link></Button>
           <p className="signup-link">Déjà inscrit ? <Link className="signup-link" to='/'>Cliquez ici pour vous connecter</Link></p>
         </Form>
       </div>
