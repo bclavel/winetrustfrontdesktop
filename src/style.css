@@ -16,6 +16,16 @@
   justify-content: center;
 }
 
+.logoSignup {
+  padding: 30px;
+}
+
+.form {
+  background-color: #FFFFFF;
+  padding: 30px;
+  width: 25vw
+}
+
 .signupComp {
   width: 100vw;
   margin-top: 100px;
@@ -24,6 +34,44 @@
   justify-content: center;
 }
 
-.btn-validate {
-  background-color: #22323F
+.signup-link {
+  color: #000000;
+  font-size: 10px
+}
+
+.blueBtnLink {
+  color : #E2DAD4;
+}
+
+.blueBtnLink:hover {
+  color : #F7F3EF;
+  text-decoration: none;
+}
+
+.lightBtnLink {
+  color : #22323F;
+}
+.lightBtnLink:hover {
+  color : #4A6F8D;
+  text-decoration: none;
+}
+
+input::-webkit-input-placeholder {
+color: black !important;
+}
+
+textarea::-webkit-input-placeholder {
+color: black !important;
+}
+
+input:-moz-placeholder { /* Firefox 18- */
+color: black !important;
+}
+
+input::-moz-placeholder {  /* Firefox 19+ */
+color: black !important;
+}
+
+input:-ms-input-placeholder {
+color: black !important;
 }

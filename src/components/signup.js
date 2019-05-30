@@ -24,48 +24,49 @@ export default class Signup extends Component {
     };
 
     return(
-    <div style={styles.homeDiv}>
-      <div className="logoSignin">
+    <div className="homeDiv">
+      <div className="logoSignup">
         <img src="../../images/WineTrust-V-logo-bordeaux.png" />
       </div>
-      <div style={styles.signupComp}>
-      <Form >
-        <FormGroup>
-          <Label for="exampleEmail" hidden>Votre Nom</Label>
-          <Input type="name" name="name" id="" placeholder="Votre Nom" />
-        </FormGroup>
-        <FormGroup>
-          <Label for="exampleEmail" hidden>Email</Label>
-          <Input type="email" name="email" id="exampleEmail" placeholder="Email" />
-        </FormGroup>
-        <FormGroup>
-          <Label for="examplePassword" hidden>Mot de passe</Label>
-          <Input type="password" name="password" id="examplePassword" placeholder="Mot de passe" />
-        </FormGroup>
-        <FormGroup>
-          <Label for="exampleConfpassword" hidden>Confirmez mot de passe</Label>
-          <Input type="password" name="confpassword" id="exampleConfpassword" placeholder="Confirmez mot de passe" />
-        </FormGroup>
-        <FormGroup>
-          <Label for="typeUser" hidden>Vous êtes</Label>
-          <Input type="select" placeholder="Vous êtes" onChange={this.userType}>
-            <option value="">Vous êtes</option>
-            <option>Producteur</option>
-            <option>Distributeur</option>
-            <option>Consommateur</option>
-            <option>Transporteur</option>
-          </Input>
-        </FormGroup>
-        <FormGroup style={{display}}>
-          <Label for="examplePassword" hidden>Nom de l'entreprise</Label>
-          <Input type="company" name="company" id="company" placeholder="Nom de l'entreprise" />
-        </FormGroup>
-        <FormGroup style={{display}}>
-          <Label for="examplePassword" hidden>Adresse</Label>
-          <Input type="address" name="address" id="address" placeholder="Adresse" />
-        </FormGroup>
-        <Button style={styles.btnValidate}><Link to='/createproduct/'>Validez</Link></Button>
-      </Form>
+      <div className="signupComp">
+        <Form className="form">
+          <FormGroup>
+            <Label for="exampleEmail" hidden>Votre Nom</Label>
+            <Input style={styles.formInput} type="name" name="name" id="" placeholder="Votre Nom" />
+          </FormGroup>
+          <FormGroup>
+            <Label for="exampleEmail" hidden>Email</Label>
+            <Input style={styles.formInput} type="email" name="email" id="exampleEmail" placeholder="Email" />
+          </FormGroup>
+          <FormGroup>
+            <Label for="examplePassword" hidden>Mot de passe</Label>
+            <Input style={styles.formInput} type="password" name="password" id="examplePassword" placeholder="Mot de passe" />
+          </FormGroup>
+          <FormGroup>
+            <Label for="exampleConfpassword" hidden>Confirmez mot de passe</Label>
+            <Input style={styles.formInput} type="password" name="confpassword" id="exampleConfpassword" placeholder="Confirmez mot de passe" />
+          </FormGroup>
+          <FormGroup>
+            <Label for="typeUser" hidden>Vous êtes</Label>
+            <Input style={styles.formInput} type="select" placeholder="Vous êtes" onChange={this.userType}>
+              <option value="">Vous êtes</option>
+              <option>Producteur</option>
+              <option>Distributeur</option>
+              <option>Consommateur</option>
+              <option>Transporteur</option>
+            </Input>
+          </FormGroup>
+          <FormGroup style={{display}}>
+            <Label for="examplePassword" hidden>Nom de l'entreprise</Label>
+            <Input style={styles.formInput} type="company" name="company" id="company" placeholder="Nom de l'entreprise" />
+          </FormGroup>
+          <FormGroup style={{display}}>
+            <Label for="examplePassword" hidden>Adresse</Label>
+            <Input style={styles.formInput} type="address" name="address" id="address" placeholder="Adresse" />
+          </FormGroup>
+          <Button style={styles.btnValidate}><Link className="blueBtnLink" to='/createproduct/'>Créer votre compte</Link></Button>
+        <p>Déjà inscrit ? <Link className="signup-link" to='/signup/'>Cliquez ici pour vous connecter</Link></p>
+        </Form>
       </div>
     </div>
     )
@@ -91,7 +92,21 @@ var styles = {
     justifyContent: 'center',
   },
 
+  // style on "validate" button is put in the jsx because the color on the button cannot be stylized via the css file
   btnValidate: {
-    backgroundColor: '#22323F'
+    backgroundColor: '#22323F',
+    marginTop: '35px',
+    marginBottom: '10px'
+  },
+
+  formInput : {
+    borderTop : '0px',
+    borderLeft : '0px',
+    borderRight : '0px',
+    borderBottom : '1px solid',
+    borderColor : '#999999',
+    borderRadius : 0,
+    paddingLeft: 0
   }
+
 };
