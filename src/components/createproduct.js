@@ -10,7 +10,22 @@ export default class CreateProduct extends Component {
     super(props);
 
     this.state = {
-      modal: false
+      modal: false,
+      productDomaine : '',
+      productCuvee : '',
+      productDeskImg : '',
+      productMobImg : '',
+      productMillesime : '',
+      productCepages : '',
+      productAppellation : '',
+      productRegion : '',
+      productCountry : '',
+      domainHistory : '',
+      productAccords : '',
+      domainPostalAddress : '',
+      domainUrl : '',
+      domainFacebook : '',
+      domainEmail : '',
     };
 
     this.toggle = this.toggle.bind(this);
@@ -20,6 +35,41 @@ export default class CreateProduct extends Component {
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
+  }
+
+  handleSubmit() {
+    var ctx = this
+    fetch('http://10.2.1.57:3000/createproduct', {
+     method: 'POST',
+     headers: {'Content-Type':'application/x-www-form-urlencoded'},
+     body: `
+     productDomaine=${this.state.productDomaine}
+     &productCuvee=${this.state.productCuvee}
+     &productDeskImg=${this.state.productDeskImg}
+     &productMobImg=${this.state.productMobImg}
+     &productMillesime=${this.state.productMillesime}
+     &productCepages=${this.state.productCepages}
+     &productAppellation=${this.state.productAppellation}
+     &productRegion=${this.state.productRegion}
+     &productCountry=${this.state.productCountry}
+     &domainHistory=${this.state.domainHistory}
+     &productAccords=${this.state.productAccords}
+     &domainPostalAddress=${this.state.domainPostalAddress}
+     &domainUrl=${this.state.domainUrl}
+     &domainFacebook=${this.state.domainFacebook}
+     &domainEmail=${this.state.domainEmail}
+     `
+    })
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(data) {
+      console.log('fetch data de sign up >>', data);
+    })
+    .catch(function(error) {
+    console.log('There has been a problem with your fetch operation mec ! ' + error.message);
+      throw error;
+    });
   }
 
  render() {
@@ -41,6 +91,7 @@ export default class CreateProduct extends Component {
         <Row>
           <Col sm="7">
             <h2 style={styles.h2}>Etape 1 : informations produit</h2>
+            // ToDo >> add States & Error Managemeent
             <Form>
               <FormGroup>
                 <Input style={styles.formInput} type="text" name="domaine" placeholder='Domaine' />
@@ -106,7 +157,7 @@ export default class CreateProduct extends Component {
         <Row>
           <Col md={{ size: 6, offset: 6 }}>
             <Button style={styles.lightBigBtn} onClick={this.toggle}>Annuler</Button>
-            <Button className='blueBigBtnHover' style={styles.blueBigBtn}><Link to='/product/' className='blueBtnLink'>Valider</Link></Button>
+            <Button className='blueBigBtnHover' style={styles.blueBigBtn} onClick={this.handleSubmit}><Link to='/product/' className='blueBtnLink'>Valider</Link></Button>
           </Col>
         </Row>
       </Container>
