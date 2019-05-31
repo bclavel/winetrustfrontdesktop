@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Container, Row, Col, Button, Table, Form, FormGroup, Label, Input, FormText, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Container, Row, Col, Button, Table, Form, FormGroup, Label, Input, FormText, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap';
 import NavBar from './navbar';
 import { Link } from "react-router-dom";
 import '../style.css'
@@ -11,6 +11,7 @@ export default class CreateProduct extends Component {
 
     this.state = {
       modal: false,
+      ligne1 : false,
       formIsValid: false,
       formControls : {
         productDomaine : {
@@ -108,7 +109,8 @@ export default class CreateProduct extends Component {
 
   toggle() {
     this.setState(prevState => ({
-      modal: !prevState.modal
+      modal: !prevState.modal,
+      ligne1 : true
     }));
   }
 
@@ -166,6 +168,9 @@ export default class CreateProduct extends Component {
    var productData = {
      title : 'test'
    }
+   // var spinner = <Spinner style={styles.spinnerStyle} size="sm" color="secondary" />
+   // var check = <img style={styles.spinnerStyle} src='/images/picto_check.png'/>
+   // var ligne1 = this.state.ligne1 ? {spinner} + <p style={styles.normalTxt}>Création de la transaction</p> : {check} + <p style={styles.normalTxt}>Création de la transaction</p>
   return (
     <div style={styles.background}>
       <NavBar />
@@ -247,25 +252,32 @@ export default class CreateProduct extends Component {
         </Row>
       </Container>
       <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-        <ModalHeader style={styles.h2} toggle={this.toggle}>Validation de la vente</ModalHeader>
+        <ModalHeader style={styles.h2} toggle={this.toggle}>Merci de patienter, traitement en cours</ModalHeader>
         <ModalBody>
           <Container>
             <Row style={styles.modalFormat}>
-              <Col sm="4">
-                <img style={styles.imageModal} src='/images/bouteille.png'/>
-              </Col>
-              <Col sm="8">
-                <h4 style={styles.h4}>Chateau Beauregard 2014</h4>
-                <p style={styles.normalTxt}><strong>ID Produit</strong><br />0x45fb56gt21av987atj89</p>
-                <p style={styles.normalTxt}><strong>Vendeur</strong><br />Domaine Beauregard<br />73 Rue de Catusseau, 33500 Pomerol<br />contact@chateau-beauregard.com</p>
-                <p style={styles.normalTxt}><strong>Date de la vente</strong><br />27/04/2019</p>
+              <Col sm="12">
+                <div style={styles.modalFormat}>
+                  <Spinner style={styles.spinnerStyle} size="sm" color="secondary" /><p style={styles.normalTxt}>Création de la transaction</p>
+                </div>
+                <div style={styles.modalFormat}>
+                  <Spinner style={styles.spinnerStyle} size="sm" color="secondary" /><p style={styles.normalTxt}>En attente de minage</p>
+                </div>
+                <div style={styles.modalFormat}>
+                  <Spinner style={styles.spinnerStyle} size="sm" color="secondary" /><p style={styles.normalTxt}>Transaction minée sur le bloc 0x4ab76fa90blas43p15v</p>
+                </div>
+                <div style={styles.modalFormat}>
+                  <Spinner style={styles.spinnerStyle} size="sm" color="secondary" /><p style={styles.normalTxt}>Synchronisation sur les noeuds du réseau</p>
+                </div>
+                <div style={styles.modalFormat}>
+                  <Spinner style={styles.spinnerStyle} size="sm" color="secondary" /><p style={styles.normalTxt}>Succès !</p>
+                </div>
               </Col>
             </Row>
           </Container>
         </ModalBody>
         <ModalFooter>
-          <Button style={styles.lightBigBtn} onClick={this.toggle}>Annuler</Button>
-          <Button className='blueBigBtnHover' style={styles.blueBigBtn} onClick={this.toggle}>Valider</Button>
+          <Button className='blueBigBtnHover' style={styles.blueBigBtn} onClick={this.toggle}>Fermer</Button>
         </ModalFooter>
       </Modal>
     </div>
@@ -362,7 +374,10 @@ var styles = {
   modalFormat : {
     display : 'flex',
     flexDirection : 'row',
-    justifyContent : 'center',
-    alignItems : 'center'
+    justifyContent : 'flex-start',
+    alignItems : 'normal'
+  },
+  spinnerStyle : {
+    marginRight : '10px'
   }
 }
