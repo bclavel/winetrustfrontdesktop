@@ -43,12 +43,10 @@ export default class NavBar extends React.Component {
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav navbar>
+            <Nav expand="md" navbar>
               <NavItem>
-                <NavLink href="/components/">Components</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
+                <NavLink href="/">GitHub</NavLink>
+                <Button href="/">GitHub</NavLink>
               </NavItem>
             </Nav>
           </Collapse>
@@ -62,5 +60,10 @@ var styles = {
   navbar: {
     backgroundColor: "#711A1A",
     paddingLeft: "5%"
+  },
+
+  navitem: {
+    backgroundColor: "#711A1A",
+    marginLeft: "10rem"
   }
 }
