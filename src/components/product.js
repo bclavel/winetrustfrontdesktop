@@ -76,7 +76,7 @@ toggle() {
         <Row>
           <Col sm="12">
             <h2 style={styles.h2}>Historique des transactions</h2>
-            <Table style={styles.normalTxt}>
+            <Table style={styles.tableTxt}>
               <thead>
                 <tr>
                   <th>ID transaction</th>
@@ -180,6 +180,11 @@ var styles = {
   normalTxt : {
     fontFamily: 'Roboto',
     fontSize: '14px',
+  },
+  tableTxt : {
+    fontFamily: 'Roboto',
+    fontSize: '14px',
+    textAlign : 'center'
   },
   textContact : {
     fontFamily: 'Roboto',

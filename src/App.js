@@ -9,7 +9,7 @@ import Signin from './components/signin';
 import Signup from './components/signup';
 import Product from './components/product';
 import CreateProduct from './components/createproduct';
-import ValidTransact from './components/validtransact';
+import Dashboard from './components/dashboard';
 
 
 class App extends Component {
@@ -29,7 +29,7 @@ class App extends Component {
           <Route path="/signup/" component={Signup} />
           <Route path="/product/" component={Product} />
           <Route path="/createproduct/" component={CreateProduct} />
-          <Route path="/validation/" component={ValidTransact} />
+          <Route path="/dashboard/" component={Dashboard} />
         </Switch>
       </Router>
     )
