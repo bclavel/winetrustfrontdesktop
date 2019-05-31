@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Container,
   Row,
-  Col
+  Col,
   Collapse,
   Navbar,
   NavbarToggler,
@@ -16,7 +16,7 @@ import {
   DropdownItem } from 'reactstrap';
 
 import 'bootstrap/dist/css/bootstrap.css';
-import './App.css';
+import '../App.css';
 
 export default class NavBar extends React.Component {
   render() {
