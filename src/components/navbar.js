@@ -13,7 +13,9 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem } from 'reactstrap';
+  DropdownItem,
+  Button
+} from 'reactstrap';
 
 
 import '../App.css';
@@ -45,8 +47,9 @@ export default class NavBar extends React.Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav expand="md" navbar>
               <NavItem>
-                <NavLink href="/">GitHub</NavLink>
-                <Button href="/">GitHub</NavLink>
+                <NavLink href="/">
+                  <Button style={styles.btnDeconnect}>Déconnexion</Button>
+                </NavLink>
               </NavItem>
             </Nav>
           </Collapse>
@@ -65,5 +68,11 @@ var styles = {
   navitem: {
     backgroundColor: "#711A1A",
     marginLeft: "10rem"
+  },
+
+  btnDeconnect: {
+    backgroundColor: '#22323F',
+    marginTop: '35px',
+    marginBottom: '10px'
   }
 }
