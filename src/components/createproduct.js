@@ -11,24 +11,99 @@ export default class CreateProduct extends Component {
 
     this.state = {
       modal: false,
-      productDomaine : '',
-      productCuvee : '',
-      productDeskImg : '',
-      productMobImg : '',
-      productMillesime : '',
-      productCepages : '',
-      productAppellation : '',
-      productRegion : '',
-      productCountry : '',
-      domainHistory : '',
-      productAccords : '',
-      domainPostalAddress : '',
-      domainUrl : '',
-      domainFacebook : '',
-      domainEmail : '',
+      formIsValid: false,
+      formControls : {
+        productDomaine : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        productCuvee : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        productYoutube : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        productDeskImg : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        productMobImg : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        productMillesime : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        productCepages : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        productAppellation : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        productRegion : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        productCountry : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        productQuality : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        domainHistory : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        productAccords : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        domainPostalAddress : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        domainUrl : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        domainFacebook : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        domainEmail : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+      }
     };
 
     this.toggle = this.toggle.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
   }
 
   toggle() {
@@ -37,28 +112,43 @@ export default class CreateProduct extends Component {
     }));
   }
 
+  // Met à jour le state à chaque changement dans un input de formulaire
+  handleChange = event => {
+
+      const name = event.target.name;
+      const value = event.target.value;
+
+      const updatedControls = {
+        ...this.state.formControls
+      };
+      const updatedFormElement = {
+        ...updatedControls[name]
+      };
+      updatedFormElement.value = value;
+      updatedFormElement.touched = true;
+      // updatedFormElement.valid = validate(value, updatedFormElement.validationRules);
+
+      updatedControls[name] = updatedFormElement;
+
+      let formIsValid = true;
+      // for (let inputIdentifier in updatedControls) {
+      //   formIsValid = updatedControls[inputIdentifier].valid && formIsValid;
+      // }
+
+      this.setState({
+        formControls: updatedControls,
+        formIsValid: formIsValid
+      });
+
+  }
+
   handleSubmit() {
     var ctx = this
-    fetch('http://10.2.1.57:3000/createproduct', {
+    console.log(this.state);
+    fetch('http://10.2.1.19:3000/createproduct', {
      method: 'POST',
      headers: {'Content-Type':'application/x-www-form-urlencoded'},
-     body: `
-     productDomaine=${this.state.productDomaine}
-     &productCuvee=${this.state.productCuvee}
-     &productDeskImg=${this.state.productDeskImg}
-     &productMobImg=${this.state.productMobImg}
-     &productMillesime=${this.state.productMillesime}
-     &productCepages=${this.state.productCepages}
-     &productAppellation=${this.state.productAppellation}
-     &productRegion=${this.state.productRegion}
-     &productCountry=${this.state.productCountry}
-     &domainHistory=${this.state.domainHistory}
-     &productAccords=${this.state.productAccords}
-     &domainPostalAddress=${this.state.domainPostalAddress}
-     &domainUrl=${this.state.domainUrl}
-     &domainFacebook=${this.state.domainFacebook}
-     &domainEmail=${this.state.domainEmail}
-     `
+     body: `productStatus=${'en stock'}&productDomaine=${ctx.state.formControls.productDomaine.value}&productCuvee=${ctx.state.formControls.productCuvee.value}&productDeskImg=${ctx.state.formControls.productDeskImg.value}&productYoutube=${ctx.state.formControls.productYoutube.value}&productMobImg=${ctx.state.formControls.productMobImg.value}&productMillesime=${ctx.state.formControls.productMillesime.value}&productCepages=${ctx.state.formControls.productCepages.value}&productAppellation=${ctx.state.formControls.productAppellation.value}&productRegion=${ctx.state.formControls.productRegion.value}&productCountry=${ctx.state.formControls.productCountry.value}&productQuality=${ctx.state.formControls.productQuality.value}&domainHistory=${ctx.state.formControls.domainHistory.value}&productAccords=${ctx.state.formControls.productAccords.value}&domainPostalAddress=${ctx.state.formControls.domainPostalAddress.value}&domainUrl=${ctx.state.formControls.domainUrl.value}&domainFacebook=${ctx.state.formControls.domainFacebook.value}&domainEmail=${ctx.state.formControls.domainEmail.value}`
     })
     .then(function(response) {
       return response.json()
@@ -91,73 +181,68 @@ export default class CreateProduct extends Component {
         <Row>
           <Col sm="7">
             <h2 style={styles.h2}>Etape 1 : informations produit</h2>
-            // ToDo >> add States & Error Managemeent
             <Form>
               <FormGroup>
-                <Input style={styles.formInput} type="text" name="domaine" placeholder='Domaine' />
+                <Input style={styles.formInput} type="text" name="productDomaine" value={this.state.formControls.productDomaine.value} placeholder='Domaine' onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
-                <Input style={styles.formInput} type="text" name="cuvee" placeholder='Cuvée' />
+                <Input style={styles.formInput} type="text" name="productCuvee" value={this.state.formControls.productCuvee.value} placeholder='Cuvée' onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
-                <Input style={styles.formInput} type="text" name="millesime" placeholder='Millésime' />
+                <Input style={styles.formInput} type="text" name="productMillesime" value={this.state.formControls.productMillesime.value} placeholder='Millésime' onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
-                <Input style={styles.formInput} type="text" name="appellation" placeholder='Appellation' />
+                <Input style={styles.formInput} type="text" name="productAppellation" value={this.state.formControls.productAppellation.value} placeholder='Appellation' onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
-                <Input style={styles.formInput} type="text" name="qualite" placeholder='Normes qualité' />
+                <Input style={styles.formInput} type="text" name="productQuality" value={this.state.formControls.productQuality.value} placeholder='Normes qualité' onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
-                <Input style={styles.formInput} type="text" name="cepages" placeholder='Cépages'/>
+                <Input style={styles.formInput} type="text" name="productCepages" value={this.state.formControls.productCepages.value} placeholder='Cépages' onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
-                <Input style={styles.formInput} type="text" name="region" placeholder='Région'/>
+                <Input style={styles.formInput} type="text" name="productRegion" value={this.state.formControls.productRegion.value} placeholder='Région' onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
-                <Input style={styles.formInput} type="text" name="pays" placeholder='Pays'/>
+                <Input style={styles.formInput} type="text" name="productCountry" value={this.state.formControls.productCountry.value} placeholder='Pays' onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
-                <Input style={styles.formInput} type="text" name="adresse" placeholder='Adresse postale'/>
+                <Input style={styles.formInput} type="text" name="domainPostalAddress" value={this.state.formControls.domainPostalAddress.value} placeholder='Adresse postale' onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
-                <Input style={styles.formInput} type="text" name="website" placeholder='Site web'/>
+                <Input style={styles.formInput} type="text" name="domainUrl" value={this.state.formControls.domainUrl.value} placeholder='Site web' onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
-                <Input style={styles.formInput} type="text" name="email" placeholder='Adresse email de contact'/>
+                <Input style={styles.formInput} type="text" name="domainEmail" value={this.state.formControls.domainEmail.value} placeholder='Adresse email de contact' onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
-                <Input style={styles.formInput} type="text" name="facebook" placeholder='Page Facebook'/>
+                <Input style={styles.formInput} type="text" name="domainFacebook" value={this.state.formControls.domainFacebook.value} placeholder='Page Facebook' onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
-                <Input style={styles.formInput} type="textarea" name="histoire" placeholder='Histoire du domaine'/>
+                <Input style={styles.formInput} type="textarea" name="domainHistory" value={this.state.formControls.domainHistory.value} placeholder='Histoire du domaine' onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
-                <Input style={styles.formInput} type="text" name="accords" placeholder='Accords mets & vins'/>
+                <Input style={styles.formInput} type="text" name="productAccords" value={this.state.formControls.productAccords.value} placeholder='Accords mets & vins' onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
-                <Input style={styles.formInput} type="text" name="youtube" placeholder='Vidéo youtube'/>
+                <Input style={styles.formInput} type="text" name="productYoutube" value={this.state.formControls.productYoutube.value} placeholder='Vidéo youtube' onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
                 <Label for="productDesktopImg">Photo desktop</Label>
-                <Input type="file" name="desktopImg" id="productDesktopImg" placeholder='Appellation'/>
+                <Input type="file" name="productDeskImg" id="productDesktopImg" value={this.state.formControls.productDeskImg.value} placeholder='Appellation' onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
                 <Label for="productMobileImg">Photo mobile</Label>
-                <Input type="file" name="mobileImg" id="productMobileImg" placeholder='Appellation'/>
+                <Input type="file" name="productMobImg" id="productMobileImg" value={this.state.formControls.productMobImg.value} placeholder='Appellation' onChange={this.handleChange} />
               </FormGroup>
+              <Button style={styles.lightBigBtn} onClick={this.toggle}>Annuler</Button>
+              <Button className='blueBigBtnHover' style={styles.blueBigBtn} onClick={this.handleSubmit}><Link to='/product/' className='blueBtnLink'>Valider</Link></Button>
             </Form>
           </Col>
           <Col sm={{ size: 4, offset: 1 }} style={styles.qrcode}>
             <h2 style={styles.h2}>Etape 2 : authentification</h2>
             <img src='/images/qrcode.jpg'/>
             <Button style={styles.smallBtn}>Télécharger le QR code</Button>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={{ size: 6, offset: 6 }}>
-            <Button style={styles.lightBigBtn} onClick={this.toggle}>Annuler</Button>
-            <Button className='blueBigBtnHover' style={styles.blueBigBtn} onClick={this.handleSubmit}><Link to='/product/' className='blueBtnLink'>Valider</Link></Button>
           </Col>
         </Row>
       </Container>
