@@ -15,9 +15,6 @@ export default class Product extends Component {
 
 
  render() {
-   var productData = {
-     title : 'test'
-   }
   return (
     <div>
       <NavBar />
@@ -57,7 +54,7 @@ export default class Product extends Component {
                     <td>
                       <div>
                         <Button style={styles.lightSmallBtn}><Link to='/product/' className='lightBtnLink'>Détails</Link></Button>
-                        <Button style={styles.blueSmallBtn}><Link to='/product/' className='blueBtnLink'>Vendre</Link></Button>
+                        <Button style={styles.blueSmallBtn}><Link to='/sellproduct/' className='blueBtnLink'>Vendre</Link></Button>
                       </div>
                     </td>
                   </tr>
@@ -70,7 +67,7 @@ export default class Product extends Component {
                     <td>
                       <div>
                         <Button style={styles.lightSmallBtn}><Link to='/product/' className='lightBtnLink'>Détails</Link></Button>
-                        <Button style={styles.blueSmallBtn}><Link to='/product/' className='blueBtnLink'>Vendre</Link></Button>
+                        <Button style={styles.blueSmallBtn}><Link to='/sellproduct/' className='blueBtnLink'>Vendre</Link></Button>
                       </div>
                     </td>
                   </tr>
@@ -83,7 +80,7 @@ export default class Product extends Component {
                     <td>
                       <div>
                         <Button style={styles.lightSmallBtn}><Link to='/product/' className='lightBtnLink'>Détails</Link></Button>
-                        <Button style={styles.blueSmallBtn}><Link to='/product/' className='blueBtnLink'>Vendre</Link></Button>
+                        <Button style={styles.blueSmallBtn}><Link to='/sellproduct/' className='blueBtnLink'>Vendre</Link></Button>
                       </div>
                     </td>
                   </tr>
@@ -100,7 +97,7 @@ export default class Product extends Component {
 
 var styles = {
   background : {
-    backgroundColor : 'white',
+    backgroundColor : 'white'
   },
   headerTxt : {
     fontFamily: 'Roboto',

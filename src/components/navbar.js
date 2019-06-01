@@ -1,21 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Container,
-  Row,
-  Col,
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  Button
-} from 'reactstrap';
+import { Container, Row, Col, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from 'reactstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
@@ -50,7 +34,7 @@ export default class NavBar extends React.Component {
               <img style={{maxWidth:'200px', marginLeft:'200px'}} src="../images/WineTrust-H-logo-bordeaux.png" />
             </NavbarBrand>
             <NavItem >
-              <NavLink  style={styles.myproduct}  href="/product">MES PRODUITS</NavLink>
+              <NavLink  style={styles.myproduct}  href="/dashboard">MES PRODUITS</NavLink>
             </NavItem>
             <NavItem style={styles.iconUser}>
               <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
