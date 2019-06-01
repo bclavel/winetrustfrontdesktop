@@ -71,7 +71,7 @@ toggle() {
               <p style={styles.normalTxt}>L’histoire de Beauregard remonte au XIIe siècle et aux Chevaliers Hospitaliers de Saint Jean de Jérusalem, à qui l’on doit la célèbre Croix des Templiers, emblème de Beauregard. Actifs dans la région de Pomerol et propriétaires d’un petit manoir ils cultivaient déjà ces terres. Sur ce site, la famille Beausoleil fait construire cinq siècles plus tard un premier édifice, qui fut remplacé à l’époque napoléonienne par le Château actuel : une magnifique chartreuse girondine, qui s’ouvre sur une terrasse avec deux pigeonniers surplombant des douves et un très beau parc, œuvre d’un élève de Victor Louis, architecte du Grand Théâtre de Bordeaux.</p>
             </Col>
             <Col sm="12" md='6'>
-              <iframe width="560" height="315" src="https://www.youtube.com/embed/jGPVRxth6Dk" frameborder="0" allow="encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/jGPVRxth6Dk" frameBorder="0" allow="encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
             </Col>
           </Row>
           <Row>

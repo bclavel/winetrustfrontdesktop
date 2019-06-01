@@ -4,6 +4,8 @@ import { Container, Row, Col, Button, Table, Form, FormGroup, Label, Input, Form
 import NavBar from './navbar';
 import { Link } from "react-router-dom";
 import '../style.css'
+import factory from '../ethereum/factory'
+import web3 from '../ethereum/web3'
 
 export default class CreateProduct extends Component {
   constructor(props) {
@@ -144,8 +146,9 @@ export default class CreateProduct extends Component {
 
   }
 
-  handleSubmit() {
+  async handleSubmit() {
     var ctx = this
+    const accounts = await web3.eth.getAccounts();
     console.log(this.state);
     fetch('http://10.2.1.19:3000/createproduct', {
      method: 'POST',
@@ -157,6 +160,9 @@ export default class CreateProduct extends Component {
     })
     .then(function(data) {
       console.log('fetch data de sign up >>', data);
+      factory.methods.createProduct(data.product.producerHash).send({
+        from : accounts[0]
+      })
     })
     .catch(function(error) {
     console.log('There has been a problem with your fetch operation mec ! ' + error.message);

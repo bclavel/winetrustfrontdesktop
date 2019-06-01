@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col, Button, Table, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap';
 import NavBar from './navbar';
 import { Link } from "react-router-dom";
+import factory from '../ethereum/factory.js'
 
 export default class Product extends Component {
   constructor(props) {
@@ -10,9 +11,15 @@ export default class Product extends Component {
 
     this.state = {
       stateTest : null,
+      productsData : []
     };
 }
 
+  async componentDidMount() {
+    const produits = await factory.methods.getDeployedProducts().call()
+    console.log(produits);
+    this.setState({productsData : produits})
+  }
 
  render() {
   return (
@@ -46,7 +53,7 @@ export default class Product extends Component {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>03948xjfe4417ty8ik63ee2</td>
+                    <td>{this.state.productsData[0]}</td>
                     <td>en stock</td>
                     <td>Chateau Beauregard 2014</td>
                     <td>Pomerol</td>
