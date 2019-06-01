@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-<<<<<<< HEAD
 import { Container, Row, Col, Button, Table, Form, FormGroup, Label, Input, FormText, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap';
-=======
-import { Container, Row, Col, Button, Table, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
->>>>>>> navbar
 import NavBar from './navbar';
 import { Link } from "react-router-dom";
+import '../style.css'
 
 export default class CreateProduct extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-<<<<<<< HEAD
       modal: false,
       ligne1 : false,
       formIsValid: false,
@@ -116,10 +112,6 @@ export default class CreateProduct extends Component {
       modal: !prevState.modal,
       ligne1 : true
     }));
-=======
-      stateTest : null,
-    };
->>>>>>> navbar
   }
 
   // Met à jour le state à chaque changement dans un input de formulaire
@@ -258,7 +250,6 @@ export default class CreateProduct extends Component {
             <Button style={styles.smallBtn}>Télécharger le QR code</Button>
           </Col>
         </Row>
-<<<<<<< HEAD
       </Container>
       <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
         <ModalHeader style={styles.h2} toggle={this.toggle}>Merci de patienter, traitement en cours</ModalHeader>
@@ -289,15 +280,6 @@ export default class CreateProduct extends Component {
           <Button className='blueBigBtnHover' style={styles.blueBigBtn} onClick={this.toggle}>Fermer</Button>
         </ModalFooter>
       </Modal>
-=======
-        <Row>
-          <Col md={{ size: 6, offset: 6 }}>
-            <Button style={styles.lightBigBtn}>Annuler</Button>
-            <Button style={styles.blueBigBtn}><Link to='/product/'>Valider</Link></Button>
-          </Col>
-        </Row>
-      </Container>
->>>>>>> navbar
     </div>
     );
   }
@@ -332,23 +314,25 @@ var styles = {
   },
   smallBtn : {
     backgroundColor : '#22323F',
-    fontSize: '18px',
+    fontSize: '16px',
     paddingLeft : '40px',
     paddingRight : '40px',
   },
   blueBigBtn : {
     backgroundColor : '#22323F',
-    fontSize: '20px',
+    fontSize: '18px',
     paddingLeft : '40px',
     paddingRight : '40px',
-    marginLeft : '30px'
+    marginLeft : '30px',
+    borderColor : '#22323F'
   },
   lightBigBtn : {
     backgroundColor : '#E2DAD4',
     color : '#22323F',
-    fontSize: '20px',
+    fontSize: '18px',
     paddingLeft : '40px',
     paddingRight : '40px',
+    borderColor : '#E2DAD4'
   },
   smallTxt : {
     fontFamily: 'Roboto',
@@ -383,7 +367,6 @@ var styles = {
     borderColor : '#999999',
     borderRadius : 0,
     paddingLeft: 0
-<<<<<<< HEAD
   },
   imageModal : {
     width : '100%'
@@ -396,7 +379,5 @@ var styles = {
   },
   spinnerStyle : {
     marginRight : '10px'
-=======
->>>>>>> navbar
   }
 }
