@@ -19,78 +19,80 @@ export default class Product extends Component {
      title : 'test'
    }
   return (
-    <div style={styles.background}>
-       <Container>
-       <NavBar />
-        <Row>
-          <Col sm="12" md={{ size: 4, offset: 8 }} style={styles.headerTxt}>Vous êtes : Domaine Beauregard (producteur)</Col>
-        </Row>
-        <Row>
-          <Col sm="12"><h1 style={styles.h1}>Dashboard - Mes produits</h1></Col>
-        </Row>
-        <Row>
-          <Col md={{ size: 3, offset: 9 }}>
-            <Button className='blueBigBtnHover' style={styles.blueBigBtn}><Link to='/createproduct/' className='blueBtnLink'>Créer un produit</Link></Button>
-          </Col>
-        </Row>
-        <Row>
-          <Col sm="12">
-            <Table style={styles.tableTxt}>
-              <thead>
-                <tr>
-                  <th>ID produit</th>
-                  <th>Statut</th>
-                  <th>Nom du produit</th>
-                  <th>Appellation</th>
-                  <th>Date de création</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>03948xjfe4417ty8ik63ee2</td>
-                  <td>en stock</td>
-                  <td>Chateau Beauregard 2014</td>
-                  <td>Pomerol</td>
-                  <td>03/11/2018</td>
-                  <td>
-                    <div>
-                      <Button style={styles.lightSmallBtn}><Link to='/product/' className='lightBtnLink'>Détails</Link></Button>
-                      <Button style={styles.blueSmallBtn}><Link to='/product/' className='blueBtnLink'>Vendre</Link></Button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>03948xjfe4417ty8ik63ee2</td>
-                  <td>en stock</td>
-                  <td>Chateau Beauregard 2014</td>
-                  <td>Pomerol</td>
-                  <td>03/11/2018</td>
-                  <td>
-                    <div>
-                      <Button style={styles.lightSmallBtn}><Link to='/product/' className='lightBtnLink'>Détails</Link></Button>
-                      <Button style={styles.blueSmallBtn}><Link to='/product/' className='blueBtnLink'>Vendre</Link></Button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>03948xjfe4417ty8ik63ee2</td>
-                  <td>en stock</td>
-                  <td>Chateau Beauregard 2014</td>
-                  <td>Pomerol</td>
-                  <td>03/11/2018</td>
-                  <td>
-                    <div>
-                      <Button style={styles.lightSmallBtn}><Link to='/product/' className='lightBtnLink'>Détails</Link></Button>
-                      <Button style={styles.blueSmallBtn}><Link to='/product/' className='blueBtnLink'>Vendre</Link></Button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </Table>
-          </Col>
-        </Row>
-      </Container>
+    <div>
+      <NavBar />
+      <div style={styles.background}>
+         <Container>
+          <Row>
+            <Col sm="12" md={{ size: 4, offset: 8 }} style={styles.headerTxt}>Vous êtes : Domaine Beauregard (producteur)</Col>
+          </Row>
+          <Row>
+            <Col sm="12"><h1 style={styles.h1}>Dashboard - Mes produits</h1></Col>
+          </Row>
+          <Row>
+            <Col md={{ size: 3, offset: 9 }}>
+              <Button className='blueBigBtnHover' style={styles.blueBigBtn}><Link to='/createproduct/' className='blueBtnLink'>Créer un produit</Link></Button>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm="12">
+              <Table style={styles.tableTxt}>
+                <thead>
+                  <tr>
+                    <th>ID produit</th>
+                    <th>Statut</th>
+                    <th>Nom du produit</th>
+                    <th>Appellation</th>
+                    <th>Date de création</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>03948xjfe4417ty8ik63ee2</td>
+                    <td>en stock</td>
+                    <td>Chateau Beauregard 2014</td>
+                    <td>Pomerol</td>
+                    <td>03/11/2018</td>
+                    <td>
+                      <div>
+                        <Button style={styles.lightSmallBtn}><Link to='/product/' className='lightBtnLink'>Détails</Link></Button>
+                        <Button style={styles.blueSmallBtn}><Link to='/product/' className='blueBtnLink'>Vendre</Link></Button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>03948xjfe4417ty8ik63ee2</td>
+                    <td>en stock</td>
+                    <td>Chateau Beauregard 2014</td>
+                    <td>Pomerol</td>
+                    <td>03/11/2018</td>
+                    <td>
+                      <div>
+                        <Button style={styles.lightSmallBtn}><Link to='/product/' className='lightBtnLink'>Détails</Link></Button>
+                        <Button style={styles.blueSmallBtn}><Link to='/product/' className='blueBtnLink'>Vendre</Link></Button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>03948xjfe4417ty8ik63ee2</td>
+                    <td>en stock</td>
+                    <td>Chateau Beauregard 2014</td>
+                    <td>Pomerol</td>
+                    <td>03/11/2018</td>
+                    <td>
+                      <div>
+                        <Button style={styles.lightSmallBtn}><Link to='/product/' className='lightBtnLink'>Détails</Link></Button>
+                        <Button style={styles.blueSmallBtn}><Link to='/product/' className='blueBtnLink'>Vendre</Link></Button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
+        </Container>
+      </div>
     </div>
     );
   }
