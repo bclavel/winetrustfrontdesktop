@@ -42,22 +42,21 @@ export default class NavBar extends React.Component {
   render() {
     return (
       <div>
+
         <Navbar dark expand="md" style={styles.navbar}>
-          <NavbarBrand href="/">
-            <img style={{maxWidth: 200}} src="../images/WineTrust-H-logo-bordeaux.png" />
+          <Nav style={styles.nav} expand="md" navbar>
+            <NavbarBrand href="/">
+              <img style={{maxWidth:'200px', marginLeft:'200px'}} src="../images/WineTrust-H-logo-bordeaux.png" />
             </NavbarBrand>
-              <Nav expand="md" navbar>
-                <NavItem style={styles.iconUser}>
-                  <NavLink href="/product">MES PRODUITS</NavLink>
-                </NavItem>
-                <NavItem style={styles.iconUser}>
-                  <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
-                </NavItem>
-                <NavItem>
-                  <NavLink href="/">
-                    <Button style={styles.btnDeconnect}>Déconnexion</Button>
-                  </NavLink>
-                </NavItem>
+            <NavItem >
+              <NavLink  style={styles.myproduct}  href="/product">MES PRODUITS</NavLink>
+            </NavItem>
+            <NavItem style={styles.iconUser}>
+              <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
+            </NavItem>
+            <NavItem style={styles.navBtndeconnect}>
+                <Button href="/" style={styles.btnDeconnect}>Déconnexion</Button>
+            </NavItem>
           </Nav>
         </Navbar>
       </div>
@@ -66,25 +65,59 @@ export default class NavBar extends React.Component {
 };
 
 var styles = {
+
   navbar: {
     backgroundColor: "#711A1A",
-    paddingLeft: "5%"
 
   },
 
-  navitem: {
-    backgroundColor: "#711A1A"
+  nav: {
+    // textAlign: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    width: '100vw'
+  },
+  // logo: {
+  //   marginLeft: '15em',
+  //   maxWidth: '200'
+  // },
+  myproduct: {
+    fontFamily: 'Roboto',
+    fontSize:'1.2em',
+    color: 'white',
+    display: 'flex',
+    paddingRight: '350px',
+  },
 
+  navItem: {
+    // textAlign: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   iconUser: {
-    marginLeft: '10%'
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: '300px',
+    fontSize: '35px'
+  },
+
+  navBtndeconnect: {
+    display: 'flex',
+    alignItems: 'center',
+    width: '100px',
+    justifyContent: 'center',
+    marginRight: '200px'
   },
 
   btnDeconnect: {
     backgroundColor: '#22323F',
-    marginTop: '35px',
-    marginBottom: '10px',
-    marginLeft: '50%'
+    display: 'flex',
+    alignItems: 'center',
+    width: '100px',
+    justifyContent: 'center'
   }
 }
