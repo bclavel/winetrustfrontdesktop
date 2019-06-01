@@ -240,14 +240,18 @@ export default class CreateProduct extends Component {
                 <Label for="productMobileImg">Photo mobile</Label>
                 <Input type="file" name="productMobImg" id="productMobileImg" value={this.state.formControls.productMobImg.value} placeholder='Appellation' onChange={this.handleChange} />
               </FormGroup>
-              <Button style={styles.lightBigBtn} onClick={this.toggle}>Annuler</Button>
-              <Button className='blueBigBtnHover' style={styles.blueBigBtn} onClick={this.handleSubmit}><Link to='/product/' className='blueBtnLink'>Valider</Link></Button>
+              <Row>
+                <Col sm={{size : 7, offset : 5}} style={styles.validBtn}>
+                  <Button style={styles.lightBigBtn}><Link to='/dashboard/' className='lightBtnLink'>Annuler</Link></Button>
+                  <Button className='blueBigBtnHover' style={styles.blueBigBtn} onClick={this.handleSubmit}><Link to='/product/' className='blueBtnLink'>Valider</Link></Button>
+                </Col>
+              </Row>
             </Form>
           </Col>
           <Col sm={{ size: 4, offset: 1 }} style={styles.qrcode}>
             <h2 style={styles.h2}>Etape 2 : authentification</h2>
-            <img src='/images/qrcode.jpg'/>
-            <Button style={styles.smallBtn}>Télécharger le QR code</Button>
+            <img src='/images/chart.png'/>
+            <Button style={styles.smallBtn} onClick={this.toggle}>Télécharger le QR code</Button>
           </Col>
         </Row>
       </Container>
@@ -358,6 +362,12 @@ var styles = {
     display : 'flex',
     flexDirection : 'column',
     alignItems : 'flex-start'
+  },
+  validBtn : {
+    display : 'flex',
+    flexDirection : 'row',
+    justifyContent : 'flex-end',
+    marginBottom : '100px'
   },
   formInput : {
     borderTop : '0px',

@@ -10,6 +10,7 @@ import Signup from './components/signup';
 import Product from './components/product';
 import CreateProduct from './components/createproduct';
 import Dashboard from './components/dashboard';
+import SellProduct from './components/sellproduct';
 
 
 class App extends Component {
@@ -30,6 +31,7 @@ class App extends Component {
           <Route path="/product/" component={Product} />
           <Route path="/createproduct/" component={CreateProduct} />
           <Route path="/dashboard/" component={Dashboard} />
+          <Route path="/sellproduct/" component={SellProduct} />
         </Switch>
       </Router>
     )
