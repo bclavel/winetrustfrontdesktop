@@ -3,22 +3,34 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col, Button, Table, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap';
 import NavBar from './navbar';
 import { Link } from "react-router-dom";
-import factory from '../ethereum/factory.js'
+import factory from '../ethereum/factory'
+import product from '../ethereum/product'
 
-export default class Product extends Component {
+export default class Dashboard extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       stateTest : null,
-      productsData : []
+      productsData : {
+        ProductId : '',
+        status : '',
+        name : '',
+        appellation : '',
+        creationDate : '',
+      }
     };
 }
 
   async componentDidMount() {
-    const produits = await factory.methods.getDeployedProducts().call()
-    console.log(produits);
-    this.setState({productsData : produits})
+    var productData = []
+    var productList = await factory.methods.getDeployedProducts().call()
+    console.log('Product List >>', productList);
+    productList.map((item) => (
+      console.log(product(item))
+    ))
+    this.setState({productsData : productList})
+
   }
 
  render() {

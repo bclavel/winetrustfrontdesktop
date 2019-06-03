@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col, Button, Table, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap';
 import NavBar from './navbar';
 import { Link } from "react-router-dom";
+import web3 from '../ethereum/web3'
+
 
 export default class Product extends Component {
   constructor(props) {
@@ -16,10 +18,12 @@ export default class Product extends Component {
   this.toggle = this.toggle.bind(this);
 }
 
-toggle() {
+async toggle() {
   this.setState(prevState => ({
     modal: !prevState.modal
   }));
+  // const accounts = await web3.eth.getAccounts();
+  // console.log(accounts[0]);
 }
 
  render() {

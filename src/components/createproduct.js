@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Container, Row, Col, Button, Table, Form, FormGroup, Label, Input, FormText, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap';
+import { Container, Row, Col, Button, Table, Form, FormGroup, Label, Input, FormText, Modal, ModalHeader, ModalBody, ModalFooter, Spinner, Toast, ToastBody, ToastHeader, Alert  } from 'reactstrap';
 import NavBar from './navbar';
 import { Link } from "react-router-dom";
 import '../style.css'
 import factory from '../ethereum/factory'
+import product from '../ethereum/product'
 import web3 from '../ethereum/web3'
 
 export default class CreateProduct extends Component {
@@ -13,8 +14,10 @@ export default class CreateProduct extends Component {
 
     this.state = {
       modal: false,
-      ligne1 : false,
+      showSecuToast : false,
       formIsValid: false,
+      errorOpen : false,
+      errorMessage : '',
       formControls : {
         productDomaine : {
           value : '',
@@ -32,12 +35,12 @@ export default class CreateProduct extends Component {
           touched: false,
         },
         productDeskImg : {
-          value : '',
+          selectedFile : null,
           valid: false,
           touched: false,
         },
         productMobImg : {
-          value : '',
+          selectedFile : null,
           valid: false,
           touched: false,
         },
@@ -104,16 +107,9 @@ export default class CreateProduct extends Component {
       }
     };
 
-    this.toggle = this.toggle.bind(this);
+    // this.toggle = this.toggle.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
-  }
-
-  toggle() {
-    this.setState(prevState => ({
-      modal: !prevState.modal,
-      ligne1 : true
-    }));
   }
 
   // Met à jour le state à chaque changement dans un input de formulaire
@@ -146,37 +142,87 @@ export default class CreateProduct extends Component {
 
   }
 
+  handleselectedFile = event => {
+    const name = event.target.name;
+    const file = event.target.files[0];
+
+    const updatedControls = {
+      ...this.state.formControls
+    };
+    const updatedFormElement = {
+      ...updatedControls[name]
+    };
+    updatedFormElement.selectedFile = file;
+    updatedFormElement.touched = true;
+
+    updatedControls[name] = updatedFormElement;
+
+    let formIsValid = true;
+
+    this.setState({
+      formControls: updatedControls,
+      formIsValid: formIsValid
+    })
+  }
+
   async handleSubmit() {
+    this.setState(prevState => ({
+      showSecuToast: !prevState.showSecuToast,
+    }));
+
+
     var ctx = this
-    const accounts = await web3.eth.getAccounts();
-    console.log(this.state);
     fetch('http://10.2.1.19:3000/createproduct', {
      method: 'POST',
      headers: {'Content-Type':'application/x-www-form-urlencoded'},
-     body: `productStatus=${'en stock'}&productDomaine=${ctx.state.formControls.productDomaine.value}&productCuvee=${ctx.state.formControls.productCuvee.value}&productDeskImg=${ctx.state.formControls.productDeskImg.value}&productYoutube=${ctx.state.formControls.productYoutube.value}&productMobImg=${ctx.state.formControls.productMobImg.value}&productMillesime=${ctx.state.formControls.productMillesime.value}&productCepages=${ctx.state.formControls.productCepages.value}&productAppellation=${ctx.state.formControls.productAppellation.value}&productRegion=${ctx.state.formControls.productRegion.value}&productCountry=${ctx.state.formControls.productCountry.value}&productQuality=${ctx.state.formControls.productQuality.value}&domainHistory=${ctx.state.formControls.domainHistory.value}&productAccords=${ctx.state.formControls.productAccords.value}&domainPostalAddress=${ctx.state.formControls.domainPostalAddress.value}&domainUrl=${ctx.state.formControls.domainUrl.value}&domainFacebook=${ctx.state.formControls.domainFacebook.value}&domainEmail=${ctx.state.formControls.domainEmail.value}`
+     body: `productStatus=${'en stock'}&productDomaine=${ctx.state.formControls.productDomaine.value}&productCuvee=${ctx.state.formControls.productCuvee.value}&productYoutube=${ctx.state.formControls.productYoutube.value}&productMillesime=${ctx.state.formControls.productMillesime.value}&productCepages=${ctx.state.formControls.productCepages.value}&productAppellation=${ctx.state.formControls.productAppellation.value}&productRegion=${ctx.state.formControls.productRegion.value}&productCountry=${ctx.state.formControls.productCountry.value}&productQuality=${ctx.state.formControls.productQuality.value}&domainHistory=${ctx.state.formControls.domainHistory.value}&productAccords=${ctx.state.formControls.productAccords.value}&domainPostalAddress=${ctx.state.formControls.domainPostalAddress.value}&domainUrl=${ctx.state.formControls.domainUrl.value}&domainFacebook=${ctx.state.formControls.domainFacebook.value}&domainEmail=${ctx.state.formControls.domainEmail.value}&producerAddressEth={'account[0] via redux'}`
     })
     .then(function(response) {
       return response.json()
     })
-    .then(function(data) {
-      console.log('fetch data de sign up >>', data);
-      factory.methods.createProduct(data.product.producerHash).send({
-        from : accounts[0]
+    .then(async function (data) {
+      console.log('CREATE PRODUCT - fetch data >>', data);
+      try {
+        const accounts = await web3.eth.getAccounts();
+        await factory.methods.createProduct(data.product.producerHash).send({
+          from : accounts[0]
+        })
+      } catch(err) {
+        ctx.setState({errorMessage : err.message, errorOpen : true})
+      }
+
+      ctx.setState(prevState => ({
+        showSecuToast: !prevState.showSecuToast,
+      }));
+
+      var productList = await factory.methods.getDeployedProducts().call()
+      var lastProductAddress = productList[productList.length-1]
+      var lastProductContract = await product(lastProductAddress)
+      var lastProductOwner = lastProductContract.methods.owner().call()
+      lastProductOwner.then((value) => {
+        console.log('Last product owner then value >>', value);
+        fetch(`http://10.2.1.19:3000/updateproduct?productId=${data.product._id}&ownerAddressEth=${value}&productAddressEth=${lastProductAddress}`);
       })
+
+      const dataImg = new FormData();
+      dataImg.append('productDeskImg', ctx.state.formControls.productDeskImg.selectedFile, data.product._id);
+      dataImg.append('productMobImg', ctx.state.formControls.productMobImg.selectedFile, data.product._id);
+
+      fetch('http://10.2.1.19:3000/uploadpictures', {
+       method: 'POST',
+       body : dataImg,
+      })
+
+
     })
     .catch(function(error) {
     console.log('There has been a problem with your fetch operation mec ! ' + error.message);
       throw error;
     });
+
   }
 
  render() {
-   var productData = {
-     title : 'test'
-   }
-   // var spinner = <Spinner style={styles.spinnerStyle} size="sm" color="secondary" />
-   // var check = <img style={styles.spinnerStyle} src='/images/picto_check.png'/>
-   // var ligne1 = this.state.ligne1 ? {spinner} + <p style={styles.normalTxt}>Création de la transaction</p> : {check} + <p style={styles.normalTxt}>Création de la transaction</p>
   return (
     <div>
       <NavBar />
@@ -241,16 +287,29 @@ export default class CreateProduct extends Component {
                   </FormGroup>
                   <FormGroup>
                     <Label for="productDesktopImg">Photo desktop</Label>
-                    <Input type="file" name="productDeskImg" id="productDesktopImg" value={this.state.formControls.productDeskImg.value} placeholder='Appellation' onChange={this.handleChange} />
+                    <Input type="file" name="productDeskImg" id="productDesktopImg" ref={(ref) => { this.uploadInput = ref; }} value={this.state.formControls.productDeskImg.value} onChange={this.handleselectedFile} />
                   </FormGroup>
                   <FormGroup>
                     <Label for="productMobileImg">Photo mobile</Label>
-                    <Input type="file" name="productMobImg" id="productMobileImg" value={this.state.formControls.productMobImg.value} placeholder='Appellation' onChange={this.handleChange} />
+                    <Input type="file" name="productMobImg" id="productMobileImg" value={this.state.formControls.productMobImg.value} onChange={this.handleselectedFile} />
                   </FormGroup>
+                  <Row>
+                    <Col sm="12">
+                      <Toast style={{maxWidth : '650px', marginBottom : '15px'}} isOpen={this.state.showSecuToast}>
+                        <ToastHeader icon={<Spinner size="sm" />}>
+                          WineTrust sécurise vos données
+                        </ToastHeader>
+                        <ToastBody>
+                          Merci de patienter, traitement en cours
+                        </ToastBody>
+                      </Toast>
+                      <Alert isOpen={this.state.errorOpen} color="danger">{this.state.errorMessage}</Alert>
+                    </Col>
+                  </Row>
                   <Row>
                     <Col sm={{size : 7, offset : 5}} style={styles.validBtn}>
                       <Button style={styles.lightBigBtn}><Link to='/dashboard/' className='lightBtnLink'>Annuler</Link></Button>
-                      <Button className='blueBigBtnHover' style={styles.blueBigBtn} onClick={this.handleSubmit}><Link to='/product/' className='blueBtnLink'>Valider</Link></Button>
+                      <Button className='blueBigBtnHover' style={styles.blueBigBtn} onClick={this.handleSubmit}>Valider</Button>
                     </Col>
                   </Row>
                 </Form>
@@ -262,35 +321,6 @@ export default class CreateProduct extends Component {
               </Col>
             </Row>
           </Container>
-          <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-            <ModalHeader style={styles.h2} toggle={this.toggle}>Merci de patienter, traitement en cours</ModalHeader>
-            <ModalBody>
-              <Container>
-                <Row style={styles.modalFormat}>
-                  <Col sm="12">
-                    <div style={styles.modalFormat}>
-                      <Spinner style={styles.spinnerStyle} size="sm" color="secondary" /><p style={styles.normalTxt}>Création de la transaction</p>
-                    </div>
-                    <div style={styles.modalFormat}>
-                      <Spinner style={styles.spinnerStyle} size="sm" color="secondary" /><p style={styles.normalTxt}>En attente de minage</p>
-                    </div>
-                    <div style={styles.modalFormat}>
-                      <Spinner style={styles.spinnerStyle} size="sm" color="secondary" /><p style={styles.normalTxt}>Transaction minée sur le bloc 0x4ab76fa90blas43p15v</p>
-                    </div>
-                    <div style={styles.modalFormat}>
-                      <Spinner style={styles.spinnerStyle} size="sm" color="secondary" /><p style={styles.normalTxt}>Synchronisation sur les noeuds du réseau</p>
-                    </div>
-                    <div style={styles.modalFormat}>
-                      <Spinner style={styles.spinnerStyle} size="sm" color="secondary" /><p style={styles.normalTxt}>Succès !</p>
-                    </div>
-                  </Col>
-                </Row>
-              </Container>
-            </ModalBody>
-            <ModalFooter>
-              <Button className='blueBigBtnHover' style={styles.blueBigBtn} onClick={this.toggle}>Fermer</Button>
-            </ModalFooter>
-          </Modal>
         </div>
       </div>
     );
