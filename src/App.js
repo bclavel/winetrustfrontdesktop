@@ -4,6 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css';
 import './App.css';
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { Provider } from 'react-redux';
+import products from './reducers/product.reducer';
+import userData from './reducers/user.reducer';
+
 
 import Signin from './components/signin';
 import Signup from './components/signup';
@@ -12,6 +16,8 @@ import CreateProduct from './components/createproduct';
 import Dashboard from './components/dashboard';
 import SellProduct from './components/sellproduct';
 
+import {createStore, combineReducers}  from 'redux';
+const store = createStore(combineReducers({products, userData}));
 
 class App extends Component {
 
@@ -24,16 +30,18 @@ class App extends Component {
 
   render() {
     return (
-      <Router>
-        <Switch>
-          <Route path="/" exact component={Signin} />
-          <Route path="/signup/" component={Signup} />
-          <Route path="/product/" component={Product} />
-          <Route path="/createproduct/" component={CreateProduct} />
-          <Route path="/dashboard/" component={Dashboard} />
-          <Route path="/sellproduct/" component={SellProduct} />
-        </Switch>
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <Switch>
+            <Route path="/" exact component={Signin} />
+            <Route path="/signup/" component={Signup} />
+            <Route path="/product/" component={Product} />
+            <Route path="/createproduct/" component={CreateProduct} />
+            <Route path="/dashboard/" component={Dashboard} />
+            <Route path="/sellproduct/" component={SellProduct} />
+          </Switch>
+        </Router>
+      </Provider>
     )
   }
 };

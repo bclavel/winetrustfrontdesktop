@@ -2,14 +2,55 @@ import React, { Component } from 'react';
 import { Col, Card, CardImg, CardText, CardBody, CardTitle, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import '../style.css';
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
 
-export default class Signin extends Component {
+
+class Signin extends Component {
   constructor(props){
     super(props);
     this.state = {
 
     }
   };
+
+  componentDidMount() {
+    var ctx = this
+
+    fetch(`http://10.2.1.7:3000/getproducts?userAddress=${this.props.user.adress0x}`)
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(products){
+      console.log('SIGNIN - DidMount data', products);
+      products.map((product) => (
+        ctx.props.handleProductsFromDB(
+          product.ownerAddress,
+          product.status,
+          product.producerHash,
+          product.creationDate,
+          product.productAddress,
+          product.domaine,
+          product.cuvee,
+          product.youtube,
+          product.desktopImg,
+          product.mobileImg,
+          product.millesime,
+          product.cepages,
+          product.appellation,
+          product.region,
+          product.country,
+          product.quality,
+          product.history,
+          product.accords,
+          product.domainAddress,
+          product.url,
+          product.facebook,
+          product.email)
+      ))
+    })
+  }
+
+
 
   render() {
 
@@ -73,3 +114,62 @@ var styles = {
   }
 
 };
+
+function mapDispatchToProps(dispatch) {
+  console.log('SignIn - Dispatch >>', dispatch);
+ return {
+  handleProductsFromDB : function(
+    ownerAddressEth,
+    productStatus,
+    producerHash,
+    productCreationDate,
+    productAddressEth,
+    producerAddressEth,
+    productDomaine,
+    productCuvee,
+    productYoutube,
+    productDeskImg,
+    productMobImg,
+    productMillesime,
+    productCepages,
+    productAppellation,
+    productRegion,
+    productCountry,
+    productQuality,
+    domainHistory,
+    productAccords,
+    domainPostalAddress,
+    domainUrl,
+    domainFacebook,
+    domainEmail,
+  ) {
+    dispatch( {
+      type: 'getProductsFromDB',
+      ownerAddress : ownerAddressEth,
+      status : productStatus,
+      producerHash : producerHash,
+      creationDate : productCreationDate,
+      productAddress : productAddressEth,
+      domaine : productDomaine,
+      cuvee : productCuvee,
+      youtube : productYoutube,
+      desktopImg : productDeskImg,
+      mobileImg : productMobImg,
+      millesime : productMillesime,
+      cepages : productCepages,
+      appellation : productAppellation,
+      region : productRegion,
+      country : productCountry,
+      quality : productQuality,
+      history : domainHistory,
+      accords : productAccords,
+      domainAddress : domainPostalAddress,
+      url : domainUrl,
+      facebook : domainFacebook,
+      email : domainEmail
+    })
+  }
+ }
+}
+
+export default connect(null, mapDispatchToProps)(Signin);

@@ -7,8 +7,9 @@ import '../style.css'
 import factory from '../ethereum/factory'
 import product from '../ethereum/product'
 import web3 from '../ethereum/web3'
+import { connect } from 'react-redux';
 
-export default class CreateProduct extends Component {
+class CreateProduct extends Component {
   constructor(props) {
     super(props);
 
@@ -211,6 +212,35 @@ export default class CreateProduct extends Component {
       fetch('http://10.2.1.19:3000/uploadpictures', {
        method: 'POST',
        body : dataImg,
+      })
+      .then(function(response) {
+        return response.json()
+      })
+      .then(function(product){
+        console.log('SIGNIN - DidMount data', product);
+        ctx.props.handleNewProduct(
+          product.ownerAddress,
+          product.status,
+          product.producerHash,
+          product.creationDate,
+          product.productAddress,
+          product.domaine,
+          product.cuvee,
+          product.youtube,
+          product.desktopImg,
+          product.mobileImg,
+          product.millesime,
+          product.cepages,
+          product.appellation,
+          product.region,
+          product.country,
+          product.quality,
+          product.history,
+          product.accords,
+          product.domainAddress,
+          product.url,
+          product.facebook,
+          product.email)
       })
 
 
@@ -429,3 +459,62 @@ var styles = {
     marginRight : '10px'
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  console.log('Create Product - Dispatch >>', dispatch);
+ return {
+  handleNewProduct : function(
+    ownerAddressEth,
+    productStatus,
+    producerHash,
+    productCreationDate,
+    productAddressEth,
+    producerAddressEth,
+    productDomaine,
+    productCuvee,
+    productYoutube,
+    productDeskImg,
+    productMobImg,
+    productMillesime,
+    productCepages,
+    productAppellation,
+    productRegion,
+    productCountry,
+    productQuality,
+    domainHistory,
+    productAccords,
+    domainPostalAddress,
+    domainUrl,
+    domainFacebook,
+    domainEmail,
+  ) {
+    dispatch( {
+      type: 'createProduct',
+      ownerAddress : ownerAddressEth,
+      status : productStatus,
+      producerHash : producerHash,
+      creationDate : productCreationDate,
+      productAddress : productAddressEth,
+      domaine : productDomaine,
+      cuvee : productCuvee,
+      youtube : productYoutube,
+      desktopImg : productDeskImg,
+      mobileImg : productMobImg,
+      millesime : productMillesime,
+      cepages : productCepages,
+      appellation : productAppellation,
+      region : productRegion,
+      country : productCountry,
+      quality : productQuality,
+      history : domainHistory,
+      accords : productAccords,
+      domainAddress : domainPostalAddress,
+      url : domainUrl,
+      facebook : domainFacebook,
+      email : domainEmail
+    })
+  }
+ }
+}
+
+export default connect(null, mapDispatchToProps)(CreateProduct);
