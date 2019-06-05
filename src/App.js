@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { Provider } from 'react-redux';
 
 import products from './reducers/product.reducer';
-import userData from './reducers/user.reducer';
+import userData from './reducers/users.reducer';
 
 import Signin from './components/signin';
 import Signup from './components/signup';

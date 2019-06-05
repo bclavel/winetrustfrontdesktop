@@ -4,6 +4,8 @@ import '../style.css';
 import { Link } from "react-router-dom";
 import web3 from '../ethereum/web3'
 import { connect } from 'react-redux';
+import backEndAddress from '../config';
+
 
 class Signin extends Component {
   constructor(props){
@@ -62,9 +64,9 @@ async handleSubmit() {
   this.setState(prevState => ({
     showSecuToast: !prevState.showSecuToast,
   }));
-const accounts = await web3.eth.getAccounts();
+
   var ctx = this
-  fetch('http://10.2.1.19:3000/signin', {
+  fetch(`${backEndAddress}/signin`, {
    method: 'POST',
    headers: {'Content-Type':'application/x-www-form-urlencoded'},
    body: `email=${ctx.state.formControls.email.value}&password=${ctx.state.formControls.password.value}`
@@ -79,7 +81,7 @@ const accounts = await web3.eth.getAccounts();
     ctx.setState(prevState => ({
       showSecuToast: !prevState.showSecuToast,
     }));
-    fetch("http://10.2.1.19:3000/getproducts?userAddress=0x3902313C53062d1FDa5BE4ACb9DA1b18418659C7")
+    fetch(`${backEndAddress}/getproducts?userAddress=${data.data.adress0x}`)
     .then(function(response) {
       return response.json()
     })

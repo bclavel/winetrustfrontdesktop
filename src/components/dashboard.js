@@ -38,7 +38,7 @@ toggle() {
 
 
    var userProducts = this.props.products.map((element, i) => {
-     var productName = element.productCuvee + element.productMillesime
+     var productName = element.productCuvee + ' ' + element.productMillesime
      return (
        <DashboardRow
           key={i}
@@ -56,7 +56,7 @@ toggle() {
       <div style={styles.background}>
          <Container>
           <Row>
-            <Col sm="12" md={{ size: 4, offset: 8 }} style={styles.headerTxt}>Vous êtes : Domaine Beauregard (producteur)</Col>
+            <Col sm="12" md={{ size: 4, offset: 8 }} style={styles.headerTxt}>Vous êtes : {this.props.user.companyName} ({this.props.user.role})</Col>
           </Row>
           <Row>
             <Col sm="12"><h1 style={styles.h1}>Dashboard - Mes produits</h1></Col>
@@ -247,7 +247,7 @@ var styles = {
 
 function mapStateToProps(state) {
   console.log('Dashboard : state products >>', state.products);
-  console.log('Dashboard : state products >>', state.user);
+  console.log('Dashboard : state userData >>', state.userData);
  return {
    products: state.products,
    user : state.userData

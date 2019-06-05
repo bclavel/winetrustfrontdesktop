@@ -28,10 +28,8 @@ export default function(products = [], action){
       domainFacebook : action.domainFacebook,
       domainEmail : action.domainEmail,
     })
-    console.log('createProduct productCopy >>', productCopy);
     return productCopy;
   } else if(action.type === 'getProductsFromDB'){
-    console.log('ALEXIS REDUCER', action)
     console.log('Action from getProductsFromDB reducer >>', action);
     var results = action.products
     for (var i = 0; i < results.length; i++) {

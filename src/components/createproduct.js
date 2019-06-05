@@ -8,6 +8,7 @@ import factory from '../ethereum/factory'
 import product from '../ethereum/product'
 import web3 from '../ethereum/web3'
 import { connect } from 'react-redux';
+import backEndAddress from '../config';
 
 class CreateProduct extends Component {
   constructor(props) {
@@ -171,12 +172,16 @@ class CreateProduct extends Component {
       showSecuToast: !prevState.showSecuToast,
     }));
 
+    const accounts = await web3.eth.getAccounts();
+    console.log('accounts >>', accounts);
+    var userAddresseEth = accounts[0]
+    console.log('accounts at 0 >>', userAddresseEth);
 
     var ctx = this
-    fetch('http://10.2.1.19:3000/createproduct', {
+    fetch(`${backEndAddress}/createproduct`, {
      method: 'POST',
      headers: {'Content-Type':'application/x-www-form-urlencoded'},
-     body: `productStatus=${'en stock'}&productDomaine=${ctx.state.formControls.productDomaine.value}&productCuvee=${ctx.state.formControls.productCuvee.value}&productYoutube=${ctx.state.formControls.productYoutube.value}&productMillesime=${ctx.state.formControls.productMillesime.value}&productCepages=${ctx.state.formControls.productCepages.value}&productAppellation=${ctx.state.formControls.productAppellation.value}&productRegion=${ctx.state.formControls.productRegion.value}&productCountry=${ctx.state.formControls.productCountry.value}&productQuality=${ctx.state.formControls.productQuality.value}&domainHistory=${ctx.state.formControls.domainHistory.value}&productAccords=${ctx.state.formControls.productAccords.value}&domainPostalAddress=${ctx.state.formControls.domainPostalAddress.value}&domainUrl=${ctx.state.formControls.domainUrl.value}&domainFacebook=${ctx.state.formControls.domainFacebook.value}&domainEmail=${ctx.state.formControls.domainEmail.value}&producerAddressEth={'account[0] via redux'}`
+     body: `productStatus=${'en stock'}&productDomaine=${ctx.state.formControls.productDomaine.value}&productCuvee=${ctx.state.formControls.productCuvee.value}&productYoutube=${ctx.state.formControls.productYoutube.value}&productMillesime=${ctx.state.formControls.productMillesime.value}&productCepages=${ctx.state.formControls.productCepages.value}&productAppellation=${ctx.state.formControls.productAppellation.value}&productRegion=${ctx.state.formControls.productRegion.value}&productCountry=${ctx.state.formControls.productCountry.value}&productQuality=${ctx.state.formControls.productQuality.value}&domainHistory=${ctx.state.formControls.domainHistory.value}&productAccords=${ctx.state.formControls.productAccords.value}&domainPostalAddress=${ctx.state.formControls.domainPostalAddress.value}&domainUrl=${ctx.state.formControls.domainUrl.value}&domainFacebook=${ctx.state.formControls.domainFacebook.value}&domainEmail=${ctx.state.formControls.domainEmail.value}&producerAddressEth=${userAddresseEth}`
     })
     .then(function(response) {
       return response.json()
@@ -184,7 +189,6 @@ class CreateProduct extends Component {
     .then(async function (data) {
       console.log('CREATE PRODUCT - fetch data >>', data);
       try {
-        const accounts = await web3.eth.getAccounts();
         await factory.methods.createProduct(data.producerHash).send({
           from : accounts[0]
         })
@@ -202,14 +206,15 @@ class CreateProduct extends Component {
       var lastProductOwner = lastProductContract.methods.owner().call()
       lastProductOwner.then((value) => {
         console.log('Last product owner then value >>', value);
-        fetch(`http://10.2.1.19:3000/updateproduct?productId=${data._id}&ownerAddressEth=${value}&productAddressEth=${lastProductAddress}`);
+        // todo : vérif si l'addresseEth du user connecté est identique à celle du owner en BDD
+        fetch(`${backEndAddress}/updateproduct?productId=${data._id}&ownerAddressEth=${value}&productAddressEth=${lastProductAddress}`);
       })
 
       const dataImg = new FormData();
       dataImg.append('productDeskImg', ctx.state.formControls.productDeskImg.selectedFile, data._id);
       dataImg.append('productMobImg', ctx.state.formControls.productMobImg.selectedFile, data._id);
 
-      fetch('http://10.2.1.19:3000/uploadpictures', {
+      fetch(`${backEndAddress}/uploadpictures`, {
        method: 'POST',
        body : dataImg,
       })

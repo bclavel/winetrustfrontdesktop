@@ -5,6 +5,7 @@ import '../style.css';
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import web3 from '../ethereum/web3'
+import backEndAddress from '../config';
 
 class Signup extends Component {
   constructor(props){
@@ -22,12 +23,12 @@ class Signup extends Component {
           valid: false,
           touched: false,
         },
-        email : {
+        lastName : {
           value : '',
           valid: false,
           touched: false,
         },
-        password : {
+        email : {
           value : '',
           valid: false,
           touched: false,
@@ -96,12 +97,16 @@ class Signup extends Component {
     this.setState(prevState => ({
       showSecuToast: !prevState.showSecuToast,
     }));
-  const accounts = await web3.eth.getAccounts();
+    const accounts = await web3.eth.getAccounts();
+    console.log('accounts >>', accounts);
+    var userAddresseEth = accounts[0]
+    console.log('accounts at 0 >>', userAddresseEth);
+
     var ctx = this
-    fetch('http://10.2.1.19:3000/createuser', {
+    fetch(`${backEndAddress}/createuser`, {
      method: 'POST',
      headers: {'Content-Type':'application/x-www-form-urlencoded'},
-     body: `firstName=${ctx.state.formControls.firstName.value}&email=${ctx.state.formControls.email.value}&password=${ctx.state.formControls.password.value}&role=${ctx.state.formControls.role.value}&companyName=${ctx.state.formControls.companyName.value}&companyAddress=${ctx.state.formControls.companyAddress.value}&user0xAdd=${accounts[0]}`
+     body: `firstName=${ctx.state.formControls.firstName.value}&lastName=${ctx.state.formControls.lastName.value}&email=${ctx.state.formControls.email.value}&password=${ctx.state.formControls.password.value}&role=${ctx.state.formControls.role.value}&companyName=${ctx.state.formControls.companyName.value}&companyAddress=${ctx.state.formControls.companyAddress.value}&adress0x=${userAddresseEth}`
     })
     .then(function(response) {
       return response.json()
@@ -113,7 +118,7 @@ class Signup extends Component {
       ctx.setState(prevState => ({
         showSecuToast: !prevState.showSecuToast,
       }));
-      fetch("http://10.2.1.19:3000/getproducts?userAddress=0x3902313C53062d1FDa5BE4ACb9DA1b18418659C7")
+      fetch(`${backEndAddress}/getproducts?userAddress=${data.user.adress0x}`)
       .then(function(response) {
         return response.json()
       })
@@ -164,8 +169,12 @@ class Signup extends Component {
       <div className="signupComp">
         <Form className="form">
           <FormGroup>
-            <Label for="exampleEmail" hidden>Votre Nom</Label>
-            <Input style={styles.formInput} type="name" name="firstName" value={this.state.formControls.firstName.value} placeholder="Votre Nom" onChange={this.handleChange} />
+            <Label for="exampleEmail" hidden>Prénom</Label>
+            <Input style={styles.formInput} type="name" name="firstName" value={this.state.formControls.firstName.value} placeholder="Prénom" onChange={this.handleChange} />
+          </FormGroup>
+          <FormGroup>
+            <Label for="exampleEmail" hidden>Nom</Label>
+            <Input style={styles.formInput} type="name" name="lastName" value={this.state.formControls.lastName.value} placeholder="Nom" onChange={this.handleChange} />
           </FormGroup>
           <FormGroup>
             <Label for="exampleEmail" hidden>Email</Label>
