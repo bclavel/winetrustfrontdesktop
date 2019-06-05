@@ -5,8 +5,9 @@ import './style.css';
 import './App.css';
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { Provider } from 'react-redux';
-import userData from './reducers/users.reducer';
 
+import products from './reducers/product.reducer';
+import userData from './reducers/user.reducer';
 
 import Signin from './components/signin';
 import Signup from './components/signup';
@@ -16,7 +17,8 @@ import Dashboard from './components/dashboard';
 import SellProduct from './components/sellproduct';
 
 import {createStore, combineReducers}  from 'redux';
-const store = createStore(combineReducers({userData}));
+
+const store = createStore(combineReducers({products, userData}));
 
 class App extends Component {
 

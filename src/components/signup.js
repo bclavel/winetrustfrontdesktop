@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import web3 from '../ethereum/web3'
 
 class Signup extends Component {
-  constructor(props) {
+  constructor(props){
     super(props);
 
     this.state = {
@@ -58,6 +58,11 @@ class Signup extends Component {
      this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  userType = (event) => {
+    this.setState({userType:event.target.value});
+    console.log(this.state.userType)
+  };
+
   // Met à jour le state à chaque changement dans un input de formulaire
   handleChange = event => {
 
@@ -86,14 +91,14 @@ class Signup extends Component {
       formIsValid: formIsValid
     });
   }
-  
+
   async handleSubmit() {
     this.setState(prevState => ({
       showSecuToast: !prevState.showSecuToast,
     }));
   const accounts = await web3.eth.getAccounts();
     var ctx = this
-    fetch('http://10.2.1.138:3000/createuser', {
+    fetch('http://10.2.1.19:3000/createuser', {
      method: 'POST',
      headers: {'Content-Type':'application/x-www-form-urlencoded'},
      body: `firstName=${ctx.state.formControls.firstName.value}&email=${ctx.state.formControls.email.value}&password=${ctx.state.formControls.password.value}&role=${ctx.state.formControls.role.value}&companyName=${ctx.state.formControls.companyName.value}&companyAddress=${ctx.state.formControls.companyAddress.value}&user0xAdd=${accounts[0]}`
@@ -108,6 +113,41 @@ class Signup extends Component {
       ctx.setState(prevState => ({
         showSecuToast: !prevState.showSecuToast,
       }));
+      fetch("http://10.2.1.19:3000/getproducts?userAddress=0x3902313C53062d1FDa5BE4ACb9DA1b18418659C7")
+      .then(function(response) {
+        return response.json()
+      })
+      .then(function(products){
+        console.log('Products back from back', products);
+        var productsFromDB = products.map(product => {
+          return {
+            ownerAddressEth : product.ownerAddressEth,
+            productStatus : product.productStatus,
+            producerHash : product.producerHash,
+            productCreationDate : product.productCreationDate,
+            productAddressEth : product.productAddressEth,
+            productDomaine : product.productDomaine,
+            productCuvee : product.productCuvee,
+            productYoutube : product.productYoutube,
+            productDeskImg : product.productDeskImg,
+            productMobImg : product.productMobImg,
+            productMillesime : product.productMillesime,
+            productCepages : product.productCepages,
+            productAppellation : product.productAppellation,
+            productRegion : product.productRegion,
+            productCountry : product.productCountry,
+            productQuality : product.productQuality,
+            domainHistory : product.domainHistory,
+            productAccords : product.productAccords,
+            domainPostalAddress : product.domainPostalAddress,
+            domainUrl : product.domainUrl,
+            domainFacebook : product.domainFacebook,
+            domainEmail : product.domainEmail,
+          }
+        })
+        console.log('SIGNUP - DidMount productsFromDB', productsFromDB);
+        ctx.props.handleProductsFromDB(productsFromDB)
+      })
   })}
 
   render(){
@@ -159,7 +199,8 @@ class Signup extends Component {
       </div>
     </div>
     )}}
-    // My new container component
+
+
 function mapDispatchToProps(dispatch) {
   return {
     handleUserValid: function(email, password, adress0x, lastName, firstName, role, companyName, companyAddress) {
@@ -174,6 +215,12 @@ function mapDispatchToProps(dispatch) {
           companyName: companyName,
           companyAddress: companyAddress
         })
+    },
+    handleProductsFromDB : function(products) {
+      dispatch({
+        type: 'getProductsFromDB',
+        products
+      })
     }
   }
 }
@@ -214,7 +261,4 @@ var styles = {
   }
 }
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Signup);
+export default connect(null, mapDispatchToProps)(Signup);

@@ -64,7 +64,7 @@ async handleSubmit() {
   }));
 const accounts = await web3.eth.getAccounts();
   var ctx = this
-  fetch('http://10.2.1.138:3000/signin', {
+  fetch('http://10.2.1.19:3000/signin', {
    method: 'POST',
    headers: {'Content-Type':'application/x-www-form-urlencoded'},
    body: `email=${ctx.state.formControls.email.value}&password=${ctx.state.formControls.password.value}`
@@ -79,7 +79,43 @@ const accounts = await web3.eth.getAccounts();
     ctx.setState(prevState => ({
       showSecuToast: !prevState.showSecuToast,
     }));
+    fetch("http://10.2.1.19:3000/getproducts?userAddress=0x3902313C53062d1FDa5BE4ACb9DA1b18418659C7")
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(products){
+      console.log('Products back from back', products);
+      var productsFromDB = products.map(product => {
+        return {
+          ownerAddressEth : product.ownerAddressEth,
+          productStatus : product.productStatus,
+          producerHash : product.producerHash,
+          productCreationDate : product.productCreationDate,
+          productAddressEth : product.productAddressEth,
+          productDomaine : product.productDomaine,
+          productCuvee : product.productCuvee,
+          productYoutube : product.productYoutube,
+          productDeskImg : product.productDeskImg,
+          productMobImg : product.productMobImg,
+          productMillesime : product.productMillesime,
+          productCepages : product.productCepages,
+          productAppellation : product.productAppellation,
+          productRegion : product.productRegion,
+          productCountry : product.productCountry,
+          productQuality : product.productQuality,
+          domainHistory : product.domainHistory,
+          productAccords : product.productAccords,
+          domainPostalAddress : product.domainPostalAddress,
+          domainUrl : product.domainUrl,
+          domainFacebook : product.domainFacebook,
+          domainEmail : product.domainEmail,
+        }
+      })
+      console.log('SIGNIN - DidMount productsFromDB', productsFromDB);
+      ctx.props.handleProductsFromDB(productsFromDB)
+    })
 })}
+
   render() {
 
     return(
@@ -105,7 +141,7 @@ const accounts = await web3.eth.getAccounts();
     )
   }
 };
-// My new container component
+
 function mapDispatchToProps(dispatch) {
   return {
     handleUserValid: function(email, password, adress0x, lastName, firstName, role, companyName, companyAddress) {
@@ -120,6 +156,13 @@ function mapDispatchToProps(dispatch) {
           companyName: companyName,
           companyAddress: companyAddress
         })
+    },
+    handleProductsFromDB : function(products) {
+      console.log("Signin - Products ToProps", products)
+      dispatch({
+        type: 'getProductsFromDB',
+        products
+      })
     }
   }
 }
@@ -161,8 +204,4 @@ var styles = {
 
 };
 
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(Signin);
+export default connect(null, mapDispatchToProps)(Signin);

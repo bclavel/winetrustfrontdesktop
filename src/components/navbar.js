@@ -8,6 +8,7 @@ import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.css';
 import '../App.css';
 import '../style.css';
+import { Link } from "react-router-dom";
 
 
 class NavBar extends React.Component {
@@ -35,7 +36,7 @@ class NavBar extends React.Component {
               <img style={{maxWidth:'200px', marginLeft:'200px'}} src="../images/WineTrust-H-logo-bordeaux.png" />
             </NavbarBrand>
             <NavItem >
-              <NavLink  style={styles.myproduct}  href="/dashboard">MES PRODUITS</NavLink>
+              <NavLink  style={styles.myproduct} href="#"><Link className='whiteBtnLink' to='/dashboard/'>MES PRODUITS</Link></NavLink>
             </NavItem>
             <NavItem style={styles.iconUser}>
               <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
@@ -73,7 +74,7 @@ var styles = {
     fontSize:'1.2em',
     color: 'white',
     display: 'flex',
-    paddingRight: '350px',
+    paddingRight: '290px',
   },
 
   navItem: {

@@ -7,8 +7,9 @@ import '../style.css'
 import factory from '../ethereum/factory'
 import product from '../ethereum/product'
 import web3 from '../ethereum/web3'
+import { connect } from 'react-redux';
 
-export default class CreateProduct extends Component {
+class CreateProduct extends Component {
   constructor(props) {
     super(props);
 
@@ -184,7 +185,7 @@ export default class CreateProduct extends Component {
       console.log('CREATE PRODUCT - fetch data >>', data);
       try {
         const accounts = await web3.eth.getAccounts();
-        await factory.methods.createProduct(data.product.producerHash).send({
+        await factory.methods.createProduct(data.producerHash).send({
           from : accounts[0]
         })
       } catch(err) {
@@ -201,16 +202,45 @@ export default class CreateProduct extends Component {
       var lastProductOwner = lastProductContract.methods.owner().call()
       lastProductOwner.then((value) => {
         console.log('Last product owner then value >>', value);
-        fetch(`http://10.2.1.19:3000/updateproduct?productId=${data.product._id}&ownerAddressEth=${value}&productAddressEth=${lastProductAddress}`);
+        fetch(`http://10.2.1.19:3000/updateproduct?productId=${data._id}&ownerAddressEth=${value}&productAddressEth=${lastProductAddress}`);
       })
 
       const dataImg = new FormData();
-      dataImg.append('productDeskImg', ctx.state.formControls.productDeskImg.selectedFile, data.product._id);
-      dataImg.append('productMobImg', ctx.state.formControls.productMobImg.selectedFile, data.product._id);
+      dataImg.append('productDeskImg', ctx.state.formControls.productDeskImg.selectedFile, data._id);
+      dataImg.append('productMobImg', ctx.state.formControls.productMobImg.selectedFile, data._id);
 
       fetch('http://10.2.1.19:3000/uploadpictures', {
        method: 'POST',
        body : dataImg,
+      })
+      .then(function(response) {
+        return response.json()
+      })
+      .then(function(product){
+        console.log('CREATE PRODUCT - Data into handleNewProduct', product);
+        ctx.props.handleNewProduct(
+          product.ownerAddressEth,
+          product.productStatus,
+          product.producerHash,
+          product.productCreationDate,
+          product.productAddressEth,
+          product.productDomaine,
+          product.productCuvee,
+          product.productYoutube,
+          product.productDeskImg,
+          product.productMobImg,
+          product.productMillesime,
+          product.productCepages,
+          product.productAppellation,
+          product.productRegion,
+          product.productCountry,
+          product.productQuality,
+          product.domainHistory,
+          product.productAccords,
+          product.domainPostalAddress,
+          product.domainUrl,
+          product.domainFacebook,
+          product.domainEmail)
       })
 
 
@@ -429,3 +459,37 @@ var styles = {
     marginRight : '10px'
   }
 }
+
+function mapDispatchToProps(dispatch) {
+ return {
+  handleNewProduct : function(ownerAddressEth, productStatus, producerHash, productCreationDate, productAddressEth, producerAddressEth, productDomaine, productCuvee, productYoutube, productDeskImg, productMobImg, productMillesime, productCepages, productAppellation, productRegion,productCountry, productQuality, domainHistory, productAccords, domainPostalAddress, domainUrl, domainFacebook, domainEmail) {
+    dispatch({
+      type: 'createProduct',
+      ownerAddressEth,
+      productStatus,
+      producerHash,
+      productCreationDate,
+      productAddressEth,
+      productDomaine,
+      productCuvee,
+      productYoutube,
+      productDeskImg,
+      productMobImg,
+      productMillesime,
+      productCepages,
+      productAppellation,
+      productRegion,
+      productCountry,
+      productQuality,
+      domainHistory,
+      productAccords,
+      domainPostalAddress,
+      domainUrl,
+      domainFacebook,
+      domainEmail
+    })
+  }
+ }
+}
+
+export default connect(null, mapDispatchToProps)(CreateProduct);
