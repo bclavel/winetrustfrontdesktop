@@ -3,14 +3,56 @@ import { Col, Card, CardImg, CardText, CardBody, CardTitle, Button, Form, FormGr
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style.css';
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
 
-export default class Signup extends Component {
+class Signup extends Component {
   constructor(props){
     super(props);
     this.state = {
       userType: "Vous êtes"
     }
   };
+
+  componentDidMount() {
+    var ctx = this
+
+    // fetch(`http://10.2.1.7:3000/getproducts?userAddress=${this.props.user.adress0x}`)
+    fetch("http://10.2.1.19:3000/getproducts?userAddress=0x3902313C53062d1FDa5BE4ACb9DA1b18418659C7")
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(products){
+      console.log('Products back from back', products);
+      var productsFromDB = products.map(product => {
+        return {
+          ownerAddressEth : product.ownerAddressEth,
+          productStatus : product.productStatus,
+          producerHash : product.producerHash,
+          productCreationDate : product.productCreationDate,
+          productAddressEth : product.productAddressEth,
+          productDomaine : product.productDomaine,
+          productCuvee : product.productCuvee,
+          productYoutube : product.productYoutube,
+          productDeskImg : product.productDeskImg,
+          productMobImg : product.productMobImg,
+          productMillesime : product.productMillesime,
+          productCepages : product.productCepages,
+          productAppellation : product.productAppellation,
+          productRegion : product.productRegion,
+          productCountry : product.productCountry,
+          productQuality : product.productQuality,
+          domainHistory : product.domainHistory,
+          productAccords : product.productAccords,
+          domainPostalAddress : product.domainPostalAddress,
+          domainUrl : product.domainUrl,
+          domainFacebook : product.domainFacebook,
+          domainEmail : product.domainEmail,
+        }
+      })
+      console.log('SIGNUP - DidMount productsFromDB', productsFromDB);
+      ctx.props.handleProductsFromDB(productsFromDB)
+    })
+  }
 
   userType = (event) => {
     this.setState({userType:event.target.value});
@@ -109,3 +151,17 @@ var styles = {
   }
 
 };
+
+
+function mapDispatchToProps(dispatch) {
+ return {
+  handleProductsFromDB : function(products) {
+    dispatch({
+      type: 'getProductsFromDB',
+      products
+    })
+  }
+ }
+}
+
+export default connect(null, mapDispatchToProps)(Signup);

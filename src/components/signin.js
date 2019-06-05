@@ -16,37 +16,41 @@ class Signin extends Component {
   componentDidMount() {
     var ctx = this
 
-    fetch(`http://10.2.1.7:3000/getproducts?userAddress=${this.props.user.adress0x}`)
+    // fetch(`http://10.2.1.7:3000/getproducts?userAddress=${this.props.user.adress0x}`)
+    fetch("http://10.2.1.19:3000/getproducts?userAddress=0x3902313C53062d1FDa5BE4ACb9DA1b18418659C7")
     .then(function(response) {
       return response.json()
     })
     .then(function(products){
-      console.log('SIGNIN - DidMount data', products);
-      products.map((product) => (
-        ctx.props.handleProductsFromDB(
-          product.ownerAddress,
-          product.status,
-          product.producerHash,
-          product.creationDate,
-          product.productAddress,
-          product.domaine,
-          product.cuvee,
-          product.youtube,
-          product.desktopImg,
-          product.mobileImg,
-          product.millesime,
-          product.cepages,
-          product.appellation,
-          product.region,
-          product.country,
-          product.quality,
-          product.history,
-          product.accords,
-          product.domainAddress,
-          product.url,
-          product.facebook,
-          product.email)
-      ))
+      console.log('Products back from back', products);
+      var productsFromDB = products.map(product => {
+        return {
+          ownerAddressEth : product.ownerAddressEth,
+          productStatus : product.productStatus,
+          producerHash : product.producerHash,
+          productCreationDate : product.productCreationDate,
+          productAddressEth : product.productAddressEth,
+          productDomaine : product.productDomaine,
+          productCuvee : product.productCuvee,
+          productYoutube : product.productYoutube,
+          productDeskImg : product.productDeskImg,
+          productMobImg : product.productMobImg,
+          productMillesime : product.productMillesime,
+          productCepages : product.productCepages,
+          productAppellation : product.productAppellation,
+          productRegion : product.productRegion,
+          productCountry : product.productCountry,
+          productQuality : product.productQuality,
+          domainHistory : product.domainHistory,
+          productAccords : product.productAccords,
+          domainPostalAddress : product.domainPostalAddress,
+          domainUrl : product.domainUrl,
+          domainFacebook : product.domainFacebook,
+          domainEmail : product.domainEmail,
+        }
+      })
+      console.log('SIGNIN - DidMount productsFromDB', productsFromDB);
+      ctx.props.handleProductsFromDB(productsFromDB)
     })
   }
 
@@ -116,57 +120,12 @@ var styles = {
 };
 
 function mapDispatchToProps(dispatch) {
-  console.log('SignIn - Dispatch >>', dispatch);
  return {
-  handleProductsFromDB : function(
-    ownerAddressEth,
-    productStatus,
-    producerHash,
-    productCreationDate,
-    productAddressEth,
-    producerAddressEth,
-    productDomaine,
-    productCuvee,
-    productYoutube,
-    productDeskImg,
-    productMobImg,
-    productMillesime,
-    productCepages,
-    productAppellation,
-    productRegion,
-    productCountry,
-    productQuality,
-    domainHistory,
-    productAccords,
-    domainPostalAddress,
-    domainUrl,
-    domainFacebook,
-    domainEmail,
-  ) {
-    dispatch( {
+  handleProductsFromDB : function(products) {
+    console.log("Signin - Products ToProps", products)
+    dispatch({
       type: 'getProductsFromDB',
-      ownerAddress : ownerAddressEth,
-      status : productStatus,
-      producerHash : producerHash,
-      creationDate : productCreationDate,
-      productAddress : productAddressEth,
-      domaine : productDomaine,
-      cuvee : productCuvee,
-      youtube : productYoutube,
-      desktopImg : productDeskImg,
-      mobileImg : productMobImg,
-      millesime : productMillesime,
-      cepages : productCepages,
-      appellation : productAppellation,
-      region : productRegion,
-      country : productCountry,
-      quality : productQuality,
-      history : domainHistory,
-      accords : productAccords,
-      domainAddress : domainPostalAddress,
-      url : domainUrl,
-      facebook : domainFacebook,
-      email : domainEmail
+      products
     })
   }
  }

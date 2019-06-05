@@ -185,7 +185,7 @@ class CreateProduct extends Component {
       console.log('CREATE PRODUCT - fetch data >>', data);
       try {
         const accounts = await web3.eth.getAccounts();
-        await factory.methods.createProduct(data.product.producerHash).send({
+        await factory.methods.createProduct(data.producerHash).send({
           from : accounts[0]
         })
       } catch(err) {
@@ -202,12 +202,12 @@ class CreateProduct extends Component {
       var lastProductOwner = lastProductContract.methods.owner().call()
       lastProductOwner.then((value) => {
         console.log('Last product owner then value >>', value);
-        fetch(`http://10.2.1.19:3000/updateproduct?productId=${data.product._id}&ownerAddressEth=${value}&productAddressEth=${lastProductAddress}`);
+        fetch(`http://10.2.1.19:3000/updateproduct?productId=${data._id}&ownerAddressEth=${value}&productAddressEth=${lastProductAddress}`);
       })
 
       const dataImg = new FormData();
-      dataImg.append('productDeskImg', ctx.state.formControls.productDeskImg.selectedFile, data.product._id);
-      dataImg.append('productMobImg', ctx.state.formControls.productMobImg.selectedFile, data.product._id);
+      dataImg.append('productDeskImg', ctx.state.formControls.productDeskImg.selectedFile, data._id);
+      dataImg.append('productMobImg', ctx.state.formControls.productMobImg.selectedFile, data._id);
 
       fetch('http://10.2.1.19:3000/uploadpictures', {
        method: 'POST',
@@ -217,30 +217,30 @@ class CreateProduct extends Component {
         return response.json()
       })
       .then(function(product){
-        console.log('SIGNIN - DidMount data', product);
+        console.log('CREATE PRODUCT - Data into handleNewProduct', product);
         ctx.props.handleNewProduct(
-          product.ownerAddress,
-          product.status,
+          product.ownerAddressEth,
+          product.productStatus,
           product.producerHash,
-          product.creationDate,
-          product.productAddress,
-          product.domaine,
-          product.cuvee,
-          product.youtube,
-          product.desktopImg,
-          product.mobileImg,
-          product.millesime,
-          product.cepages,
-          product.appellation,
-          product.region,
-          product.country,
-          product.quality,
-          product.history,
-          product.accords,
-          product.domainAddress,
-          product.url,
-          product.facebook,
-          product.email)
+          product.productCreationDate,
+          product.productAddressEth,
+          product.productDomaine,
+          product.productCuvee,
+          product.productYoutube,
+          product.productDeskImg,
+          product.productMobImg,
+          product.productMillesime,
+          product.productCepages,
+          product.productAppellation,
+          product.productRegion,
+          product.productCountry,
+          product.productQuality,
+          product.domainHistory,
+          product.productAccords,
+          product.domainPostalAddress,
+          product.domainUrl,
+          product.domainFacebook,
+          product.domainEmail)
       })
 
 
@@ -461,57 +461,32 @@ var styles = {
 }
 
 function mapDispatchToProps(dispatch) {
-  console.log('Create Product - Dispatch >>', dispatch);
  return {
-  handleNewProduct : function(
-    ownerAddressEth,
-    productStatus,
-    producerHash,
-    productCreationDate,
-    productAddressEth,
-    producerAddressEth,
-    productDomaine,
-    productCuvee,
-    productYoutube,
-    productDeskImg,
-    productMobImg,
-    productMillesime,
-    productCepages,
-    productAppellation,
-    productRegion,
-    productCountry,
-    productQuality,
-    domainHistory,
-    productAccords,
-    domainPostalAddress,
-    domainUrl,
-    domainFacebook,
-    domainEmail,
-  ) {
-    dispatch( {
+  handleNewProduct : function(ownerAddressEth, productStatus, producerHash, productCreationDate, productAddressEth, producerAddressEth, productDomaine, productCuvee, productYoutube, productDeskImg, productMobImg, productMillesime, productCepages, productAppellation, productRegion,productCountry, productQuality, domainHistory, productAccords, domainPostalAddress, domainUrl, domainFacebook, domainEmail) {
+    dispatch({
       type: 'createProduct',
-      ownerAddress : ownerAddressEth,
-      status : productStatus,
-      producerHash : producerHash,
-      creationDate : productCreationDate,
-      productAddress : productAddressEth,
-      domaine : productDomaine,
-      cuvee : productCuvee,
-      youtube : productYoutube,
-      desktopImg : productDeskImg,
-      mobileImg : productMobImg,
-      millesime : productMillesime,
-      cepages : productCepages,
-      appellation : productAppellation,
-      region : productRegion,
-      country : productCountry,
-      quality : productQuality,
-      history : domainHistory,
-      accords : productAccords,
-      domainAddress : domainPostalAddress,
-      url : domainUrl,
-      facebook : domainFacebook,
-      email : domainEmail
+      ownerAddressEth,
+      productStatus,
+      producerHash,
+      productCreationDate,
+      productAddressEth,
+      productDomaine,
+      productCuvee,
+      productYoutube,
+      productDeskImg,
+      productMobImg,
+      productMillesime,
+      productCepages,
+      productAppellation,
+      productRegion,
+      productCountry,
+      productQuality,
+      domainHistory,
+      productAccords,
+      domainPostalAddress,
+      domainUrl,
+      domainFacebook,
+      domainEmail
     })
   }
  }

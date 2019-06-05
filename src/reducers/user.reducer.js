@@ -1,6 +1,6 @@
 export default function(userData = {}, action) {
 
-  console.log('reducer action >>', action);
+  console.log('User reducer action >>', action);
 
   if(action.type == 'signin') {
 

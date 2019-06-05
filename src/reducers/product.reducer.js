@@ -2,33 +2,41 @@ export default function(products = [], action){
 
   var productCopy = [...products]
 
-  if(action.type === 'getProductsFromDB'){
-    console.log("REDUCER OK")
-    console.log('Action from Product reducer >>', action);
+  if(action.type === 'createProduct'){
+    console.log('Action from createProduct reducer >>', action);
     productCopy.push({
-      ownerAddress : action.ownerAddressEth,
-      status : action.productStatus,
+      ownerAddressEth : action.ownerAddressEth,
+      productStatus : action.productStatus,
       producerHash : action.producerHash,
-      creationDate : action.productCreationDate,
-      productAddress : action.productAddressEth,
-      domaine : action.productDomaine,
-      cuvee : action.productCuvee,
-      youtube : action.productYoutube,
-      desktopImg : action.productDeskImg,
-      mobileImg : action.productMobImg,
-      millesime : action.productMillesime,
-      cepages : action.productCepages,
-      appellation : action.productAppellation,
-      region : action.productRegion,
-      country : action.productCountry,
-      quality : action.productQuality,
-      history : action.domainHistory,
-      accords : action.productAccords,
-      domainAddress : action.domainPostalAddress,
-      url : action.domainUrl,
-      facebook : action.domainFacebook,
-      email : action.domainEmail,
+      productCreationDate : action.productCreationDate,
+      productAddressEth : action.productAddressEth,
+      productDomaine : action.productDomaine,
+      productCuvee : action.productCuvee,
+      productYoutube : action.productYoutube,
+      productDeskImg : action.productDeskImg,
+      productMobImg : action.productMobImg,
+      productMillesime : action.productMillesime,
+      productCepages : action.productCepages,
+      productAppellation : action.productAppellation,
+      productRegion : action.productRegion,
+      productCountry : action.productCountry,
+      productQuality : action.productQuality,
+      domainHistory : action.domainHistory,
+      productAccords : action.productAccords,
+      domainPostalAddress : action.domainPostalAddress,
+      domainUrl : action.domainUrl,
+      domainFacebook : action.domainFacebook,
+      domainEmail : action.domainEmail,
     })
+    console.log('createProduct productCopy >>', productCopy);
+    return productCopy;
+  } else if(action.type === 'getProductsFromDB'){
+    console.log('ALEXIS REDUCER', action)
+    console.log('Action from getProductsFromDB reducer >>', action);
+    var results = action.products
+    for (var i = 0; i < results.length; i++) {
+      productCopy.push(results[i])
+    }
     return productCopy;
   } else {
     return products;

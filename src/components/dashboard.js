@@ -38,15 +38,15 @@ toggle() {
 
 
    var userProducts = this.props.products.map((element, i) => {
-     var productName = element.cuvee + element.millesime
+     var productName = element.productCuvee + element.productMillesime
      return (
        <DashboardRow
           key={i}
-          productAddressEth={element.productAddress}
-          productStatus={element.status}
+          productAddressEth={element.productAddressEth}
+          productStatus={element.productStatus}
           productName={productName}
-          productAppellation={element.appellation}
-          productCreationDate={element.creationDate}/>
+          productAppellation={element.productAppellation}
+          productCreationDate={element.productCreationDate}/>
    )
    })
 
@@ -246,8 +246,9 @@ var styles = {
 
 
 function mapStateToProps(state) {
-  console.log('LIBRARY - dispatch : state products >>', state.products);
-  console.log('LIBRARY - dispatch : state products >>', state.user);
+  console.log('Dashboard : state products >>', state.products);
+  console.log('Dashboard : state products >>', state.user);
+  console.log('ALEXIS STATE TO PROPS', state.products)
  return {
    products: state.products,
    user : state.userData
