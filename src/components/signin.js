@@ -1,34 +1,103 @@
 import React, { Component } from 'react';
-import { Col, Card, CardImg, CardText, CardBody, CardTitle, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import '../style.css';
 import { Link } from "react-router-dom";
+import web3 from '../ethereum/web3'
+import { connect } from 'react-redux';
 
-export default class Signin extends Component {
+class Signin extends Component {
   constructor(props){
     super(props);
     this.state = {
+      modal: false,
+      showSecuToast : false,
+      formIsValid: false,
+      errorOpen : false,
+      errorMessage : '',
+      formControls : {
+        email : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        password : {
+          value : '',
+          valid: false,
+          touched: false,
+        }}
+      }
+      // this.toggle = this.toggle.bind(this);
+     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+// Met à jour le state à chaque changement dans un input de formulaire
+handleChange = event => {
 
-    }
+  const name = event.target.name;
+  const value = event.target.value;
+
+  const updatedControls = {
+    ...this.state.formControls
   };
+  const updatedFormElement = {
+    ...updatedControls[name]
+  };
+  updatedFormElement.value = value;
+  updatedFormElement.touched = true;
+  // updatedFormElement.valid = validate(value, updatedFormElement.validationRules);
 
+  updatedControls[name] = updatedFormElement;
+
+  let formIsValid = true;
+  // for (let inputIdentifier in updatedControls) {
+  //   formIsValid = updatedControls[inputIdentifier].valid && formIsValid;
+  // }
+
+  this.setState({
+    formControls: updatedControls,
+    formIsValid: formIsValid
+  });
+}
+
+async handleSubmit() {
+  this.setState(prevState => ({
+    showSecuToast: !prevState.showSecuToast,
+  }));
+const accounts = await web3.eth.getAccounts();
+  var ctx = this
+  fetch('http://10.2.1.138:3000/signin', {
+   method: 'POST',
+   headers: {'Content-Type':'application/x-www-form-urlencoded'},
+   body: `email=${ctx.state.formControls.email.value}&password=${ctx.state.formControls.password.value}`
+  })
+  .then(function(response) {
+    return response.json()
+  })
+  .then(async function (data) {
+    console.log('SIGNING IN - fetching data >>', data);
+    console.log( data.data.email);
+    ctx.props.handleUserValid(data.data.email, data.data.password, data.data.adress0x, data.data.lastName, data.data.firstName, data.data.role, data.data.companyName)
+    ctx.setState(prevState => ({
+      showSecuToast: !prevState.showSecuToast,
+    }));
+})}
   render() {
 
     return(
     <div className="homeDiv">
       <div>
-        <img src="../images/WineTrust-V-logo-bordeaux.png" />
+        <img src="../images/WineTrust-V-logo-bordeaux.png" alt=""/>
       </div>
       <div className="signinComp">
         <Form className="form">
           <FormGroup>
             <Label for="exampleEmail" hidden>Email</Label>
-            <Input style={styles.formInput} type="email" name="email" id="exampleEmail" placeholder="Email" />
+            <Input style={styles.formInput} type="email" name="email" value={this.state.formControls.email.value} placeholder="Email" onChange={this.handleChange}  placeholder="Email" />
           </FormGroup>
           <FormGroup>
             <Label for="examplePassword" hidden>Password</Label>
-            <Input style={styles.formInput} type="password" name="password" id="examplePassword" placeholder="Password" />
+            <Input style={styles.formInput} type="password" name="password" value={this.state.formControls.password.value} placeholder="Mot de passe" onChange={this.handleChange} placeholder="Password" />
           </FormGroup>
-          <Button style={styles.btnValidate}><Link className="blueBtnLink" to='/dashboard/'>Validez</Link></Button>
+          <Button style={styles.btnValidate}  onClick={this.handleSubmit}><Link className="blueBtnLink" to='/dashboard/'>Validez</Link></Button>
           <p className="signup-link"><Link className="signup-link" to='/signup/'>Vous n'avez pas encore de compte, crééz en un !</Link></p>
         </Form>
       </div>
@@ -36,6 +105,24 @@ export default class Signin extends Component {
     )
   }
 };
+// My new container component
+function mapDispatchToProps(dispatch) {
+  return {
+    handleUserValid: function(email, password, adress0x, lastName, firstName, role, companyName, companyAddress) {
+        dispatch({
+          type: 'SIGNUP',
+          email: email,
+          password: password,
+          adress0x: adress0x,
+          lastName: lastName,
+          firstName: firstName,
+          role: role,
+          companyName: companyName,
+          companyAddress: companyAddress
+        })
+    }
+  }
+}
 
 var styles = {
   homeDiv: {
@@ -73,3 +160,9 @@ var styles = {
   }
 
 };
+
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Signin);

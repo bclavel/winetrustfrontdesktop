@@ -1,23 +1,116 @@
 import React, { Component } from 'react';
-import { Col, Card, CardImg, CardText, CardBody, CardTitle, Button, Form, FormGroup, FormText, Label, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style.css';
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+import web3 from '../ethereum/web3'
 
-export default class Signup extends Component {
-  constructor(props){
+class Signup extends Component {
+  constructor(props) {
     super(props);
+
     this.state = {
-      userType: "Vous êtes"
-    }
-  };
+      modal: false,
+      showSecuToast : false,
+      formIsValid: false,
+      errorOpen : false,
+      errorMessage : '',
+      formControls : {
+        firstName : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        email : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        password : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        password : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        role : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        companyName : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+        companyAddress : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+      }
+    };
+     // this.toggle = this.toggle.bind(this);
+     this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-  userType = (event) => {
-    this.setState({userType:event.target.value});
-    console.log(this.state.userType)
-  };
+  // Met à jour le state à chaque changement dans un input de formulaire
+  handleChange = event => {
 
-  render() {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    const updatedControls = {
+      ...this.state.formControls
+    };
+    const updatedFormElement = {
+      ...updatedControls[name]
+    };
+    updatedFormElement.value = value;
+    updatedFormElement.touched = true;
+    // updatedFormElement.valid = validate(value, updatedFormElement.validationRules);
+
+    updatedControls[name] = updatedFormElement;
+
+    let formIsValid = true;
+    // for (let inputIdentifier in updatedControls) {
+    //   formIsValid = updatedControls[inputIdentifier].valid && formIsValid;
+    // }
+
+    this.setState({
+      formControls: updatedControls,
+      formIsValid: formIsValid
+    });
+  }
+  
+  async handleSubmit() {
+    this.setState(prevState => ({
+      showSecuToast: !prevState.showSecuToast,
+    }));
+  const accounts = await web3.eth.getAccounts();
+    var ctx = this
+    fetch('http://10.2.1.138:3000/createuser', {
+     method: 'POST',
+     headers: {'Content-Type':'application/x-www-form-urlencoded'},
+     body: `firstName=${ctx.state.formControls.firstName.value}&email=${ctx.state.formControls.email.value}&password=${ctx.state.formControls.password.value}&role=${ctx.state.formControls.role.value}&companyName=${ctx.state.formControls.companyName.value}&companyAddress=${ctx.state.formControls.companyAddress.value}&user0xAdd=${accounts[0]}`
+    })
+    .then(function(response) {
+      return response.json()
+    })
+    .then(async function (data) {
+      console.log('CREATE USER - fetching data >>', data);
+      console.log('new user email - ', data.user.email);
+      ctx.props.handleUserValid(data.user.email, data.user.password, data.user.adress0x, data.user.lastName, data.user.firstName, data.user.role, data.user.companyName)
+      ctx.setState(prevState => ({
+        showSecuToast: !prevState.showSecuToast,
+      }));
+  })}
+
+  render(){
     var display = 'block';
     if ( this.state.userType==="Consommateur" || this.state.userType==="Transporteur" || this.state.userType==="Vous êtes") {
       display = 'none'
@@ -26,29 +119,25 @@ export default class Signup extends Component {
     return(
     <div className="homeDiv">
       <div>
-        <img src="../../images/WineTrust-V-logo-bordeaux.png" />
+        <img src="../../images/WineTrust-V-logo-bordeaux.png" alt=""/>
       </div>
       <div className="signupComp">
         <Form className="form">
           <FormGroup>
             <Label for="exampleEmail" hidden>Votre Nom</Label>
-            <Input style={styles.formInput} type="name" name="name" id="" placeholder="Votre Nom" />
+            <Input style={styles.formInput} type="name" name="firstName" value={this.state.formControls.firstName.value} placeholder="Votre Nom" onChange={this.handleChange} />
           </FormGroup>
           <FormGroup>
             <Label for="exampleEmail" hidden>Email</Label>
-            <Input style={styles.formInput} type="email" name="email" id="exampleEmail" placeholder="Email" />
+            <Input style={styles.formInput} type="email" name="email" value={this.state.formControls.email.value} placeholder="Email" onChange={this.handleChange} />
           </FormGroup>
           <FormGroup>
             <Label for="examplePassword" hidden>Mot de passe</Label>
-            <Input style={styles.formInput} type="password" name="password" id="examplePassword" placeholder="Mot de passe" />
-          </FormGroup>
-          <FormGroup>
-            <Label for="exampleConfpassword" hidden>Confirmez mot de passe</Label>
-            <Input style={styles.formInput} type="password" name="confpassword" id="exampleConfpassword" placeholder="Confirmez mot de passe" />
+            <Input style={styles.formInput} type="password" name="password" value={this.state.formControls.password.value} placeholder="Mot de passe" onChange={this.handleChange} />
           </FormGroup>
           <FormGroup>
             <Label for="typeUser" hidden>Vous êtes</Label>
-            <Input style={styles.formInput} type="select" placeholder="Vous êtes" onChange={this.userType}>
+            <Input style={styles.formInput} type="select" name="role" value={this.state.formControls.role.value} placeholder="Vous êtes" onChange={this.handleChange}>
               <option value="">Vous êtes</option>
               <option>Producteur</option>
               <option>Distributeur</option>
@@ -58,20 +147,36 @@ export default class Signup extends Component {
           </FormGroup>
           <FormGroup style={{display}}>
             <Label for="examplePassword" hidden>Nom de l'entreprise</Label>
-            <Input style={styles.formInput} type="company" name="company" id="company" placeholder="Nom de l'entreprise" />
+            <Input style={styles.formInput} type="company" name="companyName" value={this.state.formControls.companyName.value} placeholder="Nom de l'entreprise" onChange={this.handleChange} />
           </FormGroup>
           <FormGroup style={{display}}>
             <Label for="examplePassword" hidden>Adresse</Label>
-            <Input style={styles.formInput} type="address" name="address" id="address" placeholder="Adresse" />
+            <Input style={styles.formInput} type="address" name="companyAddress" value={this.state.formControls.companyAddress.value} placeholder="Adresse" onChange={this.handleChange} />
           </FormGroup>
-          <Button style={styles.btnValidate}><Link className="blueBtnLink" to='/dashboard/'>Créer votre compte</Link></Button>
+          <Button style={styles.btnValidate}  onClick={this.handleSubmit}><Link className="blueBtnLink" to='/dashboard/' >Créer votre compte</Link></Button>
           <p className="signup-link">Déjà inscrit ? <Link className="signup-link" to='/'>Cliquez ici pour vous connecter</Link></p>
         </Form>
       </div>
     </div>
-    )
+    )}}
+    // My new container component
+function mapDispatchToProps(dispatch) {
+  return {
+    handleUserValid: function(email, password, adress0x, lastName, firstName, role, companyName, companyAddress) {
+        dispatch({
+          type: 'SIGNUP',
+          email: email,
+          password: password,
+          adress0x: adress0x,
+          lastName: lastName,
+          firstName: firstName,
+          role: role,
+          companyName: companyName,
+          companyAddress: companyAddress
+        })
+    }
   }
-};
+}
 
 var styles = {
   homeDiv: {
@@ -107,5 +212,9 @@ var styles = {
     borderRadius : 0,
     paddingLeft: 0
   }
+}
 
-};
+export default connect(
+  null,
+  mapDispatchToProps
+)(Signup);

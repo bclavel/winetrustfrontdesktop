@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from 'reactstrap';
+import { connect } from 'react-redux';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
@@ -9,7 +10,7 @@ import '../App.css';
 import '../style.css';
 
 
-export default class NavBar extends React.Component {
+class NavBar extends React.Component {
   constructor(props) {
     super(props);
 
@@ -42,7 +43,7 @@ export default class NavBar extends React.Component {
             <NavItem style={styles.navBtndeconnect}>
                 <Button href="/" style={styles.btnDeconnect}>Déconnexion</Button>
             </NavItem>
-          </Nav>
+          </Nav> 
         </Navbar>
       </div>
     )
@@ -106,3 +107,11 @@ var styles = {
     justifyContent: 'center'
   }
 }
+function mapStateToProps(state) {
+  return { user: state.userData }
+}
+
+export default connect(
+    mapStateToProps,
+    null
+)(NavBar);
