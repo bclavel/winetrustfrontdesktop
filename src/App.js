@@ -36,10 +36,10 @@ class App extends Component {
           <Switch>
             <Route path="/" exact component={Signin} />
             <Route path="/signup/" component={Signup} />
-            <Route path="/product/" component={Product} />
+            <Route path="/product/:productAddress" component={Product} />
             <Route path="/createproduct/" component={CreateProduct} />
             <Route path="/dashboard/" component={Dashboard} />
-            <Route path="/sellproduct/" component={SellProduct} />
+            <Route path="/sellproduct/:productAddress" component={SellProduct} />
           </Switch>
         </Router>
       </Provider>

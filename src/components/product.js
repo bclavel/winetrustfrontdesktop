@@ -16,6 +16,9 @@ export default class Product extends Component {
     };
 
   this.toggle = this.toggle.bind(this);
+
+  console.log('props constructor product', props);
+
 }
 
 toggle() {

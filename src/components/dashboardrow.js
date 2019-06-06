@@ -32,8 +32,8 @@ export default class DashboardRow extends Component {
           <td>{this.props.productCreationDate}</td>
           <td>
             <div>
-              <Button style={styles.lightSmallBtn}><Link to='/product/' className='lightBtnLink'>Détails</Link></Button>
-              <Button style={styles.blueSmallBtn}><Link to='/sellproduct/' className='blueBtnLink'>Vendre</Link></Button>
+                <Button style={styles.lightSmallBtn}><Link to={`/product/${this.props.productAddressEth}`} className='lightBtnLink'>Détails</Link></Button>
+              <Button style={styles.blueSmallBtn}><Link to={`/sellproduct/${this.props.productAddressEth}`} className='blueBtnLink'>Vendre</Link></Button>
             </div>
           </td>
         </tr>

@@ -1,19 +1,91 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.css';
 import { Button, ButtonGroup, Container, Row, Col, Input, Form, FormGroup } from 'reactstrap';
 import { Link } from "react-router-dom";
 import NavBar from './navbar';
+import { connect } from 'react-redux';
+import backEndAddress from '../config';
 
-import 'bootstrap/dist/css/bootstrap.css';
 
 class VenteProduit extends React.Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      formIsValid: false,
+      errorOpen : false,
+      errorMessage : '',
+      productAddress : props.match.params.productAddress,
+      formControls : {
+        distributeur : {
+          value : '',
+          valid: false,
+          touched: false,
+        },
+      }
+    };
+   this.handleSubmit = this.handleSubmit.bind(this);
+
+   console.log('props constructor', props);
+
+  }
+
+
+  handleChange = event => {
+
+    const name = event.target.name;
+    const value = event.target.value;
+
+    const updatedControls = {
+      ...this.state.formControls
+    };
+    const updatedFormElement = {
+      ...updatedControls[name]
+    };
+    updatedFormElement.value = value;
+    updatedFormElement.touched = true;
+    // updatedFormElement.valid = validate(value, updatedFormElement.validationRules);
+
+    updatedControls[name] = updatedFormElement;
+
+    let formIsValid = true;
+    // for (let inputIdentifier in updatedControls) {
+    //   formIsValid = updatedControls[inputIdentifier].valid && formIsValid;
+    // }
+
+    this.setState({
+      formControls: updatedControls,
+      formIsValid: formIsValid
+    });
+  }
+
+  handleSubmit() {
+
+    var ctx = this
+    fetch(`${backEndAddress}/creatransact`, {
+     method: 'POST',
+     headers: {'Content-Type':'application/x-www-form-urlencoded'},
+     body: `sellerAddressEth=${this.props.user.adress0x}&sellerName=${this.props.user.companyName}&sellerPostalAddress=${this.props.user.companyAddress}&buyerName=${this.state.formControls.distributeur.value}&productAddressEth=${this.state.productAddress}`
+    })
+    .then(function(response) {
+      return response.json()
+    })
+    .then(async function (data) {
+      console.log('SELL PRODUCT - fetching data >>', data);
+    })
+
+  }
+
   render() {
+    console.log('this.state.productAddress', this.state.productAddress);
+
     return (
     <div>
       <NavBar />
       <div style={styles.background}>
         <Container>
             <Row>
-                <Col sm="12" md={{size: 4, offset: 8}} style={styles.headerTxt}>Vous êtes : Domaine Beauregard (producteur)</Col>
+                <Col sm="12" md={{size: 4, offset: 8}} style={styles.headerTxt}>Vous êtes : {this.props.user.companyName} ({this.props.user.role})</Col>
             </Row>
             <Row>
               <Col sm="12">
@@ -31,7 +103,7 @@ class VenteProduit extends React.Component {
                 <h2 style={styles.h2}>Sélectionner un distributeur</h2>
                 <Form>
                   <FormGroup>
-                    <Input style={styles.formInput} type="select" >
+                    <Input style={styles.formInput} type="select" name="distributeur" value={this.state.formControls.distributeur.value} onChange={this.handleChange}>
                       <option selected disabled>Mes distributeurs</option>
                       <option>Carrefour - Aix-en-Provence</option>
                       <option>Intermarché - Dinard</option>
@@ -42,7 +114,7 @@ class VenteProduit extends React.Component {
                   <Row>
                     <Col sm={{size : 7, offset : 5}} style={styles.validBtn}>
                       <Button style={styles.lightBigBtn}><Link to='/dashboard/' className='lightBtnLink'>Annuler</Link></Button>
-                      <Button style={styles.blueBigBtn}><Link to='/dashboard/' className='blueBtnLink'>Valider</Link></Button>
+                      <Button style={styles.blueBigBtn} onClick={this.handleSubmit}><Link to='/dashboard/' className='blueBtnLink'>Valider</Link></Button>
                     </Col>
                   </Row>
                 </Form>
@@ -54,6 +126,18 @@ class VenteProduit extends React.Component {
     );
   }
 }
+
+
+
+function mapStateToProps(state) {
+  console.log('Dashboard : state products >>', state.products);
+  console.log('Dashboard : state userData >>', state.userData);
+ return {
+   products: state.products,
+   user : state.userData
+ }
+}
+
 var styles = {
     headerTxt : {
       fontFamily: 'Roboto',
@@ -146,4 +230,5 @@ var styles = {
       marginBottom : '100px'
     },
   }
-export default VenteProduit;
+
+export default connect(mapStateToProps, null)(VenteProduit);
