@@ -16,6 +16,8 @@ class VenteProduit extends React.Component {
       errorOpen : false,
       errorMessage : '',
       productAddress : props.match.params.productAddress,
+      productName : '',
+      productCreationDate : '',
       formControls : {
         distributeur : {
           value : '',
@@ -26,8 +28,18 @@ class VenteProduit extends React.Component {
     };
    this.handleSubmit = this.handleSubmit.bind(this);
 
-   console.log('props constructor', props);
+  }
 
+  componentWillMount() {
+    var productList = this.props.products
+    for (var i = 0; i < productList.length; i++) {
+      if (this.state.productAddress == productList[i].productAddressEth) {
+          this.setState({
+          productName : productList[i].productCuvee + ' ' + productList[i].productMillesime,
+          productCreationDate : productList[i].productCreationDate
+        })
+      }
+    }
   }
 
 
@@ -62,7 +74,7 @@ class VenteProduit extends React.Component {
   handleSubmit() {
 
     var ctx = this
-    fetch(`${backEndAddress}/creatransact`, {
+    fetch(`${backEndAddress}/createtransact`, {
      method: 'POST',
      headers: {'Content-Type':'application/x-www-form-urlencoded'},
      body: `sellerAddressEth=${this.props.user.adress0x}&sellerName=${this.props.user.companyName}&sellerPostalAddress=${this.props.user.companyAddress}&buyerName=${this.state.formControls.distributeur.value}&productAddressEth=${this.state.productAddress}`
@@ -77,7 +89,7 @@ class VenteProduit extends React.Component {
   }
 
   render() {
-    console.log('this.state.productAddress', this.state.productAddress);
+
 
     return (
     <div>
@@ -95,9 +107,9 @@ class VenteProduit extends React.Component {
             <Row>
               <Col sm="2" style={styles.productImg}><img style={styles.bottleImg} src="/images/bouteille.png" alt="bouteille"></img></Col>
               <Col sm="5">
-                <h2 style={styles.h2}>Chateau Beauregard 2014</h2>
-                <p style={styles.normalTxt}><strong>ID produit : </strong>0x45fb56gt21av987</p>
-                <p style={styles.normalTxt}><strong>Date de création : </strong>01/04/2019</p>
+                <h2 style={styles.h2}>{this.state.productName}</h2>
+                <p style={styles.normalTxt}><strong>ID produit : </strong>{this.state.productAddress}</p>
+                <p style={styles.normalTxt}><strong>Date de création : </strong>{this.state.productCreationDate}</p>
               </Col>
               <Col sm="5">
                 <h2 style={styles.h2}>Sélectionner un distributeur</h2>
@@ -105,9 +117,9 @@ class VenteProduit extends React.Component {
                   <FormGroup>
                     <Input style={styles.formInput} type="select" name="distributeur" value={this.state.formControls.distributeur.value} onChange={this.handleChange}>
                       <option selected disabled>Mes distributeurs</option>
-                      <option>Carrefour - Aix-en-Provence</option>
-                      <option>Intermarché - Dinard</option>
-                      <option>Caviste Nicolas - Bordeaux</option>
+                      <option>Carrefour</option>
+                      <option>Intermarché</option>
+                      <option>Nicolas</option>
                     </Input>
                     <Button style={styles.smallBtnDistri}>Ajouter un distributeur</Button>
                   </FormGroup>
