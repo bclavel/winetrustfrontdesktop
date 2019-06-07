@@ -491,7 +491,7 @@ function mapDispatchToProps(dispatch) {
       domainPostalAddress,
       domainUrl,
       domainFacebook,
-      domainEmail
+      domainEmail,
     })
   }
  }

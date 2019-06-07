@@ -77,7 +77,7 @@ async handleSubmit() {
   .then(async function (data) {
     console.log('SIGNING IN - fetching data >>', data);
     console.log( data.data.email);
-    ctx.props.handleUserValid(data.data.email, data.data.password, data.data.adress0x, data.data.lastName, data.data.firstName, data.data.role, data.data.companyName)
+    ctx.props.handleUserValid(data.data.email, data.data.password, data.data.adress0x, data.data.lastName, data.data.firstName, data.data.role, data.data.companyName, data.data.companyAddress)
     ctx.setState(prevState => ({
       showSecuToast: !prevState.showSecuToast,
     }));
@@ -111,6 +111,7 @@ async handleSubmit() {
           domainUrl : product.domainUrl,
           domainFacebook : product.domainFacebook,
           domainEmail : product.domainEmail,
+          historiqueTransactions : product.historiqueTransactions
         }
       })
       console.log('SIGNIN - DidMount productsFromDB', productsFromDB);

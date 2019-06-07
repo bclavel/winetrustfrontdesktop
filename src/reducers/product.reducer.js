@@ -27,6 +27,7 @@ export default function(products = [], action){
       domainUrl : action.domainUrl,
       domainFacebook : action.domainFacebook,
       domainEmail : action.domainEmail,
+      historiqueTransactions : action.historiqueTransactions
     })
     return productCopy;
   } else if(action.type === 'getProductsFromDB'){

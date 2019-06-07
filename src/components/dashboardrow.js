@@ -45,6 +45,7 @@ handleSubmit = async () => {
     var productContract = await product(ctx.state.productAddressEth)
     var historiqueTransactions = data.product.historiqueTransactions
     var sellerAddress = data.product.historiqueTransactions[historiqueTransactions.length-1].sellerAddressEth
+    var buyerAddress = data.product.historiqueTransactions[historiqueTransactions.length-1].buyerAddressEth
     try {
       await productContract.methods.createTransact(data.productHash, sellerAddress).send({
         from : accounts[0]
@@ -52,11 +53,37 @@ handleSubmit = async () => {
     } catch(err) {
       ctx.setState({errorMessage : err.message, errorOpen : true})
     }
-    var transactID = data.product.historiqueTransactions[historiqueTransactions.length-1]._id
-
     ctx.setState(prevState => ({
       showSecuToast: !prevState.showSecuToast,
     }));
+
+    // var transactID = data.product.historiqueTransactions[historiqueTransactions.length-1]._id
+    var transactCount = await productContract.methods.getTransactCount().call()
+    var transactions = await Promise.all(
+      Array(parseInt(transactCount)).fill().map((element, i) => {
+        return productContract.methods.transactions(i).call()
+      })
+    )
+    console.log('transactions >>', transactions);
+    console.log('transactCount >>', transactCount);
+
+    fetch(`${backEndAddress}/validtransact`, {
+     method: 'POST',
+     headers: {'Content-Type':'application/x-www-form-urlencoded'},
+     body: `productAddressEth=${ctx.state.productAddressEth}&transactCount=${transactCount}&transactProductHash=${data.productHash}&buyerAddress=${buyerAddress}`
+    })
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function (data) {
+      console.log('Valid transact - fetch data >>', data);
+
+    })
+
+
+    // Todo > envoyer les données des transactions dans le reducer
+
+
   })
 
 
