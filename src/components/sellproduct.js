@@ -84,6 +84,7 @@ class VenteProduit extends React.Component {
     })
     .then(async function (data) {
       console.log('SELL PRODUCT - fetching data >>', data);
+        // Todo > envoyer les données des transactions dans le reducer
     })
 
   }

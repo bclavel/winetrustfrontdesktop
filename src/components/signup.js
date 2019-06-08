@@ -113,7 +113,6 @@ class Signup extends Component {
     })
     .then(async function (data) {
       console.log('CREATE USER - fetching data >>', data);
-      console.log('new user email - ', data.user.email);
       ctx.props.handleUserValid(data.user.email, data.user.password, data.user.adress0x, data.user.lastName, data.user.firstName, data.user.role, data.user.companyName, data.user.companyAddress)
       ctx.setState(prevState => ({
         showSecuToast: !prevState.showSecuToast,
@@ -127,6 +126,7 @@ class Signup extends Component {
         var productsFromDB = products.map(product => {
           return {
             ownerAddressEth : product.ownerAddressEth,
+            lastBuyerAddressEth : product.lastBuyerAddressEth,
             productStatus : product.productStatus,
             producerHash : product.producerHash,
             productCreationDate : product.productCreationDate,

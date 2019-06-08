@@ -6,6 +6,8 @@ export default function(products = [], action){
     console.log('Action from createProduct reducer >>', action);
     productCopy.push({
       ownerAddressEth : action.ownerAddressEth,
+      lastBuyerAddressEth : action.lastBuyerAddressEth,
+      lastTransactCreationDate : action.lastTransactCreationDate,
       productStatus : action.productStatus,
       producerHash : action.producerHash,
       productCreationDate : action.productCreationDate,

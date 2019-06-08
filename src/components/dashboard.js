@@ -20,36 +20,21 @@ class Dashboard extends Component {
  render() {
    var userProducts = this.props.products.map((element, i) => {
      var productName = element.productCuvee + ' ' + element.productMillesime
-     var historiqueTransactions = element.historiqueTransactions
-     console.log('element >>', element);
-     console.log('historiqueTransactions >>', historiqueTransactions);
-     console.log("this.props.user.adress0x", this.props.user.adress0x);
-     if (historiqueTransactions !== []) {
-       if (element.ownerAddressEth == this.props.user.adress0x || element.historiqueTransactions[historiqueTransactions.length-1].buyerAddressEth == this.props.user.adress0x ) {
-         return (
-           <DashboardRow
-              key={i}
-              productAddressEth={element.productAddressEth}
-              productStatus={element.productStatus}
-              productName={productName}
-              productAppellation={element.productAppellation}
-              productCreationDate={element.productCreationDate}/>
-            )
-          }
-     } else {
-       if (element.ownerAddressEth == this.props.user.adress0x ) {
-         return (
-           <DashboardRow
-              key={i}
-              productAddressEth={element.productAddressEth}
-              productStatus={element.productStatus}
-              productName={productName}
-              productAppellation={element.productAppellation}
-              productCreationDate={element.productCreationDate}/>
-            )
-          }
-     }
-
+     return (
+       <DashboardRow
+          key={i}
+          productAddressEth={element.productAddressEth}
+          productStatus={element.productStatus}
+          productName={productName}
+          productAppellation={element.productAppellation}
+          productCreationDate={element.productCreationDate}
+          productDomaine={element.productDomaine}
+          domainPostalAddress={element.domainPostalAddress}
+          domainEmail={element.domainEmail}
+          ownerAddressEth={element.ownerAddressEth}
+          lastBuyer={element.lastBuyerAddressEth}
+          transactCreationDate={element.lastTransactCreationDate}/>
+        )
       })
 
   return (

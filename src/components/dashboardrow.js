@@ -5,8 +5,9 @@ import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter
 import backEndAddress from '../config';
 import web3 from '../ethereum/web3'
 import product from '../ethereum/product'
+import { connect } from 'react-redux';
 
-export default class DashboardRow extends Component {
+class DashboardRow extends Component {
   constructor(props) {
     super(props);
 
@@ -16,6 +17,7 @@ export default class DashboardRow extends Component {
       errorOpen : false,
       productAddressEth : this.props.productAddressEth,
       errorMessage : '',
+      buyerAddressEth : ''
       }
       this.toggle = this.toggle.bind(this);
     };
@@ -77,13 +79,11 @@ handleSubmit = async () => {
     })
     .then(function (data) {
       console.log('Valid transact - fetch data >>', data);
-
+      ctx.setState(prevState => ({
+        modal: !prevState.modal
+      }));
     })
-
-
     // Todo > envoyer les données des transactions dans le reducer
-
-
   })
 
 
@@ -91,55 +91,53 @@ handleSubmit = async () => {
 }
 
  render() {
-  return (
-          <tr>
-            <td>{this.props.productAddressEth}</td>
-            <td>{this.props.productStatus}</td>
-            <td>{this.props.productName}</td>
-            <td>{this.props.productAppellation}</td>
-            <td>{this.props.productCreationDate}</td>
-            <td>
-              <div>
-                <Button style={styles.lightSmallBtn}><Link to={`/product/${this.props.productAddressEth}`} className='lightBtnLink'>Détails</Link></Button>
-                <Button style={styles.blueSmallBtn}><Link to={`/sellproduct/${this.props.productAddressEth}`} className='blueBtnLink'>Vendre</Link></Button>
-                <Button style={styles.blueSmallBtn} onClick={this.toggle}>Acheter</Button>
-              </div>
-            </td>
-            <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-              <ModalHeader style={styles.h2} toggle={this.toggle}>Validation de la vente</ModalHeader>
-              <ModalBody>
-                <Container>
-                  <Row style={styles.modalFormat}>
-                    <Col sm="4">
-                      <img style={styles.imageModal} src='/images/bouteille.png'/>
-                    </Col>
-                    <Col sm="8">
-                      <h4 style={styles.h4}>Chateau Beauregard 2014</h4>
-                      <p style={styles.normalTxt}><strong>ID Produit</strong><br />0x45fb56gt21av987atj89</p>
-                      <p style={styles.normalTxt}><strong>Vendeur</strong><br />Domaine Beauregard<br />73 Rue de Catusseau, 33500 Pomerol<br />contact@chateau-beauregard.com</p>
-                      <p style={styles.normalTxt}><strong>Date de la vente</strong><br />27/04/2019</p>
-                    </Col>
-                    <Col sm="8">
-                      <Toast style={{maxWidth : '350px', marginBottom : '15px'}} isOpen={this.state.showSecuToast}>
-                        <ToastHeader icon={<Spinner size="sm" />}>
-                          WineTrust sécurise vos données
-                        </ToastHeader>
-                        <ToastBody>
-                          Merci de patienter, traitement en cours
-                        </ToastBody>
-                      </Toast>
-                      <Alert isOpen={this.state.errorOpen} color="danger">{this.state.errorMessage}</Alert>
-                    </Col>
-                  </Row>
-                </Container>
-              </ModalBody>
-              <ModalFooter>
-                <Button style={styles.lightBigBtn} onClick={this.toggle}>Annuler</Button>
-                <Button className='blueBigBtnHover' style={styles.blueBigBtn} onClick={this.handleSubmit}>Valider</Button>
-              </ModalFooter>
-            </Modal>
-          </tr>
-    );
+     return (
+             <tr>
+               <td>{this.props.productAddressEth}</td>
+               <td>{this.props.productStatus}</td>
+               <td>{this.props.productName}</td>
+               <td>{this.props.productAppellation}</td>
+               <td>{this.props.productCreationDate}</td>
+               <td>
+                 <div>
+                   <Button style={styles.lightSmallBtn}><Link to={`/product/${this.props.productAddressEth}`} className='lightBtnLink'>Détails</Link></Button>
+                   <Button style={styles.blueSmallBtn}><Link to={`/sellproduct/${this.props.productAddressEth}`} className='blueBtnLink'>Vendre</Link></Button>
+                   <Button style={styles.blueSmallBtn} onClick={this.toggle}>Acheter</Button>
+                 </div>
+               </td>
+               <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+                 <ModalHeader style={styles.h2} toggle={this.toggle}>Validation de la vente</ModalHeader>
+                 <ModalBody>
+                   <Container>
+                     <Row style={styles.modalFormat}>
+                       <Col sm="4">
+                         <img style={styles.imageModal} src='/images/bouteille.png'/>
+                       </Col>
+                       <Col sm="8">
+                         <h4 style={styles.h4}>{this.props.productName}</h4>
+                         <p style={styles.normalTxt}><strong>ID Produit</strong><br />{this.props.productAddressEth}</p>
+                         <p style={styles.normalTxt}><strong>Vendeur</strong><br />{this.props.productDomaine}<br />{this.props.domainPostalAddress}<br />{this.props.domainEmail}</p>
+                         <p style={styles.normalTxt}><strong>Date de la vente</strong><br />{this.props.transactCreationDate}</p>
+                         <Toast style={{maxWidth : '350px', marginBottom : '15px'}} isOpen={this.state.showSecuToast}>
+                           <ToastHeader icon={<Spinner size="sm" />}>
+                             WineTrust sécurise vos données
+                           </ToastHeader>
+                           <ToastBody>
+                             Merci de patienter, traitement en cours
+                           </ToastBody>
+                         </Toast>
+                         <Alert isOpen={this.state.errorOpen} color="danger">{this.state.errorMessage}</Alert>
+                       </Col>
+                     </Row>
+                   </Container>
+                 </ModalBody>
+                 <ModalFooter>
+                   <Button style={styles.lightBigBtn} onClick={this.toggle}>Annuler</Button>
+                   <Button className='blueBigBtnHover' style={styles.blueBigBtn} onClick={this.handleSubmit}>Valider</Button>
+                 </ModalFooter>
+               </Modal>
+             </tr>
+       );
   }
 }
 
@@ -190,3 +188,15 @@ var styles = {
     borderColor : '#E2DAD4'
   },
 }
+
+
+function mapStateToProps(state) {
+  console.log('Dashboard : state products >>', state.products);
+  console.log('Dashboard : state userData >>', state.userData);
+ return {
+   products: state.products,
+   user : state.userData
+ }
+}
+
+export default connect(mapStateToProps, null)(DashboardRow);

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col, Button, Table, Form, FormGroup, Label, Input, FormText, Modal, ModalHeader, ModalBody, ModalFooter, Spinner, Toast, ToastBody, ToastHeader, Alert  } from 'reactstrap';
 import NavBar from './navbar';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import '../style.css'
 import factory from '../ethereum/factory'
 import product from '../ethereum/product'
@@ -20,6 +20,7 @@ class CreateProduct extends Component {
       formIsValid: false,
       errorOpen : false,
       errorMessage : '',
+      toDashboard : false,
       formControls : {
         productDomaine : {
           value : '',
@@ -246,6 +247,7 @@ class CreateProduct extends Component {
           product.domainUrl,
           product.domainFacebook,
           product.domainEmail)
+          ctx.setState({toDashboard : true})
       })
 
 
@@ -258,6 +260,9 @@ class CreateProduct extends Component {
   }
 
  render() {
+   if (this.state.toDashboard) {
+     return <Redirect to='/dashboard/' />
+   }
   return (
     <div>
       <NavBar />
@@ -491,8 +496,7 @@ function mapDispatchToProps(dispatch) {
       domainPostalAddress,
       domainUrl,
       domainFacebook,
-      domainEmail,
-    })
+      domainEmail})
   }
  }
 }
