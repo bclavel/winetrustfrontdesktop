@@ -1,9 +1,9 @@
 export default function(userData = {}, action) {
 
-    console.log('reducer action >>', action);
+    console.log('Action from Signup user reducer >>', action);
 
     if(action.type === 'SIGNUP') {
-  
+
   var userCopy = {
     ...userData,
     email: action.email,

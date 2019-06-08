@@ -20,6 +20,8 @@ class DashboardRow extends Component {
       buyerAddressEth : ''
       }
       this.toggle = this.toggle.bind(this);
+      // this.jjmmaaaa = this.jjmmaaaa.bind(this);
+
     };
 
 toggle() {
@@ -79,30 +81,87 @@ handleSubmit = async () => {
     })
     .then(function (data) {
       console.log('Valid transact - fetch data >>', data);
-      ctx.setState(prevState => ({
-        modal: !prevState.modal
-      }));
+      ctx.setState(prevState => ({modal: !prevState.modal}));
+      fetch(`${backEndAddress}/getproducts?userAddress=${ctx.props.user.adress0x}`)
+      .then(function(response) {
+        return response.json()
+      })
+      .then(function(products){
+        console.log('Products back from back', products);
+        var productsFromDB = products.map(product => {
+          return {
+            ownerAddressEth : product.ownerAddressEth,
+            lastBuyerAddressEth : product.lastBuyerAddressEth,
+            productStatus : product.productStatus,
+            producerHash : product.producerHash,
+            productCreationDate : product.productCreationDate,
+            productAddressEth : product.productAddressEth,
+            productDomaine : product.productDomaine,
+            productCuvee : product.productCuvee,
+            productYoutube : product.productYoutube,
+            productDeskImg : product.productDeskImg,
+            productMobImg : product.productMobImg,
+            productMillesime : product.productMillesime,
+            productCepages : product.productCepages,
+            productAppellation : product.productAppellation,
+            productRegion : product.productRegion,
+            productCountry : product.productCountry,
+            productQuality : product.productQuality,
+            domainHistory : product.domainHistory,
+            productAccords : product.productAccords,
+            domainPostalAddress : product.domainPostalAddress,
+            domainUrl : product.domainUrl,
+            domainFacebook : product.domainFacebook,
+            domainEmail : product.domainEmail,
+            historiqueTransactions : product.historiqueTransactions,
+          }
+        })
+        console.log('DashboardRow - productsFromDB', productsFromDB);
+        ctx.props.handleProductsFromDB(productsFromDB)
+        ctx.props.handleStateToProps();
+      })
     })
-    // Todo > envoyer les données des transactions dans le reducer
   })
-
-
-
 }
 
+
+
  render() {
+   var actionBtn1
+   var actionBtn2
+   if (this.props.productStatus == 'en stock' && this.props.ownerAddressEth == this.props.user.adress0x) {
+     actionBtn1 = <Button style={styles.lightSmallBtn}><Link to={`/product/${this.props.productAddressEth}`} className='lightBtnLink'>Détails</Link></Button>
+     actionBtn2 = <Button style={styles.blueSmallBtn}><Link to={`/sellproduct/${this.props.productAddressEth}`} className='blueBtnLink'>Vendre</Link></Button>
+   } else if (this.props.productStatus == 'transaction en cours' && this.props.ownerAddressEth == this.props.user.adress0x) {
+     actionBtn1 = <Button style={styles.lightSmallBtn}><Link to={`/product/${this.props.productAddressEth}`} className='lightBtnLink'>Détails</Link></Button>
+   } else {
+     actionBtn1 = <Button style={styles.lightSmallBtn}><Link to={`/product/${this.props.productAddressEth}`} className='lightBtnLink'>Détails</Link></Button>
+     actionBtn2 = <Button style={styles.blueSmallBtn} onClick={this.toggle}>Acheter</Button>
+   }
+
+   function formatDate(date) {
+      var d = new Date(date),
+          month = '' + (d.getMonth() + 1),
+          day = '' + d.getDate(),
+          year = d.getFullYear();
+
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
+
+      return [day, month, year].join('/');
+    }
+
      return (
              <tr>
                <td>{this.props.productAddressEth.substring(0, 8)}[...]{this.props.productAddressEth.substring(11, 20)}</td>
                <td>{this.props.productStatus}</td>
                <td>{this.props.productName}</td>
                <td>{this.props.productAppellation}</td>
-               <td>{this.props.productCreationDate}</td>
+               <td>{formatDate(this.props.productCreationDate)}</td>
                <td>
-                 <div>
-                   <Button style={styles.lightSmallBtn}><Link to={`/product/${this.props.productAddressEth}`} className='lightBtnLink'>Détails</Link></Button>
-                   <Button style={styles.blueSmallBtn}><Link to={`/sellproduct/${this.props.productAddressEth}`} className='blueBtnLink'>Vendre</Link></Button>
-                   <Button style={styles.blueSmallBtn} onClick={this.toggle}>Acheter</Button>
+                 <div style={{display : 'flex'}}>
+                  {actionBtn1}
+                  {actionBtn2}
                  </div>
                </td>
                <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
@@ -111,7 +170,7 @@ handleSubmit = async () => {
                    <Container>
                      <Row style={styles.modalFormat}>
                        <Col sm="4">
-                         <img style={styles.imageModal} src='/images/bouteille.png'/>
+                         <img style={styles.imageModal} src={this.props.productDeskImg}/>
                        </Col>
                        <Col sm="8">
                          <h4 style={styles.h4}>{this.props.productName}</h4>
@@ -119,7 +178,7 @@ handleSubmit = async () => {
                          <p style={styles.normalTxt}><strong>Vendeur</strong><br />{this.props.productDomaine}<br />{this.props.domainPostalAddress}<br />{this.props.domainEmail}</p>
                          <p style={styles.normalTxt}><strong>Date de la vente</strong><br />{this.props.transactCreationDate}</p>
                          <Toast style={{maxWidth : '350px', marginBottom : '15px'}} isOpen={this.state.showSecuToast}>
-                           <ToastHeader icon={<Spinner size="sm" />}>
+                           <ToastHeader style={{backgroundColor : '#711A1A', color : '#FFF'}} icon={<Spinner size="sm" />}>
                              WineTrust sécurise vos données
                            </ToastHeader>
                            <ToastBody>
@@ -139,6 +198,26 @@ handleSubmit = async () => {
              </tr>
        );
   }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    handleProductsFromDB : function(products) {
+      dispatch({
+        type: 'updateProducts',
+        products
+      })
+    }
+  }
+}
+
+function mapStateToProps(state) {
+  console.log('DashboardRow : state products >>', state.products);
+  console.log('DashboardRow : state userData >>', state.userData);
+ return {
+   products: state.products,
+   user : state.userData
+ }
 }
 
 var styles = {
@@ -189,14 +268,4 @@ var styles = {
   },
 }
 
-
-function mapStateToProps(state) {
-  console.log('Dashboard : state products >>', state.products);
-  console.log('Dashboard : state userData >>', state.userData);
- return {
-   products: state.products,
-   user : state.userData
- }
-}
-
-export default connect(mapStateToProps, null)(DashboardRow);
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardRow);

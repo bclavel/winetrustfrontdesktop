@@ -1,13 +1,13 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button, ButtonGroup, Container, Row, Col, Input, Form, FormGroup } from 'reactstrap';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import NavBar from './navbar';
 import { connect } from 'react-redux';
 import backEndAddress from '../config';
 
 
-class VenteProduit extends React.Component {
+class SellProduct extends React.Component {
   constructor(props){
     super(props);
 
@@ -18,6 +18,8 @@ class VenteProduit extends React.Component {
       productAddress : props.match.params.productAddress,
       productName : '',
       productCreationDate : '',
+      productDeskImg : '',
+      toDashboard : false,
       formControls : {
         distributeur : {
           value : '',
@@ -30,13 +32,14 @@ class VenteProduit extends React.Component {
 
   }
 
-  componentWillMount() {
+  componentDidMount() {
     var productList = this.props.products
     for (var i = 0; i < productList.length; i++) {
       if (this.state.productAddress == productList[i].productAddressEth) {
           this.setState({
           productName : productList[i].productCuvee + ' ' + productList[i].productMillesime,
-          productCreationDate : productList[i].productCreationDate
+          productCreationDate : productList[i].productCreationDate,
+          productDeskImg : productList[i].productDeskImg
         })
       }
     }
@@ -71,26 +74,63 @@ class VenteProduit extends React.Component {
   }
 
   handleSubmit() {
-
     var ctx = this
     fetch(`${backEndAddress}/createtransact`, {
      method: 'POST',
      headers: {'Content-Type':'application/x-www-form-urlencoded'},
-     body: `sellerAddressEth=${this.props.user.adress0x}&sellerName=${this.props.user.companyName}&sellerPostalAddress=${this.props.user.companyAddress}&buyerName=${this.state.formControls.distributeur.value}&productAddressEth=${this.state.productAddress}`
+     body: `sellerAddressEth=${this.props.user.adress0x}&sellerName=${this.props.user.companyName}&buyerName=${this.state.formControls.distributeur.value}&productAddressEth=${this.state.productAddress}`
     })
     .then(function(response) {
       return response.json()
     })
     .then(async function (data) {
       console.log('SELL PRODUCT - fetching data >>', data);
-        // Todo > envoyer les données des transactions dans le reducer
+      fetch(`${backEndAddress}/getproducts?userAddress=${ctx.props.user.adress0x}`)
+      .then(function(response) {
+        return response.json()
+      })
+      .then(function(products){
+        console.log('Products back from back', products);
+        var productsFromDB = products.map(product => {
+          return {
+            ownerAddressEth : product.ownerAddressEth,
+            lastBuyerAddressEth : product.lastBuyerAddressEth,
+            productStatus : product.productStatus,
+            producerHash : product.producerHash,
+            productCreationDate : product.productCreationDate,
+            productAddressEth : product.productAddressEth,
+            productDomaine : product.productDomaine,
+            productCuvee : product.productCuvee,
+            productYoutube : product.productYoutube,
+            productDeskImg : product.productDeskImg,
+            productMobImg : product.productMobImg,
+            productMillesime : product.productMillesime,
+            productCepages : product.productCepages,
+            productAppellation : product.productAppellation,
+            productRegion : product.productRegion,
+            productCountry : product.productCountry,
+            productQuality : product.productQuality,
+            domainHistory : product.domainHistory,
+            productAccords : product.productAccords,
+            domainPostalAddress : product.domainPostalAddress,
+            domainUrl : product.domainUrl,
+            domainFacebook : product.domainFacebook,
+            domainEmail : product.domainEmail,
+            historiqueTransactions : product.historiqueTransactions,
+          }
+        })
+        console.log('DashboardRow - productsFromDB', productsFromDB);
+        ctx.props.handleProductsFromDB(productsFromDB)
+        ctx.setState({toDashboard : true})
+      })
     })
 
   }
 
   render() {
-
-
+    if (this.state.toDashboard) {
+      return <Redirect to='/dashboard/' />
+    }
     return (
     <div>
       <NavBar />
@@ -105,7 +145,7 @@ class VenteProduit extends React.Component {
               </Col>
             </Row>
             <Row>
-              <Col sm="2" style={styles.productImg}><img style={styles.bottleImg} src="/images/bouteille.png" alt="bouteille"></img></Col>
+              <Col sm="2" style={styles.productImg}><img style={styles.bottleImg} src={this.state.productDeskImg} alt="bouteille"></img></Col>
               <Col sm="5">
                 <h2 style={styles.h2}>{this.state.productName}</h2>
                 <p style={styles.normalTxt}><strong>ID produit : </strong>{this.state.productAddress}</p>
@@ -116,17 +156,18 @@ class VenteProduit extends React.Component {
                 <Form>
                   <FormGroup>
                     <Input style={styles.formInput} type="select" name="distributeur" value={this.state.formControls.distributeur.value} onChange={this.handleChange}>
-                      <option selected disabled>Mes distributeurs</option>
+                      <option defaultValue disabled>Mes distributeurs</option>
                       <option>Carrefour</option>
                       <option>Intermarché</option>
                       <option>Nicolas</option>
+                      <option>PapierCorp</option>
                     </Input>
                     <Button style={styles.smallBtnDistri}>Ajouter un distributeur</Button>
                   </FormGroup>
                   <Row>
                     <Col sm={{size : 7, offset : 5}} style={styles.validBtn}>
                       <Button style={styles.lightBigBtn}><Link to='/dashboard/' className='lightBtnLink'>Annuler</Link></Button>
-                      <Button style={styles.blueBigBtn} onClick={this.handleSubmit}><Link to='/dashboard/' className='blueBtnLink'>Valider</Link></Button>
+                      <Button style={styles.blueBigBtn} onClick={this.handleSubmit}>Valider</Button>
                     </Col>
                   </Row>
                 </Form>
@@ -139,11 +180,20 @@ class VenteProduit extends React.Component {
   }
 }
 
-
+function mapDispatchToProps(dispatch) {
+  return {
+    handleProductsFromDB : function(products) {
+      dispatch({
+        type: 'updateProducts',
+        products
+      })
+    }
+  }
+}
 
 function mapStateToProps(state) {
-  console.log('Dashboard : state products >>', state.products);
-  console.log('Dashboard : state userData >>', state.userData);
+  console.log('SellProduct : state products >>', state.products);
+  console.log('SellProduct : state userData >>', state.userData);
  return {
    products: state.products,
    user : state.userData
@@ -243,4 +293,4 @@ var styles = {
     },
   }
 
-export default connect(mapStateToProps, null)(VenteProduit);
+export default connect(mapStateToProps, mapDispatchToProps)(SellProduct);

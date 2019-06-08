@@ -226,6 +226,8 @@ class CreateProduct extends Component {
         console.log('CREATE PRODUCT - Data into handleNewProduct', product);
         ctx.props.handleNewProduct(
           product.ownerAddressEth,
+          product.lastBuyerAddressEth,
+          product.lastTransactCreationDate,
           product.productStatus,
           product.producerHash,
           product.productCreationDate,
@@ -246,7 +248,8 @@ class CreateProduct extends Component {
           product.domainPostalAddress,
           product.domainUrl,
           product.domainFacebook,
-          product.domainEmail)
+          product.domainEmail,
+          product.historiqueTransactions)
           ctx.setState({toDashboard : true})
       })
 
@@ -269,7 +272,7 @@ class CreateProduct extends Component {
       <div style={styles.background}>
          <Container>
             <Row>
-              <Col sm="12" md={{ size: 4, offset: 8 }} style={styles.headerTxt}>Vous êtes : Domaine Beauregard (producteur)</Col>
+              <Col sm="12" md={{ size: 4, offset: 8 }} style={styles.headerTxt}>Vous êtes : {this.props.user.companyName} ({this.props.user.role})</Col>
             </Row>
             <Row>
               <Col sm="12">
@@ -336,7 +339,7 @@ class CreateProduct extends Component {
                   <Row>
                     <Col sm="12">
                       <Toast style={{maxWidth : '650px', marginBottom : '15px'}} isOpen={this.state.showSecuToast}>
-                        <ToastHeader icon={<Spinner size="sm" />}>
+                        <ToastHeader style={{backgroundColor : '#711A1A', color : '#FFF'}} icon={<Spinner size="sm" />}>
                           WineTrust sécurise vos données
                         </ToastHeader>
                         <ToastBody>
@@ -472,10 +475,12 @@ var styles = {
 
 function mapDispatchToProps(dispatch) {
  return {
-  handleNewProduct : function(ownerAddressEth, productStatus, producerHash, productCreationDate, productAddressEth, producerAddressEth, productDomaine, productCuvee, productYoutube, productDeskImg, productMobImg, productMillesime, productCepages, productAppellation, productRegion,productCountry, productQuality, domainHistory, productAccords, domainPostalAddress, domainUrl, domainFacebook, domainEmail) {
+  handleNewProduct : function(ownerAddressEth, lastBuyerAddressEth, lastTransactCreationDate, productStatus, producerHash, productCreationDate, productAddressEth, producerAddressEth, productDomaine, productCuvee, productYoutube, productDeskImg, productMobImg, productMillesime, productCepages, productAppellation, productRegion,productCountry, productQuality, domainHistory, productAccords, domainPostalAddress, domainUrl, domainFacebook, domainEmail, historiqueTransactions) {
     dispatch({
       type: 'createProduct',
       ownerAddressEth,
+      lastBuyerAddressEth,
+      lastTransactCreationDate,
       productStatus,
       producerHash,
       productCreationDate,
@@ -496,9 +501,17 @@ function mapDispatchToProps(dispatch) {
       domainPostalAddress,
       domainUrl,
       domainFacebook,
-      domainEmail})
+      domainEmail,
+      historiqueTransactions})
   }
  }
 }
 
-export default connect(null, mapDispatchToProps)(CreateProduct);
+function mapStateToProps(state) {
+  console.log('Dashboard : state userData >>', state.userData);
+ return {
+   user : state.userData
+ }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateProduct);

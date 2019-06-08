@@ -91,7 +91,7 @@ componentWillMount() {
   var urlYt =  this.state.productYoutube.replace('watch?v=' , 'embed/');
   console.log(this.state.domainFacebook);
   var productHistory = this.state.historiqueTransactions.map((element, i) => {
-  var productName = element.productCuvee + ' ' + element.productMillesime    
+  var productName = element.productCuvee + ' ' + element.productMillesime
   return (
       <HistoriqueRow
           key={i}
@@ -108,7 +108,8 @@ componentWillMount() {
           buyerPostalAddress={element.buyerPostalAddress}/>
        )
      }
-     )
+   )
+
   return (
 
     <div>
@@ -257,9 +258,9 @@ var styles = {
   }
 }
 function mapStateToProps(state) {
-  return { 
+  return {
     products: state.products,
-    user : state.userData 
+    user : state.userData
 }}
 export default connect(
   mapStateToProps,
