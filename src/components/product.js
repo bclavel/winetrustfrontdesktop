@@ -84,7 +84,7 @@ componentWillMount() {
 }
 
  render() {
- 
+
   return (
 
     <div>
@@ -240,9 +240,9 @@ var styles = {
   }
 }
 function mapStateToProps(state) {
-  return { 
+  return {
     products: state.products,
-    user : state.userData 
+    user : state.userData
 }}
 export default connect(
   mapStateToProps,

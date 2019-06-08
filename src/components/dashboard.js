@@ -9,13 +9,43 @@ import product from '../ethereum/product'
 import { connect } from 'react-redux';
 
 class Dashboard extends Component {
+
+componentWillUpdate(prevProps){
+  console.log('prevProps', prevProps);
+  console.log('this.props', this.props);
+  if (prevProps.products !== this.props.products) {
+    console.log('prevProps is not equal to this.props.products');
+    this.setState({stateDidUpdate : "update"})
+  }
+}
+
+componentDidMount(){
+  console.log("componentDidMount");
+  this.forceUpdate();
+}
+
   constructor(props) {
     super(props);
 
     this.state = {
-      stateTest : null,
+      stateDidUpdate : "",
       }
     };
+
+
+// Fonciton qui appelle stateToProps > pour essayer de forcer la mise à jour du state avec le reducer
+async handleStateToProps(){
+  console.log('handleStateToProps !');
+  await function mapStateToProps(state) {
+    console.log('Dashboard : state products >>', state.products);
+    console.log('Dashboard : state userData >>', state.userData);
+   return {
+     products: state.products,
+     user : state.userData
+   }
+  }
+}
+
 
  render() {
    var userProducts = this.props.products.map((element, i) => {
@@ -23,6 +53,7 @@ class Dashboard extends Component {
      return (
        <DashboardRow
           key={i}
+          handleStateToProps={this.handleStateToProps}
           productAddressEth={element.productAddressEth}
           productStatus={element.productStatus}
           productName={productName}
@@ -33,6 +64,7 @@ class Dashboard extends Component {
           domainEmail={element.domainEmail}
           ownerAddressEth={element.ownerAddressEth}
           lastBuyer={element.lastBuyerAddressEth}
+          productDeskImg={element.productDeskImg}
           transactCreationDate={element.lastTransactCreationDate}/>
         )
       })
@@ -77,6 +109,15 @@ class Dashboard extends Component {
     </div>
     );
   }
+}
+
+function mapStateToProps(state) {
+  console.log('Dashboard : state products >>', state.products);
+  console.log('Dashboard : state userData >>', state.userData);
+ return {
+   products: state.products,
+   user : state.userData
+ }
 }
 
 var styles = {
@@ -183,17 +224,4 @@ var styles = {
   },
 }
 
-
-function mapStateToProps(state) {
-  console.log('Dashboard : state products >>', state.products);
-  console.log('Dashboard : state userData >>', state.userData);
- return {
-   products: state.products,
-   user : state.userData
- }
-}
-
-export default connect(
-  mapStateToProps, 
-  null
-  )(Dashboard);
+export default connect(mapStateToProps, null)(Dashboard);

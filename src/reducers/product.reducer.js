@@ -39,6 +39,9 @@ export default function(products = [], action){
       productCopy.push(results[i])
     }
     return productCopy;
+  } else if(action.type === 'updateProducts'){
+    console.log('Action from updateProducts reducer >>', action);
+    return productCopy;
   } else {
     return products;
   }
