@@ -34,6 +34,7 @@ export default function(products = [], action){
     return productCopy;
   } else if(action.type === 'getProductsFromDB'){
     console.log('Action from getProductsFromDB reducer >>', action);
+    console.log('historique des transactions dans le reducer >>', action.historiqueTransactions);
     var results = action.products
     for (var i = 0; i < results.length; i++) {
       productCopy.push(results[i])

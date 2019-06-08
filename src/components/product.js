@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col, Button, Table, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap';
 import NavBar from './navbar';
+import HistoriqueRow from './transactionHistoryRow';
 import { Link } from "react-router-dom";
 import web3 from '../ethereum/web3'
 import { connect } from 'react-redux';
@@ -38,7 +39,8 @@ class Product extends Component {
       domainPostalAddress : '',
       domainUrl : '',
       domainFacebook : '',
-      domainEmail : ''
+      domainEmail : '',
+      historiqueTransactions: []
     }
    this.toggle = this.toggle.bind(this);
   }
@@ -77,14 +79,36 @@ componentWillMount() {
         domainPostalAddress : productList[i].domainPostalAddress,
         domainUrl : productList[i].domainUrl,
         domainFacebook : productList[i].domainFacebook,
-        domainEmail : productList[i].domainEmail
+        domainEmail : productList[i].domainEmail,
+        domainEmail : productList[i].domainEmail,
+        historiqueTransactions : productList[i].historiqueTransactions
       })
     }
   }
 }
 
  render() {
- 
+  var urlYt =  this.state.productYoutube.replace('watch?v=' , 'embed/');
+  console.log(this.state.domainFacebook);
+  var productHistory = this.state.historiqueTransactions.map((element, i) => {
+  var productName = element.productCuvee + ' ' + element.productMillesime    
+  return (
+      <HistoriqueRow
+          key={i}
+          index={i+1}
+          buyerName={element.buyerName}
+          sellerAddressEth={element.sellerAddressEth}
+          sellerName={element.sellerName}
+          sellerPostalAddress={element.sellerPostalAddress}
+          transactCreationDate={element.transactCreationDate}
+          transactStatus={element.transactStatus}
+          transactValidationDate={element.transactValidationDate}
+          transactAddressEth={element.transactAddressEth}
+          buyerAddressEth={element.buyerAddressEth}
+          buyerPostalAddress={element.buyerPostalAddress}/>
+       )
+     }
+     )
   return (
 
     <div>
@@ -95,7 +119,7 @@ componentWillMount() {
             <Col sm="12" md={{ size: 4, offset: 8 }} style={styles.headerTxt}>Vous êtes : {this.props.user.companyName}({this.props.user.role})</Col>
           </Row>
           <Row>
-            <Col sm="12" md='6' style={styles.productImg}><img src={this.state.productDeskImg} type="fetch" alt=""/></Col>
+            <Col sm="12" md='6' style={styles.productImg}><img src={this.state.productDeskImg} type="fetch" alt=""  style={{ height : '600px'}}/></Col>
             <Col sm="12" md='6'>
               <h1 style={styles.h1}>{this.state.productName}</h1>
               <h4 style={styles.h4}>{this.state.productAppellation}, {this.state.productQuality}</h4>
@@ -113,14 +137,14 @@ componentWillMount() {
                   <Col sm="11" style={styles.textContact}>Par email</Col>
                 </Row>
                 <Row>
-                  <Col sm="1"><a href={this.state.domainFacebook}><img src='/images/picto_facebook.png'/></a></Col>
+                  <Col sm="1"><a href={this.state.domainFacebook} target="_blank"><img src='/images/picto_facebook.png'/></a></Col>
                   <Col sm="11" style={styles.textContact}>Par Facebook</Col>
                 </Row>
               </div>
               <div style={{marginTop : '25px', marginBottom : '15px'}}>
                 <p style={styles.normalTxt}>{this.state.domainPostalAddress}</p><br />
                 <h2 style={styles.h2}>Caractéristiques</h2>
-                <p style={styles.normalTxt}><strong>Cépages</strong>: {this.state.productCepages}</p><br />
+                <p style={styles.normalTxt}><strong>Cépages: </strong>{this.state.productCepages}</p><br />
                 <p style={styles.normalTxt}><strong>Accord mets & vin :</strong>{this.state.productAccords}</p><br />
               </div>
             </Col>
@@ -132,7 +156,7 @@ componentWillMount() {
               <p style={styles.normalTxt}>L’histoire de Beauregard remonte au XIIe siècle et aux Chevaliers Hospitaliers de Saint Jean de Jérusalem, à qui l’on doit la célèbre Croix des Templiers, emblème de Beauregard. Actifs dans la région de Pomerol et propriétaires d’un petit manoir ils cultivaient déjà ces terres. Sur ce site, la famille Beausoleil fait construire cinq siècles plus tard un premier édifice, qui fut remplacé à l’époque napoléonienne par le Château actuel : une magnifique chartreuse girondine, qui s’ouvre sur une terrasse avec deux pigeonniers surplombant des douves et un très beau parc, œuvre d’un élève de Victor Louis, architecte du Grand Théâtre de Bordeaux.</p>
             </Col>
             <Col sm="12" md='6'>
-              <iframe width="560" height="315" src={{url: this.state.productYoutube.replace('watch?v=' , 'embed/')}} frameBorder="0" allow="encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+              <iframe width="560" height="315" src= {urlYt} frameBorder="0" allow="encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
             </Col>
           </Row>
           <Row>
@@ -141,7 +165,7 @@ componentWillMount() {
               <Table style={styles.tableTxt}>
                 <thead>
                   <tr>
-                    <th>ID transaction</th>
+                    <th>ID</th>
                     <th>Date</th>
                     <th>Lieu</th>
                     <th>Vendeur</th>
@@ -150,14 +174,7 @@ componentWillMount() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>03948xjfe4417ty8ik63ee2</td>
-                    <td>03/11/2018</td>
-                    <td>Dinard, France</td>
-                    <td>Domaine Beauregard</td>
-                    <td>Intermarché Dinard</td>
-                    <td>Validée</td>
-                  </tr>
+                  {productHistory}
                 </tbody>
               </Table>
             </Col>

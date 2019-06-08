@@ -42,7 +42,7 @@ class NavBar extends React.Component {
               <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
             </NavItem>
             <NavItem style={styles.navBtndeconnect}>
-                <Button href="/" style={styles.btnDeconnect}>Déconnexion</Button>
+                <Button href="/" style={styles.blueSmallBtn}>Déconnexion</Button>
             </NavItem>
           </Nav> 
         </Navbar>
@@ -99,13 +99,13 @@ var styles = {
     justifyContent: 'center',
     marginRight: '200px'
   },
-
-  btnDeconnect: {
-    backgroundColor: '#22323F',
-    display: 'flex',
-    alignItems: 'center',
-    width: '100px',
-    justifyContent: 'center'
+  blueSmallBtn : {
+    backgroundColor : '#22323F',
+    fontSize: '14px',
+    paddingLeft : '5px',
+    paddingRight : '5px',
+    marginLeft : '10px',
+    borderColor : '#22323F'
   }
 }
 function mapStateToProps(state) {

@@ -93,7 +93,7 @@ handleSubmit = async () => {
  render() {
      return (
              <tr>
-               <td>{this.props.productAddressEth}</td>
+               <td>{this.props.productAddressEth.substring(0, 8)}[...]{this.props.productAddressEth.substring(11, 20)}</td>
                <td>{this.props.productStatus}</td>
                <td>{this.props.productName}</td>
                <td>{this.props.productAppellation}</td>
