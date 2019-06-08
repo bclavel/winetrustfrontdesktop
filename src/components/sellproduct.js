@@ -30,7 +30,6 @@ class VenteProduit extends React.Component {
 
   }
 
-
   handleChange = event => {
 
     const name = event.target.name;

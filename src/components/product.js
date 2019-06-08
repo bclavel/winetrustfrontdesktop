@@ -4,22 +4,44 @@ import { Container, Row, Col, Button, Table, Modal, ModalHeader, ModalBody, Moda
 import NavBar from './navbar';
 import { Link } from "react-router-dom";
 import web3 from '../ethereum/web3'
-
-
-export default class Product extends Component {
+import { connect } from 'react-redux';
+class Product extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      stateTest : null,
-      modal: false
-    };
-
-  this.toggle = this.toggle.bind(this);
-
-  console.log('props constructor product', props);
-
-}
+      formIsValid: false,
+      errorOpen : false,
+      errorMessage : '',
+      productAddress : props.match.params.productAddress,
+      productName : '',
+      productCreationDate : '',
+      formControls : '',
+      ownerAddressEth : '',
+      productStatus : '',
+      producerHash : '',
+      productCreationDate : '',
+      productAddressEth : '',
+      productDomaine : '',
+      productCuvee : '',
+      productYoutube : '',
+      productDeskImg : '',
+      productMobImg : '',
+      productMillesime : '',
+      productCepages : '',
+      productAppellation : '',
+      productRegion : '',
+      productCountry : '',
+      productQuality : '',
+      domainHistory : '',
+      productAccords : '',
+      domainPostalAddress : '',
+      domainUrl : '',
+      domainFacebook : '',
+      domainEmail : ''
+    }
+   this.toggle = this.toggle.bind(this);
+  }
 
 toggle() {
   this.setState(prevState => ({
@@ -27,56 +49,90 @@ toggle() {
   }));
 }
 
+componentWillMount() {
+  var productList = this.props.products
+  for (var i = 0; i < productList.length; i++) {
+    if (this.state.productAddress == productList[i].productAddressEth) {
+        this.setState({
+        productName : productList[i].productCuvee + ' ' + productList[i].productMillesime,
+        productCreationDate : productList[i].productCreationDate,
+        ownerAddressEth : '',
+        productStatus : productList[i].productStatus,
+        producerHash : productList[i].producerHash,
+        productCreationDate : productList[i].productCreationDate,
+        productAddressEth : productList[i].productAddressEth,
+        productDomaine : productList[i].productDomaine,
+        productCuvee : productList[i].productCuvee,
+        productYoutube : productList[i].productYoutube,
+        productDeskImg : productList[i].productDeskImg,
+        productMobImg : productList[i].productMobImg,
+        productMillesime : productList[i].productMillesime,
+        productCepages : productList[i].productCepages,
+        productAppellation : productList[i].productAppellation,
+        productRegion : productList[i].productRegion,
+        productCountry : productList[i].productCountry,
+        productQuality : productList[i].productQuality,
+        domainHistory : productList[i].domainHistory,
+        productAccords : productList[i].productAccords,
+        domainPostalAddress : productList[i].domainPostalAddress,
+        domainUrl : productList[i].domainUrl,
+        domainFacebook : productList[i].domainFacebook,
+        domainEmail : productList[i].domainEmail
+      })
+    }
+  }
+}
+
  render() {
-   var productData = {
-     title : 'test'
-   }
+ 
   return (
+
     <div>
       <NavBar />
       <div style={styles.background}>
          <Container>
           <Row>
-            <Col sm="12" md={{ size: 4, offset: 8 }} style={styles.headerTxt}>Vous êtes : Domaine Beauregard (producteur)</Col>
+            <Col sm="12" md={{ size: 4, offset: 8 }} style={styles.headerTxt}>Vous êtes : {this.props.user.companyName}({this.props.user.role})</Col>
           </Row>
           <Row>
-            <Col sm="12" md='6' style={styles.productImg}><img src='/images/bouteille.png'/></Col>
+            <Col sm="12" md='6' style={styles.productImg}><img src={this.state.productDeskImg} type="fetch" alt=""/></Col>
             <Col sm="12" md='6'>
-              <h1 style={styles.h1}>Chateau Beauregard 2014</h1>
-              <h4 style={styles.h4}>Pomerol AOC</h4>
-              <h4 style={styles.h4}>Domaine Beauregard</h4>
-              <h4 style={styles.h4}>Région de Bordeaux, France</h4>
+              <h1 style={styles.h1}>{this.state.productName}</h1>
+              <h4 style={styles.h4}>{this.state.productAppellation}, {this.state.productQuality}</h4>
+              <h4 style={styles.h4}>{this.state.productDomaine}</h4>
+              <h4 style={styles.h4}>{this.state.productRegion}, {this.state.productCountry}</h4>
               <div style={{marginTop : '25px', marginBottom : '15px'}}>
                 <Button style={styles.smallBtn} onClick={this.toggle}>Acheter 49,96€</Button>
                 <p style={styles.smallTxt}>Vendu par Ovinia.com</p>
               </div>
               <div style={{marginTop : '25px', marginBottom : '15px'}}>
-              <h2 style={styles.h2}>Découvrez le domaine Beauregard</h2>
-                <a style={styles.textLink} href='https://www.chateau-beauregard.com/' target='_blank'>www.chateau-beauregard.com</a>
+              <h2 style={styles.h2}>Découvrez le {this.state.productDomaine}</h2>
+                <a style={styles.textLink}  target='_blank'>{this.state.domainUrl}</a>
                 <Row>
-                  <Col sm="1"><img src='/images/picto_email.png'/></Col>
+                  <Col sm="1"><a href={`mailto:${this.state.domainEmail}`}> <img  src='/images/picto_email.png'/></a></Col>
                   <Col sm="11" style={styles.textContact}>Par email</Col>
                 </Row>
                 <Row>
-                  <Col sm="1"><img src='/images/picto_facebook.png'/></Col>
+                  <Col sm="1"><a href={this.state.domainFacebook}><img src='/images/picto_facebook.png'/></a></Col>
                   <Col sm="11" style={styles.textContact}>Par Facebook</Col>
                 </Row>
               </div>
               <div style={{marginTop : '25px', marginBottom : '15px'}}>
+                <p style={styles.normalTxt}>{this.state.domainPostalAddress}</p><br />
                 <h2 style={styles.h2}>Caractéristiques</h2>
-                <p style={styles.normalTxt}><strong>Cépages</strong><br />Cépages 95% Pinot noir, 5% Merlot</p>
-                <p style={styles.normalTxt}><strong>Accord mets & vin</strong><br />Viande rouge, Gibier</p>
+                <p style={styles.normalTxt}><strong>Cépages</strong>: {this.state.productCepages}</p><br />
+                <p style={styles.normalTxt}><strong>Accord mets & vin :</strong>{this.state.productAccords}</p><br />
               </div>
             </Col>
           </Row>
           <Row>
             <Col sm="12" md='6'>
               <h2 style={styles.h2}>Histoire du domaine</h2>
-              <p style={styles.normalTxt}><em>Propriété des familles Moulin et Cathiard depuis 2014, le Château Beauregard renaît autour de sa fonction première : produire un grand vin de Pomerol au cœur d’un lieu historiquement dédié à la résidence de ses hôtes.</em></p>
+              <p style={styles.normalTxt}>{this.state.domainHistory}</p>
               <p style={styles.normalTxt}>L’histoire de Beauregard remonte au XIIe siècle et aux Chevaliers Hospitaliers de Saint Jean de Jérusalem, à qui l’on doit la célèbre Croix des Templiers, emblème de Beauregard. Actifs dans la région de Pomerol et propriétaires d’un petit manoir ils cultivaient déjà ces terres. Sur ce site, la famille Beausoleil fait construire cinq siècles plus tard un premier édifice, qui fut remplacé à l’époque napoléonienne par le Château actuel : une magnifique chartreuse girondine, qui s’ouvre sur une terrasse avec deux pigeonniers surplombant des douves et un très beau parc, œuvre d’un élève de Victor Louis, architecte du Grand Théâtre de Bordeaux.</p>
             </Col>
             <Col sm="12" md='6'>
-              <iframe width="560" height="315" src="https://www.youtube.com/embed/jGPVRxth6Dk" frameBorder="0" allow="encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+              <iframe width="560" height="315" src={{url: this.state.productYoutube.replace('watch?v=' , 'embed/')}} frameBorder="0" allow="encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
             </Col>
           </Row>
           <Row>
@@ -138,7 +194,10 @@ var styles = {
     display : 'flex',
     alignItems : 'center',
     flexDirection: 'column',
+    width: '100vw',
+    overflow: 'hidden'
   },
+
   smallBtn : {
     backgroundColor : '#22323F',
     fontSize: '18px',
@@ -180,3 +239,12 @@ var styles = {
     marginRight : '10px'
   }
 }
+function mapStateToProps(state) {
+  return { 
+    products: state.products,
+    user : state.userData 
+}}
+export default connect(
+  mapStateToProps,
+  null
+)(Product);

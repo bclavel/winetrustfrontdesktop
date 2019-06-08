@@ -254,4 +254,7 @@ function mapStateToProps(state) {
  }
 }
 
-export default connect(mapStateToProps, null)(Dashboard);
+export default connect(
+  mapStateToProps, 
+  null
+  )(Dashboard);
