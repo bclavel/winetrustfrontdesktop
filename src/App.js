@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Row, Container, Collapse, Navbar, NavbarToggler, Nav, NavItem, NavLink, Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css';
 import './App.css';
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Provider } from 'react-redux';
 
 import products from './reducers/product.reducer';

@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Link } from "react-router-dom";
-import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Spinner, Toast, ToastBody, ToastHeader, Alert } from 'reactstrap';
-import backEndAddress from '../config';
-import web3 from '../ethereum/web3'
-import product from '../ethereum/product'
 import { connect } from 'react-redux';
 
 class HistoriqueRow extends Component {
@@ -23,10 +18,21 @@ class HistoriqueRow extends Component {
 
 
  render() {
+   function formatDate(date) {
+      var d = new Date(date),
+          month = '' + (d.getMonth() + 1),
+          day = '' + d.getDate(),
+          year = d.getFullYear();
+
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
+
+      return [day, month, year].join('/');
+    }
      return (
         <tr>
             <td>{this.props.index}</td>
-            <td>{this.props.transactValidationDate}</td>
+            <td>{formatDate(this.props.transactValidationDate)}</td>
             <td>{this.props.buyerPostalAddress}</td>
             <td>{this.props.sellerName}</td>
             <td>{this.props.buyerName}</td>

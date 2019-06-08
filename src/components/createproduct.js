@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Container, Row, Col, Button, Table, Form, FormGroup, Label, Input, FormText, Modal, ModalHeader, ModalBody, ModalFooter, Spinner, Toast, ToastBody, ToastHeader, Alert  } from 'reactstrap';
+import { Container, Row, Col, Button, Form, FormGroup, Label, Input, Spinner, Toast, ToastBody, ToastHeader, Alert  } from 'reactstrap';
 import NavBar from './navbar';
 import { Link, Redirect } from "react-router-dom";
 import '../style.css'
@@ -378,6 +378,8 @@ var styles = {
     fontFamily: 'Roboto',
     fontSize: '14px',
     marginBottom : '75px',
+    marginTop : '10px',
+    textAlign : 'right',
   },
   h1 : {
     fontFamily: 'Roboto',
@@ -475,7 +477,7 @@ var styles = {
 
 function mapDispatchToProps(dispatch) {
  return {
-  handleNewProduct : function(ownerAddressEth, lastBuyerAddressEth, lastTransactCreationDate, productStatus, producerHash, productCreationDate, productAddressEth, producerAddressEth, productDomaine, productCuvee, productYoutube, productDeskImg, productMobImg, productMillesime, productCepages, productAppellation, productRegion,productCountry, productQuality, domainHistory, productAccords, domainPostalAddress, domainUrl, domainFacebook, domainEmail, historiqueTransactions) {
+  handleNewProduct : function(ownerAddressEth, lastBuyerAddressEth, lastTransactCreationDate, productStatus, producerHash, productCreationDate, productAddressEth, productDomaine, productCuvee, productYoutube, productDeskImg, productMobImg, productMillesime, productCepages, productAppellation, productRegion, productCountry, productQuality, domainHistory, productAccords, domainPostalAddress, domainUrl, domainFacebook, domainEmail, historiqueTransactions) {
     dispatch({
       type: 'createProduct',
       ownerAddressEth,

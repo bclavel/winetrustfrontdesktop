@@ -1,6 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Button, ButtonGroup, Container, Row, Col, Input, Form, FormGroup } from 'reactstrap';
+import { Button, Container, Row, Col, Input, Form, FormGroup } from 'reactstrap';
 import { Link, Redirect } from "react-router-dom";
 import NavBar from './navbar';
 import { connect } from 'react-redux';
@@ -95,6 +95,7 @@ class SellProduct extends React.Component {
           return {
             ownerAddressEth : product.ownerAddressEth,
             lastBuyerAddressEth : product.lastBuyerAddressEth,
+            lastTransactCreationDate : product.lastTransactCreationDate,
             productStatus : product.productStatus,
             producerHash : product.producerHash,
             productCreationDate : product.productCreationDate,
@@ -131,6 +132,17 @@ class SellProduct extends React.Component {
     if (this.state.toDashboard) {
       return <Redirect to='/dashboard/' />
     }
+    function formatDate(date) {
+       var d = new Date(date),
+           month = '' + (d.getMonth() + 1),
+           day = '' + d.getDate(),
+           year = d.getFullYear();
+
+       if (month.length < 2) month = '0' + month;
+       if (day.length < 2) day = '0' + day;
+
+       return [day, month, year].join('/');
+     }
     return (
     <div>
       <NavBar />
@@ -149,7 +161,7 @@ class SellProduct extends React.Component {
               <Col sm="5">
                 <h2 style={styles.h2}>{this.state.productName}</h2>
                 <p style={styles.normalTxt}><strong>ID produit : </strong>{this.state.productAddress}</p>
-                <p style={styles.normalTxt}><strong>Date de création : </strong>{this.state.productCreationDate}</p>
+                <p style={styles.normalTxt}><strong>Date de création : </strong>{formatDate(this.state.productCreationDate)}</p>
               </Col>
               <Col sm="5">
                 <h2 style={styles.h2}>Sélectionner un distributeur</h2>
@@ -204,7 +216,9 @@ var styles = {
     headerTxt : {
       fontFamily: 'Roboto',
       fontSize: '14px',
-      marginBottom : '25px',
+      marginBottom : '75px',
+      marginTop : '10px',
+      textAlign : 'right',
     },
     h1 : {
       fontFamily: 'Roboto',

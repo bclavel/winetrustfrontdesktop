@@ -129,10 +129,10 @@ handleSubmit = async () => {
  render() {
    var actionBtn1
    var actionBtn2
-   if (this.props.productStatus == 'en stock' && this.props.ownerAddressEth == this.props.user.adress0x) {
+   if (this.props.productStatus === 'en stock' && this.props.ownerAddressEth === this.props.user.adress0x) {
      actionBtn1 = <Button style={styles.lightSmallBtn}><Link to={`/product/${this.props.productAddressEth}`} className='lightBtnLink'>Détails</Link></Button>
      actionBtn2 = <Button style={styles.blueSmallBtn}><Link to={`/sellproduct/${this.props.productAddressEth}`} className='blueBtnLink'>Vendre</Link></Button>
-   } else if (this.props.productStatus == 'transaction en cours' && this.props.ownerAddressEth == this.props.user.adress0x) {
+   } else if (this.props.productStatus === 'transaction en cours' && this.props.ownerAddressEth === this.props.user.adress0x) {
      actionBtn1 = <Button style={styles.lightSmallBtn}><Link to={`/product/${this.props.productAddressEth}`} className='lightBtnLink'>Détails</Link></Button>
    } else {
      actionBtn1 = <Button style={styles.lightSmallBtn}><Link to={`/product/${this.props.productAddressEth}`} className='lightBtnLink'>Détails</Link></Button>
@@ -174,10 +174,10 @@ handleSubmit = async () => {
                        </Col>
                        <Col sm="8">
                          <h4 style={styles.h4}>{this.props.productName}</h4>
-                         <p style={styles.normalTxt}><strong>ID Produit</strong><br />{this.props.productAddressEth}</p>
+                         <p style={styles.normalTxt}><strong>ID Produit</strong> : {this.props.productAddressEth}</p>
                          <p style={styles.normalTxt}><strong>Vendeur</strong><br />{this.props.productDomaine}<br />{this.props.domainPostalAddress}<br />{this.props.domainEmail}</p>
-                         <p style={styles.normalTxt}><strong>Date de la vente</strong><br />{this.props.transactCreationDate}</p>
-                         <Toast style={{maxWidth : '350px', marginBottom : '15px'}} isOpen={this.state.showSecuToast}>
+                         <p style={styles.normalTxt}><strong>Date de la vente</strong> : {formatDate(this.props.transactCreationDate)}</p>
+                         <Toast style={{maxWidth : '400px', marginBottom : '15px'}} isOpen={this.state.showSecuToast}>
                            <ToastHeader style={{backgroundColor : '#711A1A', color : '#FFF'}} icon={<Spinner size="sm" />}>
                              WineTrust sécurise vos données
                            </ToastHeader>
@@ -265,6 +265,11 @@ var styles = {
     paddingLeft : '40px',
     paddingRight : '40px',
     borderColor : '#E2DAD4'
+  },
+  h4 : {
+    fontFamily: 'Roboto',
+    fontSize: '18px',
+    marginBottom : '30px'
   },
 }
 

@@ -4,8 +4,6 @@ import { Container, Row, Col, Button, Table } from 'reactstrap';
 import NavBar from './navbar';
 import DashboardRow from './dashboardrow';
 import { Link } from "react-router-dom";
-import factory from '../ethereum/factory'
-import product from '../ethereum/product'
 import { connect } from 'react-redux';
 
 class Dashboard extends Component {
@@ -33,7 +31,7 @@ componentDidMount(){
     };
 
 
-// Fonciton qui appelle stateToProps > pour essayer de forcer la mise à jour du state avec le reducer
+// Fonction qui appelle stateToProps > pour essayer de forcer la mise à jour du state avec le reducer
 async handleStateToProps(){
   console.log('handleStateToProps !');
   await function mapStateToProps(state) {
@@ -128,6 +126,8 @@ var styles = {
     fontFamily: 'Roboto',
     fontSize: '14px',
     marginBottom : '75px',
+    marginTop : '10px',
+    textAlign : 'right',
   },
   h1 : {
     fontFamily: 'Roboto',

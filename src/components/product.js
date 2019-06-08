@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Container, Row, Col, Button, Table, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap';
+import { Container, Row, Col, Button, Table } from 'reactstrap';
 import NavBar from './navbar';
 import HistoriqueRow from './transactionHistoryRow';
-import { Link } from "react-router-dom";
-import web3 from '../ethereum/web3'
 import { connect } from 'react-redux';
 class Product extends Component {
   constructor(props) {
@@ -16,7 +14,6 @@ class Product extends Component {
       errorMessage : '',
       productAddress : props.match.params.productAddress,
       productName : '',
-      productCreationDate : '',
       formControls : '',
       ownerAddressEth : '',
       productStatus : '',
@@ -54,14 +51,13 @@ toggle() {
 componentWillMount() {
   var productList = this.props.products
   for (var i = 0; i < productList.length; i++) {
-    if (this.state.productAddress == productList[i].productAddressEth) {
+    if (this.state.productAddress === productList[i].productAddressEth) {
         this.setState({
         productName : productList[i].productCuvee + ' ' + productList[i].productMillesime,
         productCreationDate : productList[i].productCreationDate,
         ownerAddressEth : '',
         productStatus : productList[i].productStatus,
         producerHash : productList[i].producerHash,
-        productCreationDate : productList[i].productCreationDate,
         productAddressEth : productList[i].productAddressEth,
         productDomaine : productList[i].productDomaine,
         productCuvee : productList[i].productCuvee,
@@ -88,27 +84,38 @@ componentWillMount() {
 }
 
  render() {
-  var urlYt =  this.state.productYoutube.replace('watch?v=' , 'embed/');
-  console.log(this.state.domainFacebook);
-  var productHistory = this.state.historiqueTransactions.map((element, i) => {
-  var productName = element.productCuvee + ' ' + element.productMillesime
-  return (
-      <HistoriqueRow
-          key={i}
-          index={i+1}
-          buyerName={element.buyerName}
-          sellerAddressEth={element.sellerAddressEth}
-          sellerName={element.sellerName}
-          sellerPostalAddress={element.sellerPostalAddress}
-          transactCreationDate={element.transactCreationDate}
-          transactStatus={element.transactStatus}
-          transactValidationDate={element.transactValidationDate}
-          transactAddressEth={element.transactAddressEth}
-          buyerAddressEth={element.buyerAddressEth}
-          buyerPostalAddress={element.buyerPostalAddress}/>
-       )
-     }
-   )
+  var urlYt = this.state.productYoutube.replace('watch?v=' , 'embed/');
+  var productHistory
+  var transactCount = this.state.historiqueTransactions.length
+  console.log("this.state.historiqueTransactions", this.state.historiqueTransactions);
+  if (transactCount == 0) {
+    console.log('aucune transact');
+    productHistory = <div style={{marginTop : "10px"}}><p style={styles.tableTxt}>Aucune transaction</p></div>
+  } else {
+    console.log('transact found');
+    productHistory = this.state.historiqueTransactions.map((element, i) => {
+    var productName = element.productCuvee + ' ' + element.productMillesime
+    if (element.transactStatus === "validée") {
+      return (
+          <HistoriqueRow
+              key={i}
+              index={i+1}
+              buyerName={element.buyerName}
+              sellerAddressEth={element.sellerAddressEth}
+              sellerName={element.sellerName}
+              sellerPostalAddress={element.sellerPostalAddress}
+              transactCreationDate={element.transactCreationDate}
+              transactStatus={element.transactStatus}
+              transactValidationDate={element.transactValidationDate}
+              transactAddressEth={element.transactAddressEth}
+              buyerAddressEth={element.buyerAddressEth}
+              buyerPostalAddress={element.buyerPostalAddress}/>
+           )
+         }
+       }
+     )
+  }
+
 
   return (
 
@@ -117,13 +124,13 @@ componentWillMount() {
       <div style={styles.background}>
          <Container>
           <Row>
-            <Col sm="12" md={{ size: 4, offset: 8 }} style={styles.headerTxt}>Vous êtes : {this.props.user.companyName}({this.props.user.role})</Col>
+            <Col sm="12" md={{ size: 4, offset: 8 }} style={styles.headerTxt}>Vous êtes : {this.props.user.companyName} ({this.props.user.role})</Col>
           </Row>
           <Row>
             <Col sm="12" md='6' style={styles.productImg}><img src={this.state.productDeskImg} type="fetch" alt=""  style={{ height : '600px'}}/></Col>
             <Col sm="12" md='6'>
               <h1 style={styles.h1}>{this.state.productName}</h1>
-              <h4 style={styles.h4}>{this.state.productAppellation}, {this.state.productQuality}</h4>
+              <h4 style={styles.h4}>{this.state.productAppellation} {this.state.productQuality}</h4>
               <h4 style={styles.h4}>{this.state.productDomaine}</h4>
               <h4 style={styles.h4}>{this.state.productRegion}, {this.state.productCountry}</h4>
               <div style={{marginTop : '25px', marginBottom : '15px'}}>
@@ -141,12 +148,12 @@ componentWillMount() {
                   <Col sm="1"><a href={this.state.domainFacebook} target="_blank"><img src='/images/picto_facebook.png'/></a></Col>
                   <Col sm="11" style={styles.textContact}>Par Facebook</Col>
                 </Row>
+                <p style={styles.normalTxt}>{this.state.domainPostalAddress}</p>
               </div>
               <div style={{marginTop : '25px', marginBottom : '15px'}}>
-                <p style={styles.normalTxt}>{this.state.domainPostalAddress}</p><br />
                 <h2 style={styles.h2}>Caractéristiques</h2>
-                <p style={styles.normalTxt}><strong>Cépages: </strong>{this.state.productCepages}</p><br />
-                <p style={styles.normalTxt}><strong>Accord mets & vin :</strong>{this.state.productAccords}</p><br />
+                <p style={styles.normalTxt}><strong>Cépages : </strong>{this.state.productCepages}</p>
+                <p style={styles.normalTxt}><strong>Accord mets & vin : </strong>{this.state.productAccords}</p>
               </div>
             </Col>
           </Row>
@@ -154,7 +161,6 @@ componentWillMount() {
             <Col sm="12" md='6'>
               <h2 style={styles.h2}>Histoire du domaine</h2>
               <p style={styles.normalTxt}>{this.state.domainHistory}</p>
-              <p style={styles.normalTxt}>L’histoire de Beauregard remonte au XIIe siècle et aux Chevaliers Hospitaliers de Saint Jean de Jérusalem, à qui l’on doit la célèbre Croix des Templiers, emblème de Beauregard. Actifs dans la région de Pomerol et propriétaires d’un petit manoir ils cultivaient déjà ces terres. Sur ce site, la famille Beausoleil fait construire cinq siècles plus tard un premier édifice, qui fut remplacé à l’époque napoléonienne par le Château actuel : une magnifique chartreuse girondine, qui s’ouvre sur une terrasse avec deux pigeonniers surplombant des douves et un très beau parc, œuvre d’un élève de Victor Louis, architecte du Grand Théâtre de Bordeaux.</p>
             </Col>
             <Col sm="12" md='6'>
               <iframe width="560" height="315" src= {urlYt} frameBorder="0" allow="encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
@@ -195,6 +201,8 @@ var styles = {
     fontFamily: 'Roboto',
     fontSize: '14px',
     marginBottom : '75px',
+    marginTop : '10px',
+    textAlign : 'right',
   },
   h1 : {
     fontFamily: 'Roboto',
@@ -215,7 +223,6 @@ var styles = {
     width: '100vw',
     overflow: 'hidden'
   },
-
   smallBtn : {
     backgroundColor : '#22323F',
     fontSize: '18px',

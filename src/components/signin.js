@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import '../style.css';
 import { Link } from "react-router-dom";
-import web3 from '../ethereum/web3'
 import { connect } from 'react-redux';
 import backEndAddress from '../config';
 
@@ -90,6 +89,8 @@ async handleSubmit() {
       var productsFromDB = products.map(product => {
         return {
           ownerAddressEth : product.ownerAddressEth,
+          lastBuyerAddressEth : product.lastBuyerAddressEth,
+          lastTransactCreationDate : product.lastTransactCreationDate,
           productStatus : product.productStatus,
           producerHash : product.producerHash,
           productCreationDate : product.productCreationDate,

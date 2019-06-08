@@ -127,6 +127,7 @@ class Signup extends Component {
           return {
             ownerAddressEth : product.ownerAddressEth,
             lastBuyerAddressEth : product.lastBuyerAddressEth,
+            lastTransactCreationDate : product.lastTransactCreationDate,
             productStatus : product.productStatus,
             producerHash : product.producerHash,
             productCreationDate : product.productCreationDate,

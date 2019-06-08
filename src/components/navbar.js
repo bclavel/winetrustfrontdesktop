@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from 'reactstrap';
+import { Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, Button } from 'reactstrap';
 import { connect } from 'react-redux';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import '../App.css';
@@ -36,15 +33,15 @@ class NavBar extends React.Component {
               <img style={{maxWidth:'200px', marginLeft:'200px'}} src="../images/WineTrust-H-logo-bordeaux.png" />
             </NavbarBrand>
             <NavItem >
-              <NavLink  style={styles.myproduct} href="#"><Link className='whiteBtnLink' to='/dashboard/'>MES PRODUITS</Link></NavLink>
+              <Link style={styles.myproduct} className='whiteBtnLink' to='/dashboard/'>Mes produits</Link>
             </NavItem>
             <NavItem style={styles.iconUser}>
-              <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
+              <img style={{width : "35px"}} src="../images/profil.png" />
             </NavItem>
             <NavItem style={styles.navBtndeconnect}>
                 <Button href="/" style={styles.blueSmallBtn}>Déconnexion</Button>
             </NavItem>
-          </Nav> 
+          </Nav>
         </Navbar>
       </div>
     )
@@ -59,26 +56,24 @@ var styles = {
   },
 
   nav: {
-    // textAlign: 'center',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around',
     width: '100vw'
   },
-  // logo: {
-  //   marginLeft: '15em',
-  //   maxWidth: '200'
-  // },
   myproduct: {
     fontFamily: 'Roboto',
-    fontSize:'1.2em',
+    fontWeight : 'bold',
+    textTransform : 'uppercase',
+    fontSize:'18px',
     color: 'white',
     display: 'flex',
-    paddingRight: '290px',
+    marginRight: '270px',
+    marginTop : '7px',
+    marginLeft : '20px'
   },
 
   navItem: {
-    // textAlign: 'center',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
