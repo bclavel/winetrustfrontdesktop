@@ -23,4 +23,8 @@ contract Product {
     owner = msg.sender;
     }
 
+    function getTransactCount() public view returns (uint256) {
+      return transactions.length;
+    }
+
 }
