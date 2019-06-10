@@ -172,7 +172,7 @@ class SellProduct extends React.Component {
                       <option>Carrefour</option>
                       <option>Intermarché</option>
                       <option>Nicolas</option>
-                      <option>PapierCorp</option>
+                      <option>Domaine Beauregard</option>
                     </Input>
                     <Button style={styles.smallBtnDistri}>Ajouter un distributeur</Button>
                   </FormGroup>

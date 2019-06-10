@@ -41,7 +41,7 @@ export default function(products = [], action){
     return productCopy;
   } else if(action.type === 'updateProducts'){
     console.log('Action from updateProducts reducer >>', action);
-    return productCopy;
+      return action.products;
   } else {
     return products;
   }
