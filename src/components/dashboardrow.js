@@ -20,7 +20,6 @@ class DashboardRow extends Component {
       buyerAddressEth : ''
       }
       this.toggle = this.toggle.bind(this);
-      // this.jjmmaaaa = this.jjmmaaaa.bind(this);
 
     };
 
@@ -136,7 +135,7 @@ handleSubmit = async () => {
      actionBtn1 = <Button style={styles.lightSmallBtn}><Link to={`/product/${this.props.productAddressEth}`} className='lightBtnLink'>Détails</Link></Button>
    } else {
      actionBtn1 = <Button style={styles.lightSmallBtn}><Link to={`/product/${this.props.productAddressEth}`} className='lightBtnLink'>Détails</Link></Button>
-     actionBtn2 = <Button style={styles.blueSmallBtn} onClick={this.toggle}>Acheter</Button>
+     actionBtn2 = <Button style={styles.redSmallBtn} onClick={this.toggle}>Confirmer</Button>
    }
 
    function formatDate(date) {
@@ -228,6 +227,14 @@ var styles = {
     paddingRight : '5px',
     marginLeft : '10px',
     borderColor : '#22323F'
+  },
+  redSmallBtn : {
+    backgroundColor : '#711A1A',
+    fontSize: '14px',
+    paddingLeft : '5px',
+    paddingRight : '5px',
+    marginLeft : '10px',
+    borderColor : '#711A1A'
   },
   lightSmallBtn : {
     backgroundColor : '#E2DAD4',

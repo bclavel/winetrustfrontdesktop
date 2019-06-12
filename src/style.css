@@ -81,6 +81,15 @@ color: black !important;
   text-decoration: none;
 }
 
+.redBtnLink {
+  color : #F7F3EF;
+}
+
+.redBtnLink:hover {
+  color : #E2DAD4;
+  text-decoration: none;
+}
+
 .whiteBtnLink {
   color : #FFF;
 }

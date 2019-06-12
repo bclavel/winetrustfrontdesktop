@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, Button } from 'reactstrap';
+import { Navbar, NavbarBrand, Nav, NavItem, Button } from 'reactstrap';
 import { connect } from 'react-redux';
 
 import 'bootstrap/dist/css/bootstrap.css';

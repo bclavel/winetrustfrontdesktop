@@ -76,7 +76,6 @@ componentWillMount() {
         domainUrl : productList[i].domainUrl,
         domainFacebook : productList[i].domainFacebook,
         domainEmail : productList[i].domainEmail,
-        domainEmail : productList[i].domainEmail,
         historiqueTransactions : productList[i].historiqueTransactions
       })
     }

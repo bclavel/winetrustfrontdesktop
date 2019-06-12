@@ -42,54 +42,6 @@ class HistoriqueRow extends Component {
   }
 }
 
-var styles = {
-  blueSmallBtn : {
-    backgroundColor : '#22323F',
-    fontSize: '14px',
-    paddingLeft : '5px',
-    paddingRight : '5px',
-    marginLeft : '10px',
-    borderColor : '#22323F'
-  },
-  lightSmallBtn : {
-    backgroundColor : '#E2DAD4',
-    color : '#22323F',
-    fontSize: '14px',
-    paddingLeft : '5px',
-    paddingRight : '5px',
-    borderColor : '#E2DAD4'
-  },
-  modalFormat : {
-    display : 'flex',
-    flexDirection : 'row',
-    justifyContent : 'flex-start',
-    alignItems : 'normal'
-  },
-  normalTxt : {
-    fontFamily: 'Roboto',
-    fontSize: '14px',
-  },
-  imageModal : {
-    width : '100%'
-  },
-  blueBigBtn : {
-    backgroundColor : '#22323F',
-    fontSize: '18px',
-    paddingLeft : '40px',
-    paddingRight : '40px',
-    marginLeft : '30px',
-    borderColor : '#22323F'
-  },
-  lightBigBtn : {
-    backgroundColor : '#E2DAD4',
-    color : '#22323F',
-    fontSize: '18px',
-    paddingLeft : '40px',
-    paddingRight : '40px',
-    borderColor : '#E2DAD4'
-  },
-}
-
 
 function mapStateToProps(state) {
   console.log('Dashboard : state products >>', state.products);
